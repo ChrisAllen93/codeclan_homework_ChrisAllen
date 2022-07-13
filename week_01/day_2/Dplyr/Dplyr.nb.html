@@ -1768,10 +1768,42 @@ pre code {
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5saWJyYXJ5KENvZGVDbGFuRGF0YSlcblZpZXcoZHJpbmtzX2NvbnRlbnQpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)
-library(CodeClanData)
-View(drinks_content)</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
+<pre class="r"><code>library(tidyverse)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4xIOKUgOKUgFxu4pyUIGdncGxvdDIgMy4zLjYgICAgIOKclCBwdXJyciAgIDAuMy40XG7inJQgdGliYmxlICAzLjEuNiAgICAg4pyUIGRwbHlyICAgMS4wLjlcbuKclCB0aWR5ciAgIDEuMi4wICAgICDinJQgc3RyaW5nciAxLjQuMFxu4pyUIHJlYWRyICAgMi4xLjIgICAgIOKclCBmb3JjYXRzIDAuNS4xXG5XYXJuaW5nOiBwYWNrYWdlIOKAmGdncGxvdDLigJkgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiA0LjIuMVxuV2FybmluZzogcGFja2FnZSDigJhkcGx5cuKAmSB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuMi4xXG7ilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG7inJYgZHBseXI6OmZpbHRlcigpIG1hc2tzIHN0YXRzOjpmaWx0ZXIoKVxu4pyWIGRwbHlyOjpsYWcoKSAgICBtYXNrcyBzdGF0czo6bGFnKClcbiJ9 -->
+<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
+  method         from
+  print.tbl_lazy     
+  print.tbl_sql      
+── Attaching packages ─────────────────── tidyverse 1.3.1 ──
+✔ ggplot2 3.3.6     ✔ purrr   0.3.4
+✔ tibble  3.1.6     ✔ dplyr   1.0.9
+✔ tidyr   1.2.0     ✔ stringr 1.4.0
+✔ readr   2.1.2     ✔ forcats 0.5.1
+Warning: package ‘ggplot2’ was built under R version 4.2.1
+Warning: package ‘dplyr’ was built under R version 4.2.1
+── Conflicts ────────────────────── tidyverse_conflicts() ──
+✖ dplyr::filter() masks stats::filter()
+✖ dplyr::lag()    masks stats::lag()</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShDb2RlQ2xhbkRhdGEpXG5gYGAifQ== -->
+<pre class="r"><code>library(CodeClanData)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiXG5BdHRhY2hpbmcgcGFja2FnZTog4oCYQ29kZUNsYW5EYXRh4oCZXG5cblRoZSBmb2xsb3dpbmcgb2JqZWN0IGlzIG1hc2tlZCBmcm9tIOKAmHBhY2thZ2U6ZHBseXLigJk6XG5cbiAgICBzdGFyd2Fyc1xuXG5UaGUgZm9sbG93aW5nIG9iamVjdCBpcyBtYXNrZWQgZnJvbSDigJhwYWNrYWdlOnRpZHly4oCZOlxuXG4gICAgcG9wdWxhdGlvblxuIn0= -->
+<pre><code>
+Attaching package: ‘CodeClanData’
+
+The following object is masked from ‘package:dplyr’:
+
+    starwars
+
+The following object is masked from ‘package:tidyr’:
+
+    population</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuVmlldyhkcmlua3NfY29udGVudClcbmBgYCJ9 -->
+<pre class="r"><code>View(drinks_content)</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1803,27 +1835,27 @@ variable types, variable names, etc.?</p>
 <!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2xpbXBzZShkcmlua3NfY29udGVudClcbmBgYCJ9 -->
 <pre class="r"><code>glimpse(drinks_content)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMjQyXG5Db2x1bW5zOiAxOFxuJCBCZXZlcmFnZV9jYXRlZ29yeSAgICAgICAgIDxjaHI+IFwiQ29mZmVlXCIsIFwiQ29mZmVlXCIsIFwiQ2/igKZcbiQgQmV2ZXJhZ2UgICAgICAgICAgICAgICAgICA8Y2hyPiBcIkJyZXdlZCBDb2ZmZWVcIiwgXCJCcmV3ZeKAplxuJCBCZXZlcmFnZV9wcmVwICAgICAgICAgICAgIDxjaHI+IFwiU2hvcnRcIiwgXCJUYWxsXCIsIFwiR3JhbmTigKZcbiQgQ2Fsb3JpZXMgICAgICAgICAgICAgICAgICA8ZGJsPiAzLCA0LCA1LCA1LCA3MCwgMTAwLCA3MOKAplxuJCBgVG90YWwgRmF0IChnKWAgICAgICAgICAgIDxjaHI+IFwiMC4xXCIsIFwiMC4xXCIsIFwiMC4xXCIsIFwiMOKAplxuJCBgVHJhbnMgRmF0IChnKWAgICAgICAgICAgIDxkYmw+IDAuMCwgMC4wLCAwLjAsIDAuMCwgMC4x4oCmXG4kIGBTYXR1cmF0ZWQgRmF0IChnKWAgICAgICAgPGRibD4gMC4wLCAwLjAsIDAuMCwgMC4wLCAwLjDigKZcbiQgYFNvZGl1bSAobWcpYCAgICAgICAgICAgICA8ZGJsPiAwLCAwLCAwLCAwLCA1LCAxNSwgMCwgNeKAplxuJCBgVG90YWwgQ2FyYm9oeWRyYXRlcyAoZylgIDxkYmw+IDUsIDEwLCAxMCwgMTAsIDc1LCA4NSwg4oCmXG4kIGBDaG9sZXN0ZXJvbCAobWcpYCAgICAgICAgPGRibD4gMCwgMCwgMCwgMCwgMTAsIDEwLCA2LCDigKZcbiQgYERpZXRhcnkgRmlicmUgKGcpYCAgICAgICA8ZGJsPiAwLCAwLCAwLCAwLCAwLCAwLCAxLCAwLOKAplxuJCBgU3VnYXJzIChnKWAgICAgICAgICAgICAgIDxkYmw+IDAsIDAsIDAsIDAsIDksIDksIDQsIDE04oCmXG4kIGBQcm90ZWluIChnKWAgICAgICAgICAgICAgPGRibD4gMC4zLCAwLjUsIDEuMCwgMS4wLCA2LjDigKZcbiQgYFZpdGFtaW4gQSAoJSBEVilgICAgICAgICA8Y2hyPiBcIjAlXCIsIFwiMCVcIiwgXCIwJVwiLCBcIjAlXCIs4oCmXG4kIGBWaXRhbWluIEMgKCUgRFYpYCAgICAgICAgPGNocj4gXCIwJVwiLCBcIjAlXCIsIFwiMCVcIiwgXCIwJVwiLOKAplxuJCBgQ2FsY2l1bSAoJSBEVilgICAgICAgICAgIDxjaHI+IFwiMCVcIiwgXCIwJVwiLCBcIjAlXCIsIFwiMiVcIizigKZcbiQgYElyb24gKCUgRFYpYCAgICAgICAgICAgICA8Y2hyPiBcIjAlXCIsIFwiMCVcIiwgXCIwJVwiLCBcIjAlXCIs4oCmXG4kIGBDYWZmZWluZSAobWcpYCAgICAgICAgICAgPGNocj4gXCIxNzVcIiwgXCIyNjBcIiwgXCIzMzBcIiwgXCI04oCmXG4ifQ== -->
+<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMjQyXG5Db2x1bW5zOiAxOFxuJCBCZXZlcmFnZV9jYXRlZ29yeSAgICAgICAgIDxjaHI+IFwiQ29mZmVlXCIsIFwiQ29mZmVlXCIsIFwiQ29m4oCmXG4kIEJldmVyYWdlICAgICAgICAgICAgICAgICAgPGNocj4gXCJCcmV3ZWQgQ29mZmVlXCIsIFwiQnJld2Vk4oCmXG4kIEJldmVyYWdlX3ByZXAgICAgICAgICAgICAgPGNocj4gXCJTaG9ydFwiLCBcIlRhbGxcIiwgXCJHcmFuZGXigKZcbiQgQ2Fsb3JpZXMgICAgICAgICAgICAgICAgICA8ZGJsPiAzLCA0LCA1LCA1LCA3MCwgMTAwLCA3MCzigKZcbiQgYFRvdGFsIEZhdCAoZylgICAgICAgICAgICA8Y2hyPiBcIjAuMVwiLCBcIjAuMVwiLCBcIjAuMVwiLCBcIjAu4oCmXG4kIGBUcmFucyBGYXQgKGcpYCAgICAgICAgICAgPGRibD4gMC4wLCAwLjAsIDAuMCwgMC4wLCAwLjEs4oCmXG4kIGBTYXR1cmF0ZWQgRmF0IChnKWAgICAgICAgPGRibD4gMC4wLCAwLjAsIDAuMCwgMC4wLCAwLjAs4oCmXG4kIGBTb2RpdW0gKG1nKWAgICAgICAgICAgICAgPGRibD4gMCwgMCwgMCwgMCwgNSwgMTUsIDAsIDUs4oCmXG4kIGBUb3RhbCBDYXJib2h5ZHJhdGVzIChnKWAgPGRibD4gNSwgMTAsIDEwLCAxMCwgNzUsIDg1LCA24oCmXG4kIGBDaG9sZXN0ZXJvbCAobWcpYCAgICAgICAgPGRibD4gMCwgMCwgMCwgMCwgMTAsIDEwLCA2LCAx4oCmXG4kIGBEaWV0YXJ5IEZpYnJlIChnKWAgICAgICAgPGRibD4gMCwgMCwgMCwgMCwgMCwgMCwgMSwgMCwg4oCmXG4kIGBTdWdhcnMgKGcpYCAgICAgICAgICAgICAgPGRibD4gMCwgMCwgMCwgMCwgOSwgOSwgNCwgMTQs4oCmXG4kIGBQcm90ZWluIChnKWAgICAgICAgICAgICAgPGRibD4gMC4zLCAwLjUsIDEuMCwgMS4wLCA2LjAs4oCmXG4kIGBWaXRhbWluIEEgKCUgRFYpYCAgICAgICAgPGNocj4gXCIwJVwiLCBcIjAlXCIsIFwiMCVcIiwgXCIwJVwiLCDigKZcbiQgYFZpdGFtaW4gQyAoJSBEVilgICAgICAgICA8Y2hyPiBcIjAlXCIsIFwiMCVcIiwgXCIwJVwiLCBcIjAlXCIsIOKAplxuJCBgQ2FsY2l1bSAoJSBEVilgICAgICAgICAgIDxjaHI+IFwiMCVcIiwgXCIwJVwiLCBcIjAlXCIsIFwiMiVcIiwg4oCmXG4kIGBJcm9uICglIERWKWAgICAgICAgICAgICAgPGNocj4gXCIwJVwiLCBcIjAlXCIsIFwiMCVcIiwgXCIwJVwiLCDigKZcbiQgYENhZmZlaW5lIChtZylgICAgICAgICAgICA8Y2hyPiBcIjE3NVwiLCBcIjI2MFwiLCBcIjMzMFwiLCBcIjQx4oCmXG4ifQ== -->
 <pre><code>Rows: 242
 Columns: 18
-$ Beverage_category         &lt;chr&gt; &quot;Coffee&quot;, &quot;Coffee&quot;, &quot;Co…
-$ Beverage                  &lt;chr&gt; &quot;Brewed Coffee&quot;, &quot;Brewe…
-$ Beverage_prep             &lt;chr&gt; &quot;Short&quot;, &quot;Tall&quot;, &quot;Grand…
-$ Calories                  &lt;dbl&gt; 3, 4, 5, 5, 70, 100, 70…
-$ `Total Fat (g)`           &lt;chr&gt; &quot;0.1&quot;, &quot;0.1&quot;, &quot;0.1&quot;, &quot;0…
-$ `Trans Fat (g)`           &lt;dbl&gt; 0.0, 0.0, 0.0, 0.0, 0.1…
-$ `Saturated Fat (g)`       &lt;dbl&gt; 0.0, 0.0, 0.0, 0.0, 0.0…
-$ `Sodium (mg)`             &lt;dbl&gt; 0, 0, 0, 0, 5, 15, 0, 5…
-$ `Total Carbohydrates (g)` &lt;dbl&gt; 5, 10, 10, 10, 75, 85, …
-$ `Cholesterol (mg)`        &lt;dbl&gt; 0, 0, 0, 0, 10, 10, 6, …
-$ `Dietary Fibre (g)`       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 1, 0,…
-$ `Sugars (g)`              &lt;dbl&gt; 0, 0, 0, 0, 9, 9, 4, 14…
-$ `Protein (g)`             &lt;dbl&gt; 0.3, 0.5, 1.0, 1.0, 6.0…
-$ `Vitamin A (% DV)`        &lt;chr&gt; &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;,…
-$ `Vitamin C (% DV)`        &lt;chr&gt; &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;,…
-$ `Calcium (% DV)`          &lt;chr&gt; &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;2%&quot;,…
-$ `Iron (% DV)`             &lt;chr&gt; &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;,…
-$ `Caffeine (mg)`           &lt;chr&gt; &quot;175&quot;, &quot;260&quot;, &quot;330&quot;, &quot;4…</code></pre>
+$ Beverage_category         &lt;chr&gt; &quot;Coffee&quot;, &quot;Coffee&quot;, &quot;Cof…
+$ Beverage                  &lt;chr&gt; &quot;Brewed Coffee&quot;, &quot;Brewed…
+$ Beverage_prep             &lt;chr&gt; &quot;Short&quot;, &quot;Tall&quot;, &quot;Grande…
+$ Calories                  &lt;dbl&gt; 3, 4, 5, 5, 70, 100, 70,…
+$ `Total Fat (g)`           &lt;chr&gt; &quot;0.1&quot;, &quot;0.1&quot;, &quot;0.1&quot;, &quot;0.…
+$ `Trans Fat (g)`           &lt;dbl&gt; 0.0, 0.0, 0.0, 0.0, 0.1,…
+$ `Saturated Fat (g)`       &lt;dbl&gt; 0.0, 0.0, 0.0, 0.0, 0.0,…
+$ `Sodium (mg)`             &lt;dbl&gt; 0, 0, 0, 0, 5, 15, 0, 5,…
+$ `Total Carbohydrates (g)` &lt;dbl&gt; 5, 10, 10, 10, 75, 85, 6…
+$ `Cholesterol (mg)`        &lt;dbl&gt; 0, 0, 0, 0, 10, 10, 6, 1…
+$ `Dietary Fibre (g)`       &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 1, 0, …
+$ `Sugars (g)`              &lt;dbl&gt; 0, 0, 0, 0, 9, 9, 4, 14,…
+$ `Protein (g)`             &lt;dbl&gt; 0.3, 0.5, 1.0, 1.0, 6.0,…
+$ `Vitamin A (% DV)`        &lt;chr&gt; &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, …
+$ `Vitamin C (% DV)`        &lt;chr&gt; &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, …
+$ `Calcium (% DV)`          &lt;chr&gt; &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;2%&quot;, …
+$ `Iron (% DV)`             &lt;chr&gt; &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, &quot;0%&quot;, …
+$ `Caffeine (mg)`           &lt;chr&gt; &quot;175&quot;, &quot;260&quot;, &quot;330&quot;, &quot;41…</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
@@ -1880,16 +1912,19 @@ Which 3 category of drinks have the most calories? Which 3 drinks have
 the least? Write a small summary of your findings.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZHJpbmtzX2NsZWFuICU+JVxuICBncm91cF9ieShCZXZlcmFnZV9jYXRlZ29yeSkgJT4lIFxuICBzdW1tYXJpc2UoYXZlcmFnZV92YWx1ZSA9IG1lYW4oQ2Fsb3JpZXMpKSAlPiUgXG4gIGFycmFuZ2UoZGVzYyhhdmVyYWdlX3ZhbHVlKSlcbmBgYCJ9 -->
-<pre class="r"><code>drinks_clean %&gt;%
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubW9zdF9jYWxvcmllcyA8LSBkcmlua3NfY2xlYW4gJT4lXG4gIGdyb3VwX2J5KEJldmVyYWdlX2NhdGVnb3J5KSAlPiUgXG4gIHN1bW1hcmlzZShhdmVyYWdlX3ZhbHVlID0gbWVhbihDYWxvcmllcykpICU+JSBcbiAgYXJyYW5nZShkZXNjKGF2ZXJhZ2VfdmFsdWUpKSAlPiUgXG4gIGhlYWQoMylcblxubW9zdF9jYWxvcmllc1xuYGBgIn0= -->
+<pre class="r"><code>most_calories &lt;- drinks_clean %&gt;%
   group_by(Beverage_category) %&gt;% 
   summarise(average_value = mean(Calories)) %&gt;% 
-  arrange(desc(average_value))</code></pre>
+  arrange(desc(average_value)) %&gt;% 
+  head(3)
+
+most_calories</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6OSwibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI5IMOXIDIiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCb1ZTUFcvVFFCaCthMm9xUjBvaFFoVkN5bUIxcVJpU0JTR1Y3ZFNXSWlRa0VBbFNCaVQwMW43am5PTGNPZWR6K0pnNndNRFNYd0FzTEV6OENCajZGN3F6czdJMTNEbDNFakZJbk9UejYrZTU1LzE0emsrUFJuZGFveFlBWElITndPeWhDU0Y4Tmp6dTdVT053QVpzUW1UZnJ3eDl3d1FXdkc2ZXlCSFJZQ2Fsbm5BcUFVNHQwRDFXV0JSVmtuQWh2MzJORDNJU0thWHhvUnlQaVp6bzFvQm5BbldsS0w1ZkZvcktVc1pIaW92cC81S283MTltNU01MGh2akdra1BDZGZIdXV2Z1J6eWI2MzMzY1BNeXhMSG55VnhjcmVtY3d3U21KK0dGaWhBZTBJSVVaZWZLcXl3U3diVzFnODg5bit6L083ckg1NCs3OHZLdVlaTlpNWUxQZHhkN0pZbytOYjE5OGZIL3hpYVZQVmppK2U4dC9qaDZ3NXgvTThmazU2NEJiYTc2SEFtZlcydHJ6d0lFZDM4dUxCRFZsVXIxMlJCc2R2c0M4b2thcVNNbVhmWit1YmRPZG1tMjVYUDVxMWt5c0s2Nm1CMXNwYXV5UEZWci80YkloMlpLRjVsSVlVV0Iva3JBaDNsQU40Rm9sYkNkcEw1bFVZdHE3YXd2VTlHcTFYUno5RVFlcmtzSFNwUXI5UFpESXVQQTNHdVo0UXJuNzJEWVQxd1AzQzNPdDJrOWkwTEt2cFVaL3JwWEkzQ1AxYkhENUd3OFdtUEFiQXdBQSJ9 -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MywibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIzIMOXIDIiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbDFRUVU3RE1CRGNwZzJva1ZKQW5KQjZ5QWNhQ1hFcHQ2aVVYcEVvU0wwaGsyelNxS21kT2s2QlcxL1FUM0RuRVZ4NENPK2d3VTVzQ2VMRGVqM3JtZG5kKytuaXlsazRBTkNGbmlXakxWT3dIeDltb3pIVUNIU2dCMzExdjhyeXVVd1VlTm93NmtKL3ZtWk1MRk1zQUhZS0dNNDR5Zk15REZQS1BqKzhTWVkwd3NpN1lYR01xRWtYOHpTaFJKUWN2ZHNpNTFnVXpKdnlsSzZrQ0F5VWVyQjUzNCsvOTlmQjVtNjQrUnJ5Z0FYUW5IOXQyWlNzbFhQZGtxWEJzd2x1a1pNRW4wSWlNR0g4VFJkY292RXR5VXBzU2ZVNWUvR05uS3ZrZGpKVVZmWFQ5Z3d6VWhoUEF6b1JFY1NQdWVUTDE2RkZPV2E1U0JtVkpFdnQwRzZSTzd3Rm5KUlVkUktOd21WSlY2TkxaVkNYbStQcXZQc250eHBMcTlKU3RwWTZRcHFrMUN6ZXpzZ3padm94a0JQWEEvdTUzTDB3azBpMDhBVVR4UHh6UXBZWnBKNE5Ecjk5Z2xTTk9nSUFBQT09In0= -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
-{"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["average_value"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Smoothies","2":"282.2222"},{"1":"Frappuccino® Blended Coffee","2":"276.9444"},{"1":"Signature Espresso Drinks","2":"250.0000"},{"1":"Frappuccino® Blended Crème","2":"233.0769"},{"1":"Tazo® Tea Drinks","2":"177.3077"},{"1":"Frappuccino® Light Blended Coffee","2":"162.5000"},{"1":"Classic Espresso Drinks","2":"140.1724"},{"1":"Shaken Iced Beverages","2":"114.4444"},{"1":"Coffee","2":"4.2500"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[9]},"pages":{}}}
+{"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["average_value"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Smoothies","2":"282.2222"},{"1":"Frappuccino® Blended Coffee","2":"276.9444"},{"1":"Signature Espresso Drinks","2":"250.0000"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
   </script>
 </div>
 <!-- rnb-frame-end -->
@@ -1897,10 +1932,28 @@ the least? Write a small summary of your findings.</p>
 <pre class="r"><code>NA</code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGVhc3RfY2Fsb3JpZXMgPC0gZHJpbmtzX2NsZWFuICU+JVxuICBncm91cF9ieShCZXZlcmFnZV9jYXRlZ29yeSkgJT4lIFxuICBzdW1tYXJpc2UoYXZlcmFnZV92YWx1ZSA9IG1lYW4oQ2Fsb3JpZXMpKSAlPiUgXG4gIGFycmFuZ2UoZGVzYyhhdmVyYWdlX3ZhbHVlKSkgJT4lIFxuICB0YWlsKDMpXG5cbmxlYXN0X2NhbG9yaWVzXG5gYGAifQ== -->
+<pre class="r"><code>least_calories &lt;- drinks_clean %&gt;%
+  group_by(Beverage_category) %&gt;% 
+  summarise(average_value = mean(Calories)) %&gt;% 
+  arrange(desc(average_value)) %&gt;% 
+  tail(3)
+
+least_calories</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MywibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIzIMOXIDIiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbDFSUzA3RE1CUjAwd2JVU0NsVUNMRmhrUXNrQzlpd2pHZ0JzZVVqWllHRVRQS1NSZ2wyYXljRmRpemdGdHludCtFR05Ed250Z1R4d2huUGVPYTk1OXpNbzFNbmNnZ2hRekt5Y0xjUkV2dis3dEkvSXkxREJtUkV4dXI3aXZJQkFrWHVkNDVXT0pxVlZNbzg5aTdrVW9DVTNKdUxuQlZTeTRlM0Mxb0E4NjVqU0x4eldJT2dHUmh4WjhiVEZBRFJSQ1dHOVBNai80NnV3b2V2MWVaNHRRbW5SSzkvcmRpTVBtTkUxNGFseWFuSmZveHBCUmtYYjFwd3FlYlh0S3loRnpVVy9DVXdjYTZLZThldGFacWZmczFZVGFsckd0SkphRVdEVktBZlQ5dWVaWmN2cTV3ek5GbnEzZXllZVNCNnhGN05WQ2VKSHk5cVZ2Z25xa0FyZDh2VmVQZ0hXMTFKcTlGUnRubFhZRm5Pd1BSZTBpY285V0dDRTdjREIwdjhUWldaQkZrWlZMeWk1cDRUODlJdzdXeGsrd3V3QnZYaExnSUFBQT09In0= -->
+<div data-pagedtable="false">
+<script data-pagedtable-source type="application/json">
+{"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["average_value"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Classic Espresso Drinks","2":"140.1724"},{"1":"Shaken Iced Beverages","2":"114.4444"},{"1":"Coffee","2":"4.2500"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[3]},"pages":{}}}
+  </script>
+</div>
+<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-<p>The table above shows that <em>Smoothies</em>, <em>Frappucino Blended
-Coffee</em> and <em>Signature Espresso Drinks</em> are the top 3 drink
-categories with the highest average calories. Conversely,
+<p>The table above shows that <em>Smoothies</em>, <em>Frappuccino
+Blended Coffee</em> and <em>Signature Espresso Drinks</em> are the top 3
+drink categories with the highest average calories. Conversely,
 <em>Coffee</em>, <em>Shaken Iced Beverages</em> and <em>Classic Espresso
 Drinks</em> are the lowest 3 drink categories with the lowest average
 calories.</p>
@@ -1983,7 +2036,7 @@ min_cal_coffee</code></pre>
 <pre class="r"><code>drinks_clean %&gt;%
   filter(Calories == min_cal_coffee)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6NCwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDQiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbTFSUVU3RE1CRGNoQmphU0NrZ1BzQUhrZ3NYdUtFVzhRQ2dVbS9JVFRacGhMRWp4NlZ3NCtVdDY5UkdyZFdWYkk5bmRqMWUrK1ZwY1pjdVVnQTRneVNtbVJFRU5uOTd6dTloWUNDQ0JNWjIvU2I1aGtCQzQrcEFPSitwdWtZTTJHeXFjWVBWN1VtUnZhNlVOZ1FtbG53Y2dZc2pReWI1Si9hdU1uSGs5UlMvVVBNRzMwdHVzRkg2eHdrakwvejcrOFJPWStlVFpsd28zZHBUajZ6R1dtMEtiNWZSaUg5cDJsR0VkeW9GNy91Z203VGloaGUxcG5yYWJZT1NDOVdaVmtrcWl1M3JzYUE0MGdGeHVaYjJKbFZlcnRieUkzK3dCb084ajh6aDZBQW5lOHQ0NTQ1aS9tZFFOcTMwTDhJRVg2Sndtd2wxUERSY2RMcVZ4bmRDYkY4WVpialBTMHNsUERQMEJ0cy9uZmREUWpRQ0FBQT0ifQ== -->
+<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6NCwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDQiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbTFSeTA3RE1CRGNCSnUya1ZKQS9FQi9vTGx3NFloYXhBZndrSHBESnRta0VjYU9ISmZDalM5dldhYzJhaTFXc3IyZTJmRjY3TWY3MVUyMnlnRGdERmhLTTZjVStNdnp3L3dXQmdRU1lEQng2eGZSMTVRd0dwZEh4UGxTMXpWaWhPWUxnMXVzWnYrUy9HbXRqYVZrNnNDN01mZzRhY2lWK01EZUs1a0hyeGI0aVVZMCtGb0tpNDAyMzU0WUIrS3ZmeWpzREhhaGFDbWtOcTA3OWFUVnhPaHRFZHJsTk5JZm12WVU4WjFLS2ZvK2NwTlZ3b3FpTnFTbjNTNlNqSFJuVzYxSWxMclg0NUU0TVJGd3NWSHVKdFc4WEcvVXUvc0d5QWI2RUxuUGs2T2NIVnFtZTM4VUR6K0RxbWxWZUJFdXhSdEt2NW1TNDhGdzBabFcyZUNFMEw2dzJvcFFsNVZhQm1Ud0JydGZ2OVVkSVRRQ0FBQT0ifQ== -->
 <div data-pagedtable="false">
 <script data-pagedtable-source type="application/json">
 {"columns":[{"label":["Beverage_category"],"name":[1],"type":["chr"],"align":["left"]},{"label":["Beverage"],"name":[2],"type":["chr"],"align":["left"]},{"label":["Beverage_prep"],"name":[3],"type":["chr"],"align":["left"]},{"label":["Calories"],"name":[4],"type":["dbl"],"align":["right"]}],"data":[{"1":"Coffee","2":"Brewed Coffee","3":"Short","4":"3"}],"options":{"columns":{"min":{},"max":[10],"total":[4]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
@@ -1999,7 +2052,7 @@ min_cal_coffee</code></pre>
 coffee drinks.</p>
 <!-- rnb-text-end -->
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShDb2RlQ2xhbkRhdGEpDQpWaWV3KGRyaW5rc19jb250ZW50KQ0KYGBgDQoNClF1ZXN0aW9uIDEuDQoNCkxvYWQgaW4gdGhlIGRhdGFzZXQgYW5kIGhhdmUgYSBsb29rIGF0IGl0LiBXaGF0IGFyZSB0aGUgZGltZW5zaW9ucywgdmFyaWFibGUgdHlwZXMsIHZhcmlhYmxlIG5hbWVzLCBldGMuPw0KDQpgYGB7cn0NCmRpbShkcmlua3NfY29udGVudCkNCm5hbWVzKGRyaW5rc19jb250ZW50KQ0KZ2xpbXBzZShkcmlua3NfY29udGVudCkNCmBgYA0KDQpRdWVzdGlvbiAyLg0KDQpMZXTigJlzIGZpcnN0IGludmVzdGlnYXRlIHRoZSBjYWxvcmllcyBvZiBkaWZmZXJlbnQgZHJpbmtzLiBTZWxlY3QgdGhlIHZhcmlhYmxlcyBCZXZlcmFnZV9jYXRlZ29yeSwgQmV2ZXJhZ2UsIEJldmVyYWdlIHByZXAgYW5kIENhbG9yaWVzIGZyb20geW91ciBkYXRhLiBTaW5jZSB3ZSBhcmUgaW50ZXJlc3RlZCBpbiB0aGUgY2Fsb3JpZSBjb250ZW50LCBjaGVjayBpZiB0aGVyZSBhcmUgYW55IE5BIHZhbHVlcyBpbiB0aGUgZGF0YSwgYW5kIGRyb3AgdGhlbSBpZiB0aGVyZSBhcmUuDQoNCmBgYHtyfQ0KZHJpbmtzX2NsZWFuIDwtIGRyaW5rc19jb250ZW50ICU+JQ0KICBzZWxlY3QoY29udGFpbnMoImJldmVyYWdlIiksIENhbG9yaWVzKSAlPiUgDQogIGZpbHRlcighaXMubmEoQ2Fsb3JpZXMpKQ0KDQpkcmlua3NfY2xlYW4NCmBgYA0KDQpRdWVzdGlvbiAzLg0KDQpDcmVhdGUgYSBuZXcgdmFyaWFibGUgKGNvbHVtbikgY2FsbGVkIGNhbG9yaWVfZGlmZiwgd2hpY2ggc3RvcmVzIHRoZSBkaWZmZXJlbmNlIGJldHdlZW4gMTM1IGNhbG9yaWVzICgxMzUgY2Fsb3JpZXMgPSAxMCBjdWJlcyBvZiBzdWdhciEpIGFuZCB0aGUgY2Fsb3JpZXMgaW4gZWFjaCBkcmluay4gKGhpbnQ6IHlvdeKAmWxsIHdhbnQgdG8gc3VidHJhY3QgMTM1IGZyb20gdGhlIGNhbG9yaWVzIHRvIHNlZSB3aGljaCBkcmluayBoYXZlIG1vcmUgb3IgbGVzcyB0aGFuIDEwIGN1cHMgb2Ygc3VnYXIpLg0KDQpgYGB7cn0NCmRyaW5rc19jbGVhbiAlPiUNCiAgbXV0YXRlKGNhbG9yaWVfZGlmZiA9IENhbG9yaWVzIC0gMTM1KQ0KDQpgYGANCg0KUXVlc3Rpb24gNC4NCg0KU3VtbWFyaXNlIHRoZSBtZWFuIG51bWJlciBvZiBjYWxvcmllcyBpbiBlYWNoIGJldmVyYWdlX2NhdGVnb3J5LiBXaGljaCAzIGNhdGVnb3J5IG9mIGRyaW5rcyBoYXZlIHRoZSBtb3N0IGNhbG9yaWVzPyBXaGljaCAzIGRyaW5rcyBoYXZlIHRoZSBsZWFzdD8gV3JpdGUgYSBzbWFsbCBzdW1tYXJ5IG9mIHlvdXIgZmluZGluZ3MuDQoNCmBgYHtyfQ0KZHJpbmtzX2NsZWFuICU+JQ0KICBncm91cF9ieShCZXZlcmFnZV9jYXRlZ29yeSkgJT4lIA0KICBzdW1tYXJpc2UoYXZlcmFnZV92YWx1ZSA9IG1lYW4oQ2Fsb3JpZXMpKSAlPiUgDQogIGFycmFuZ2UoZGVzYyhhdmVyYWdlX3ZhbHVlKSkNCg0KYGBgDQoNClRoZSB0YWJsZSBhYm92ZSBzaG93cyB0aGF0ICpTbW9vdGhpZXMqLCAqRnJhcHB1Y2lubyBCbGVuZGVkIENvZmZlZSogYW5kICpTaWduYXR1cmUgRXNwcmVzc28gRHJpbmtzKiBhcmUgdGhlIHRvcCAzIGRyaW5rIGNhdGVnb3JpZXMgd2l0aCB0aGUgaGlnaGVzdCBhdmVyYWdlIGNhbG9yaWVzLiBDb252ZXJzZWx5LCAqQ29mZmVlKiwgKlNoYWtlbiBJY2VkIEJldmVyYWdlcyogYW5kICpDbGFzc2ljIEVzcHJlc3NvIERyaW5rcyogYXJlIHRoZSBsb3dlc3QgMyBkcmluayBjYXRlZ29yaWVzIHdpdGggdGhlIGxvd2VzdCBhdmVyYWdlIGNhbG9yaWVzLg0KDQpRdWVzdGlvbiA1Lg0KDQpMZXTigJlzIGxvb2sgYXQgdGhpcyBhIGRpZmZlcmVudCB3YXkuIFdoYXQgaXMgdGhlIGF2ZXJhZ2UgbnVtYmVyIG9mIGNhbG9yaWVzIGluIGVhY2ggQmV2ZXJhZ2VfcHJlcCB0eXBlPw0KDQpgYGB7cn0NCmRyaW5rc19jbGVhbiAlPiUNCiAgZ3JvdXBfYnkoQmV2ZXJhZ2VfcHJlcCkgJT4lIA0KICBzdW1tYXJpc2UoYXZlcmFnZV92YWx1ZSA9IG1lYW4oQ2Fsb3JpZXMpKSAlPiUgDQogIGFycmFuZ2UoZGVzYyhhdmVyYWdlX3ZhbHVlKSkNCg0KYGBgDQoNClF1ZXN0aW9uIDYuDQoNCldoaWNoIEJldmVyYWdlX3ByZXAgdHlwZSBjb250YWlucyBtb3JlIHRoYW4gdGhlIGF2ZXJhZ2UgY2Fsb3JpZXMgb2YgYWxsIGRyaW5rcz8NCg0KYGBge3J9DQphdmVyYWdlX2NhbG9yaWVzIDwtIGRyaW5rc19jb250ZW50ICU+JQ0KICBtdXRhdGUoYXZlcmFnZV92YWx1ZSA9IG1lYW4oQ2Fsb3JpZXMsIG5hLnJtID0gVCkpICU+JSANCiAgc3VtbWFyaXNlKGF2ZXJhZ2VfdmFsdWUgPSBtZWFuKENhbG9yaWVzLCBuYS5ybSA9IFQpKSAlPiUgDQogIHB1bGwoKQ0KDQphdmVyYWdlX2NhbG9yaWVzDQoNCmRyaW5rc19jbGVhbiAlPiUgDQogIGdyb3VwX2J5KEJldmVyYWdlX3ByZXApICU+JSANCiAgc3VtbWFyaXNlKGF2ZXJhZ2VfdmFsdWUgPSBtZWFuKENhbG9yaWVzKSkgJT4lIA0KICBmaWx0ZXIoYXZlcmFnZV92YWx1ZSA+IGF2ZXJhZ2VfY2Fsb3JpZXMpICU+JQ0KICBhcnJhbmdlKGRlc2MoYXZlcmFnZV92YWx1ZSkpDQoNCmBgYA0KDQpRdWVzdGlvbiA3Lg0KDQpXaGljaCBpcyB0aGUgYmVzdCB0eXBlIG9mIGNvZmZlZSBkcmluayAoYW5kIGJ5IOKAmGRyaW5r4oCZIHdlIG1lYW4gdGhlIGNvbWJpbmF0aW9uIG9mIEJldmVyYWdlX2NhdGVnb3J5LCBCZXZlcmFnZSBhbmQgQmV2ZXJhZ2VfcHJlcCkgdG8gZ2V0IGlmIHlvdeKAmXJlIHdvcnJpZWQgYWJvdXQgY29uc3VtaW5nIHRvbyBtYW55IGNhbG9yaWVzPw0KDQpgYGB7cn0NCm1pbl9jYWxfY29mZmVlIDwtIGRyaW5rc19jbGVhbiAlPiUgDQogIGZpbHRlcihCZXZlcmFnZSAlaW4lICJDb2ZmZWUiIHwgQmV2ZXJhZ2VfY2F0ZWdvcnkgJWluJSAiQ29mZmVlIikgJT4lIA0KICBzdW1tYXJpc2UobWluX2NhbCA9IG1pbihDYWxvcmllcywgbmEucm0gPSBUKSkgJT4lIA0KICBwdWxsKCkNCg0KbWluX2NhbF9jb2ZmZWUNCg0KZHJpbmtzX2NsZWFuICU+JQ0KICBmaWx0ZXIoQ2Fsb3JpZXMgPT0gbWluX2NhbF9jb2ZmZWUpDQoNCmBgYA0KQSAqU2hvcnQgQnJld2VkIENvZmZlZSogaGFzIHRoZSBmZXdlc3QgY2Fsb3JpZXMgKDNrY2FsKSBvZiBhbGwgY29mZmVlIGRyaW5rcy4NCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShDb2RlQ2xhbkRhdGEpDQpWaWV3KGRyaW5rc19jb250ZW50KQ0KYGBgDQoNClF1ZXN0aW9uIDEuDQoNCkxvYWQgaW4gdGhlIGRhdGFzZXQgYW5kIGhhdmUgYSBsb29rIGF0IGl0LiBXaGF0IGFyZSB0aGUgZGltZW5zaW9ucywgdmFyaWFibGUgdHlwZXMsIHZhcmlhYmxlIG5hbWVzLCBldGMuPw0KDQpgYGB7cn0NCmRpbShkcmlua3NfY29udGVudCkNCm5hbWVzKGRyaW5rc19jb250ZW50KQ0KZ2xpbXBzZShkcmlua3NfY29udGVudCkNCmBgYA0KDQpRdWVzdGlvbiAyLg0KDQpMZXTigJlzIGZpcnN0IGludmVzdGlnYXRlIHRoZSBjYWxvcmllcyBvZiBkaWZmZXJlbnQgZHJpbmtzLiBTZWxlY3QgdGhlIHZhcmlhYmxlcyBCZXZlcmFnZV9jYXRlZ29yeSwgQmV2ZXJhZ2UsIEJldmVyYWdlIHByZXAgYW5kIENhbG9yaWVzIGZyb20geW91ciBkYXRhLiBTaW5jZSB3ZSBhcmUgaW50ZXJlc3RlZCBpbiB0aGUgY2Fsb3JpZSBjb250ZW50LCBjaGVjayBpZiB0aGVyZSBhcmUgYW55IE5BIHZhbHVlcyBpbiB0aGUgZGF0YSwgYW5kIGRyb3AgdGhlbSBpZiB0aGVyZSBhcmUuDQoNCmBgYHtyfQ0KZHJpbmtzX2NsZWFuIDwtIGRyaW5rc19jb250ZW50ICU+JQ0KICBzZWxlY3QoY29udGFpbnMoImJldmVyYWdlIiksIENhbG9yaWVzKSAlPiUgDQogIGZpbHRlcighaXMubmEoQ2Fsb3JpZXMpKQ0KDQpkcmlua3NfY2xlYW4NCmBgYA0KDQpRdWVzdGlvbiAzLg0KDQpDcmVhdGUgYSBuZXcgdmFyaWFibGUgKGNvbHVtbikgY2FsbGVkIGNhbG9yaWVfZGlmZiwgd2hpY2ggc3RvcmVzIHRoZSBkaWZmZXJlbmNlIGJldHdlZW4gMTM1IGNhbG9yaWVzICgxMzUgY2Fsb3JpZXMgPSAxMCBjdWJlcyBvZiBzdWdhciEpIGFuZCB0aGUgY2Fsb3JpZXMgaW4gZWFjaCBkcmluay4gKGhpbnQ6IHlvdeKAmWxsIHdhbnQgdG8gc3VidHJhY3QgMTM1IGZyb20gdGhlIGNhbG9yaWVzIHRvIHNlZSB3aGljaCBkcmluayBoYXZlIG1vcmUgb3IgbGVzcyB0aGFuIDEwIGN1cHMgb2Ygc3VnYXIpLg0KDQpgYGB7cn0NCmRyaW5rc19jbGVhbiAlPiUNCiAgbXV0YXRlKGNhbG9yaWVfZGlmZiA9IENhbG9yaWVzIC0gMTM1KQ0KDQpgYGANCg0KUXVlc3Rpb24gNC4NCg0KU3VtbWFyaXNlIHRoZSBtZWFuIG51bWJlciBvZiBjYWxvcmllcyBpbiBlYWNoIGJldmVyYWdlX2NhdGVnb3J5LiBXaGljaCAzIGNhdGVnb3J5IG9mIGRyaW5rcyBoYXZlIHRoZSBtb3N0IGNhbG9yaWVzPyBXaGljaCAzIGRyaW5rcyBoYXZlIHRoZSBsZWFzdD8gV3JpdGUgYSBzbWFsbCBzdW1tYXJ5IG9mIHlvdXIgZmluZGluZ3MuDQoNCmBgYHtyfQ0KbW9zdF9jYWxvcmllcyA8LSBkcmlua3NfY2xlYW4gJT4lDQogIGdyb3VwX2J5KEJldmVyYWdlX2NhdGVnb3J5KSAlPiUgDQogIHN1bW1hcmlzZShhdmVyYWdlX3ZhbHVlID0gbWVhbihDYWxvcmllcykpICU+JSANCiAgYXJyYW5nZShkZXNjKGF2ZXJhZ2VfdmFsdWUpKSAlPiUgDQogIGhlYWQoMykNCg0KbW9zdF9jYWxvcmllcw0KDQpgYGANCmBgYHtyfQ0KbGVhc3RfY2Fsb3JpZXMgPC0gZHJpbmtzX2NsZWFuICU+JQ0KICBncm91cF9ieShCZXZlcmFnZV9jYXRlZ29yeSkgJT4lIA0KICBzdW1tYXJpc2UoYXZlcmFnZV92YWx1ZSA9IG1lYW4oQ2Fsb3JpZXMpKSAlPiUgDQogIGFycmFuZ2UoZGVzYyhhdmVyYWdlX3ZhbHVlKSkgJT4lIA0KICB0YWlsKDMpDQoNCmxlYXN0X2NhbG9yaWVzDQpgYGANCg0KDQpUaGUgdGFibGUgYWJvdmUgc2hvd3MgdGhhdCAqU21vb3RoaWVzKiwgKkZyYXBwdWNjaW5vIEJsZW5kZWQgQ29mZmVlKiBhbmQgKlNpZ25hdHVyZSBFc3ByZXNzbyBEcmlua3MqIGFyZSB0aGUgdG9wIDMgZHJpbmsgY2F0ZWdvcmllcyB3aXRoIHRoZSBoaWdoZXN0IGF2ZXJhZ2UgY2Fsb3JpZXMuIENvbnZlcnNlbHksICpDb2ZmZWUqLCAqU2hha2VuIEljZWQgQmV2ZXJhZ2VzKiBhbmQgKkNsYXNzaWMgRXNwcmVzc28gRHJpbmtzKiBhcmUgdGhlIGxvd2VzdCAzIGRyaW5rIGNhdGVnb3JpZXMgd2l0aCB0aGUgbG93ZXN0IGF2ZXJhZ2UgY2Fsb3JpZXMuDQoNClF1ZXN0aW9uIDUuDQoNCkxldOKAmXMgbG9vayBhdCB0aGlzIGEgZGlmZmVyZW50IHdheS4gV2hhdCBpcyB0aGUgYXZlcmFnZSBudW1iZXIgb2YgY2Fsb3JpZXMgaW4gZWFjaCBCZXZlcmFnZV9wcmVwIHR5cGU/DQoNCmBgYHtyfQ0KZHJpbmtzX2NsZWFuICU+JQ0KICBncm91cF9ieShCZXZlcmFnZV9wcmVwKSAlPiUgDQogIHN1bW1hcmlzZShhdmVyYWdlX3ZhbHVlID0gbWVhbihDYWxvcmllcykpICU+JSANCiAgYXJyYW5nZShkZXNjKGF2ZXJhZ2VfdmFsdWUpKQ0KDQpgYGANCg0KUXVlc3Rpb24gNi4NCg0KV2hpY2ggQmV2ZXJhZ2VfcHJlcCB0eXBlIGNvbnRhaW5zIG1vcmUgdGhhbiB0aGUgYXZlcmFnZSBjYWxvcmllcyBvZiBhbGwgZHJpbmtzPw0KDQpgYGB7cn0NCmF2ZXJhZ2VfY2Fsb3JpZXMgPC0gZHJpbmtzX2NvbnRlbnQgJT4lDQogIG11dGF0ZShhdmVyYWdlX3ZhbHVlID0gbWVhbihDYWxvcmllcywgbmEucm0gPSBUKSkgJT4lIA0KICBzdW1tYXJpc2UoYXZlcmFnZV92YWx1ZSA9IG1lYW4oQ2Fsb3JpZXMsIG5hLnJtID0gVCkpICU+JSANCiAgcHVsbCgpDQoNCmF2ZXJhZ2VfY2Fsb3JpZXMNCg0KZHJpbmtzX2NsZWFuICU+JSANCiAgZ3JvdXBfYnkoQmV2ZXJhZ2VfcHJlcCkgJT4lIA0KICBzdW1tYXJpc2UoYXZlcmFnZV92YWx1ZSA9IG1lYW4oQ2Fsb3JpZXMpKSAlPiUgDQogIGZpbHRlcihhdmVyYWdlX3ZhbHVlID4gYXZlcmFnZV9jYWxvcmllcykgJT4lDQogIGFycmFuZ2UoZGVzYyhhdmVyYWdlX3ZhbHVlKSkNCg0KYGBgDQoNClF1ZXN0aW9uIDcuDQoNCldoaWNoIGlzIHRoZSBiZXN0IHR5cGUgb2YgY29mZmVlIGRyaW5rIChhbmQgYnkg4oCYZHJpbmvigJkgd2UgbWVhbiB0aGUgY29tYmluYXRpb24gb2YgQmV2ZXJhZ2VfY2F0ZWdvcnksIEJldmVyYWdlIGFuZCBCZXZlcmFnZV9wcmVwKSB0byBnZXQgaWYgeW914oCZcmUgd29ycmllZCBhYm91dCBjb25zdW1pbmcgdG9vIG1hbnkgY2Fsb3JpZXM/DQoNCmBgYHtyfQ0KbWluX2NhbF9jb2ZmZWUgPC0gZHJpbmtzX2NsZWFuICU+JSANCiAgZmlsdGVyKEJldmVyYWdlICVpbiUgIkNvZmZlZSIgfCBCZXZlcmFnZV9jYXRlZ29yeSAlaW4lICJDb2ZmZWUiKSAlPiUgDQogIHN1bW1hcmlzZShtaW5fY2FsID0gbWluKENhbG9yaWVzLCBuYS5ybSA9IFQpKSAlPiUgDQogIHB1bGwoKQ0KDQptaW5fY2FsX2NvZmZlZQ0KDQpkcmlua3NfY2xlYW4gJT4lDQogIGZpbHRlcihDYWxvcmllcyA9PSBtaW5fY2FsX2NvZmZlZSkNCg0KYGBgDQpBICpTaG9ydCBCcmV3ZWQgQ29mZmVlKiBoYXMgdGhlIGZld2VzdCBjYWxvcmllcyAoM2tjYWwpIG9mIGFsbCBjb2ZmZWUgZHJpbmtzLg0K</div>
 
 
 

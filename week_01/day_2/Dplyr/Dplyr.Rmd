@@ -46,14 +46,27 @@ Question 4.
 Summarise the mean number of calories in each beverage_category. Which 3 category of drinks have the most calories? Which 3 drinks have the least? Write a small summary of your findings.
 
 ```{r}
-drinks_clean %>%
+most_calories <- drinks_clean %>%
   group_by(Beverage_category) %>% 
   summarise(average_value = mean(Calories)) %>% 
-  arrange(desc(average_value))
+  arrange(desc(average_value)) %>% 
+  head(3)
+
+most_calories
 
 ```
+```{r}
+least_calories <- drinks_clean %>%
+  group_by(Beverage_category) %>% 
+  summarise(average_value = mean(Calories)) %>% 
+  arrange(desc(average_value)) %>% 
+  tail(3)
 
-The table above shows that *Smoothies*, *Frappucino Blended Coffee* and *Signature Espresso Drinks* are the top 3 drink categories with the highest average calories. Conversely, *Coffee*, *Shaken Iced Beverages* and *Classic Espresso Drinks* are the lowest 3 drink categories with the lowest average calories.
+least_calories
+```
+
+
+The table above shows that *Smoothies*, *Frappuccino Blended Coffee* and *Signature Espresso Drinks* are the top 3 drink categories with the highest average calories. Conversely, *Coffee*, *Shaken Iced Beverages* and *Classic Espresso Drinks* are the lowest 3 drink categories with the lowest average calories.
 
 Question 5.
 
