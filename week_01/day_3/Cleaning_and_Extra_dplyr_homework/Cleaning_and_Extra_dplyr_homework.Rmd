@@ -1,0 +1,111 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+
+
+tmdb_credits <- read_csv("tmdb_5000_credits.csv")
+tmdb_movies <- read_csv("tmdb_5000_movies.csv")
+
+View(tmdb_credits)
+View(tmdb_movies)
+```
+
+```{r}
+
+movies_selected <- tmdb_movies %>% 
+  select(original_title, runtime, budget) %>%
+  summarise(org_title_mv = sum(is.na(title)),
+            runtime_mv = sum(is.na(runtime)),
+            budget_mv = sum(is.na(budget)))
+
+movies_selected
+
+```
+
+```{r}
+movies_runtime <- tmdb_movies %>%
+  select(title, runtime, budget) %>% 
+  mutate(runtime = na_if(runtime, 0))
+  
+
+num_na <- movies_runtime %>% 
+  summarise(num_na = sum(is.na(runtime))) %>% 
+  pull()
+
+movies_runtime
+num_na
+
+```
+
+```{r}
+
+# Calculate median runtime from existing data
+med_runtime <- movies_runtime %>% 
+  summarise(med_runtime = median(runtime, na.rm = T)) %>% 
+  pull()
+
+med_runtime
+
+# replace na values in dataset with median runtime
+movies_imputed <- movies_runtime %>% 
+  mutate(runtime = coalesce(runtime, med_runtime))
+
+movies_imputed
+
+# check for no missing runtime values
+movies_imputed %>% 
+  summarise(runtime_mv = sum(is.na(runtime)))
+
+
+```
+
+```{r}
+library(dplyr)
+
+longest_runtimes <- movies_imputed %>%
+  slice_max(runtime, n = 10)
+
+longest_runtimes
+
+shortest_runtimes <- movies_imputed %>%
+  slice_min(runtime, n = 10)
+
+shortest_runtimes
+
+
+```
+
+```{r}
+movies_imputed <- movies_imputed %>% 
+  mutate(budget1 = if_else(budget < 100, median(budget, na.rm = T),budget)) %>% 
+  arrange(runtime)
+
+movies_imputed
+```
+
+#### EXTENSION HOMEWORK
+
+```{r}
+movie_budgets <- movies_runtime %>% 
+  mutate(budget_type = case_when(budget < 12e6 ~ "Small Budget",
+                                 budget < 4e7 ~ "Medium Budget",
+                                 TRUE              ~ "Big Budget"))
+
+movie_budgets
+```
+
+```{r}
+
+num_of_na <- tmdb_movies %>% 
+  mutate(across(where(is.character),is.na),
+         across(where(is.numeric),is.na)) %>% 
+  summarise(across(where(is.logical),sum))
+
+num_of_na
+         
+```
+
