@@ -6,27 +6,31 @@ output: html_notebook
 ```{r}
 library(tidyverse)
 
-
+# Reading in datasets
 tmdb_credits <- read_csv("tmdb_5000_credits.csv")
 tmdb_movies <- read_csv("tmdb_5000_movies.csv")
 
-View(tmdb_credits)
-View(tmdb_movies)
 ```
 
 ```{r}
 
+# Selecting title, runtime and budget columns and calculating the number of
+# "NA" values
 movies_selected <- tmdb_movies %>% 
   select(original_title, runtime, budget) %>%
   summarise(org_title_mv = sum(is.na(title)),
             runtime_mv = sum(is.na(runtime)),
             budget_mv = sum(is.na(budget)))
 
+# Output number of NA values found in dataset for the columns stated above
 movies_selected
 
 ```
 
 ```{r}
+
+# Alternative method for calculating number of NA values across the same
+# headings
 movies_selected <- tmdb_movies %>% 
   select(original_title, runtime, budget) %>%
   summarise(across(.fns = ~sum(is.na(.x))))
@@ -36,59 +40,52 @@ movies_selected
 
 
 ```{r}
+
+# Replacing zero runtime values with NA
 movies_runtime <- tmdb_movies %>%
   select(title, runtime, budget) %>% 
   mutate(runtime = na_if(runtime, 0))
   
-
-num_na <- movies_runtime %>% 
-  summarise(num_na = sum(is.na(runtime))) %>% 
-  pull()
-
-movies_runtime
-num_na
+# Calculating the number of NA values in the runtime column
+movies_runtime %>% 
+  summarise(num_na = sum(is.na(runtime)))
 
 ```
 
 ```{r}
 
-# Calculate median runtime from existing data
-'med_runtime <- movies_runtime %>% 
-  summarise(med_runtime = median(runtime, na.rm = T)) %>% 
-  pull()
-
-med_runtime'
-
-# replace na values in dataset with median runtime
+# Replace NA values in 'runtime' column with median runtime
 movies_imputed <- movies_runtime %>% 
   mutate(runtime = coalesce(runtime, median(runtime, na.rm = T)))
 
-movies_imputed
-
-# check for no missing runtime values
+# Check for no missing runtime values
 movies_imputed %>% 
   summarise(runtime_mv = sum(is.na(runtime)))
-
 
 ```
 
 ```{r}
-library(dplyr)
 
+# Finding the top 10 longest runtimes
 longest_runtimes <- movies_imputed %>%
   slice_max(runtime, n = 10)
 
-longest_runtimes
 
+
+# Finding the top 10 shortest runtimes
 shortest_runtimes <- movies_imputed %>%
   slice_min(runtime, n = 10)
 
+# Output longest and shortest runtimes
+longest_runtimes
 shortest_runtimes
 
 
 ```
 
 ```{r}
+
+# Change small budget values to the median value
 movies_imputed <- movies_imputed %>% 
   mutate(budget1 = if_else(budget < 100, median(budget, na.rm = T),budget)) %>% 
   arrange(runtime)
@@ -99,6 +96,8 @@ movies_imputed
 #### EXTENSION HOMEWORK
 
 ```{r}
+
+# Create additional column identifying type of budget based on budget value
 movie_budgets <- movies_runtime %>% 
   mutate(budget_type = case_when(budget < 12e6 ~ "Small Budget",
                                  budget < 4e7  ~ "Medium Budget",
@@ -108,7 +107,7 @@ movie_budgets
 ```
 
 ```{r}
-
+# Finding the number of NA values across all columns of the dataset.
 num_of_na <- tmdb_movies %>%
   mutate(across(where(is.character),is.na),
          across(where(is.numeric),is.na)) %>%
