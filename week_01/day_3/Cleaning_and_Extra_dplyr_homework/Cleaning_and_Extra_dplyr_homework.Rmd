@@ -27,6 +27,15 @@ movies_selected
 ```
 
 ```{r}
+movies_selected <- tmdb_movies %>% 
+  select(original_title, runtime, budget) %>%
+  summarise(across(.fns = ~sum(is.na(.x))))
+
+movies_selected
+```
+
+
+```{r}
 movies_runtime <- tmdb_movies %>%
   select(title, runtime, budget) %>% 
   mutate(runtime = na_if(runtime, 0))
@@ -44,15 +53,15 @@ num_na
 ```{r}
 
 # Calculate median runtime from existing data
-med_runtime <- movies_runtime %>% 
+'med_runtime <- movies_runtime %>% 
   summarise(med_runtime = median(runtime, na.rm = T)) %>% 
   pull()
 
-med_runtime
+med_runtime'
 
 # replace na values in dataset with median runtime
 movies_imputed <- movies_runtime %>% 
-  mutate(runtime = coalesce(runtime, med_runtime))
+  mutate(runtime = coalesce(runtime, median(runtime, na.rm = T)))
 
 movies_imputed
 
@@ -92,20 +101,25 @@ movies_imputed
 ```{r}
 movie_budgets <- movies_runtime %>% 
   mutate(budget_type = case_when(budget < 12e6 ~ "Small Budget",
-                                 budget < 4e7 ~ "Medium Budget",
-                                 TRUE              ~ "Big Budget"))
+                                 budget < 4e7  ~ "Medium Budget",
+                                 TRUE          ~ "Big Budget"))
 
 movie_budgets
 ```
 
 ```{r}
 
-num_of_na <- tmdb_movies %>% 
+num_of_na <- tmdb_movies %>%
   mutate(across(where(is.character),is.na),
-         across(where(is.numeric),is.na)) %>% 
+         across(where(is.numeric),is.na)) %>%
   summarise(across(where(is.logical),sum))
 
 num_of_na
+
+## alternative using across function with multiple logical expressions (sum & is.na)
+tmdb_movies %>% 
+  summarise(across(where(is.numeric), ~sum(is.na(.x))),
+            across(where(is.character), ~sum(is.na(.x))))
          
 ```
 
