@@ -1,0 +1,130 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(tidyverse)
+library(janitor)
+
+```
+
+```{r}
+
+books <- read_csv("data/books.csv")
+clean_names(books)
+
+```
+
+```{r}
+# Q: What are the top 10 books with the highest average rating (with more than
+# 10,000 ratings)?
+
+top_10_books <- books %>%
+  select(title, average_rating, ratings_count) %>% 
+  filter(ratings_count >= 10000) %>% 
+  slice_max(average_rating, n = 10, with_ties = FALSE)
+
+top_10_books
+
+```
+
+```{r}
+# Q: What is the average book page length?
+
+# Remove all zero values from num_pages column and take average of remaining
+avg_pages_per_book <- books %>% 
+  mutate(num_pages = if_else(num_pages == 0, NA_real_, num_pages)) %>%
+  filter(!is.na(num_pages)) %>%
+  summarise(avg_pages = round(mean(num_pages), digits = 1)) %>% 
+  pull()
+
+avg_pages_per_book
+
+```
+```{r}
+# Q: How many books has each author written and what is their average rating?
+
+books %>%
+  group_by(authors) %>%
+  summarise(num_books = n(), avg_rating = round(mean(average_rating),
+                                                digits = 2)) %>%
+  arrange(desc(num_books))
+
+```
+```{r}
+# Q: Are longer books better than shorter books?
+
+# Categorise each book based on number of pages, filter out any NA values
+# and calculate the average rating per book length type
+books_clean %>% 
+  mutate(book_length = case_when(
+    num_pages <= 100 ~ "Short Book",
+    num_pages <= 300 ~ "Medium Book",
+    num_pages > 300  ~ "Long Book"),
+    .after = num_pages
+  ) %>% 
+  group_by(book_length) %>% 
+  filter(!is.na(book_length)) %>%
+  summarise(num_books = n(), avg_rating = round(mean(average_rating),
+                                                digits = 2)) %>% 
+  arrange(desc(avg_rating))
+
+```
+
+
+```{r}
+# Which authors have the best rating who have written more than 5 books?
+
+books %>% 
+  group_by(authors) %>%
+  summarise(num_books = n(),avg_rating = round(mean(average_rating),
+                                               digits = 2)) %>%
+  filter(num_books >= 5) %>% 
+  arrange(desc(avg_rating))
+
+  
+```
+
+# Q: Which publisher has published the most books (and what is their average 
+rating?
+```{r}
+books %>% 
+  group_by(publisher) %>% 
+  summarise(num_books = n(), avg_rating = round(mean(average_rating),
+                                                digits = 2)) %>% 
+  arrange(desc(num_books))
+
+```
+# Q: What is the average rating of books written by JK Rowling?
+
+```{r}
+books %>% 
+  select(authors, title, average_rating, language_code) %>% 
+  filter(str_detect(authors, "Rowling")) %>%
+  group_by(language_code, title) %>% 
+  #group_by(language_code) %>% 
+  summarise(avg_rating = round(mean(average_rating), digits = 2))
+
+
+```
+
+# Q: What is Stephen King's highest and lowest rated book?
+
+```{r}
+highest_rating_sk <- books %>%
+  filter(str_detect(authors, "Stephen King")) %>%
+  select(title, average_rating) %>% 
+  slice_max(average_rating, n = 1)
+
+lowest_rating_sk <- books %>% 
+  filter(str_detect(authors, "Stephen King")) %>%
+  select(title, average_rating) %>% 
+  slice_min(average_rating, n = 1)
+
+highest_rating_sk
+lowest_rating_sk
+```
+
+# What is the average rating across the entire dataset and how
