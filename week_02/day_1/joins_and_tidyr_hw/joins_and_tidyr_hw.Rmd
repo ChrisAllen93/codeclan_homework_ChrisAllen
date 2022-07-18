@@ -1,0 +1,114 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Question 1
+
+```{r}
+library(tidyverse)
+library(janitor)
+
+card_base <- read_csv("data/CardBase.csv")
+customer_base <- read_csv("data/CustomerBase.csv")
+fraud_base <- read_csv("data/FraudBase.csv")
+transaction_base <- read_csv("data/TransactionBase.csv")
+
+card_base <- clean_names(card_base)
+customer_base <- clean_names(customer_base)
+fraud_base <- clean_names(fraud_base)
+transaction_base <- clean_names(transaction_base)
+
+```
+
+# Question 2
+
+```{r}
+# joining card details and customer details
+card_details <- card_base %>% 
+  left_join(customer_base, by = c("cust_id"))
+
+```
+
+# Question 3
+
+```{r}
+# join transactions and fraud tables
+transaction_details <- transaction_base %>% 
+  left_join(fraud_base, "transaction_id")
+
+```
+
+# Question 4
+
+```{r}
+
+card_details %>% 
+  left_join(transaction_details,
+             by = c("card_number" = "credit_card_id"))
+
+```
+
+# Question 5
+
+```{r}
+
+hat_observations <- read_csv("data/hat_observations.csv")
+
+```
+
+```{r}
+hat_obs <- hat_observations %>% 
+  separate(observation, into = c("hat_colour", "hat_type"), sep = ",")
+
+```
+
+# Question 6
+
+```{r}
+
+hat_obs %>% 
+  unite(col = "date",
+        c("day", "month", "year"),
+        sep = "/") %>%
+  filter(hat_type == "beret") %>% 
+  slice_max(observation_count, n = 1)
+
+```
+
+# EXTENSION - Question 1
+
+```{r}
+
+# join datasets together and 
+fraudulent_transactions <- card_base %>% 
+  left_join(customer_base, "cust_id",) %>% 
+  left_join(transaction_base, by = c("card_number" = "credit_card_id")) %>% 
+  right_join(fraud_base, "transaction_id" )
+
+
+fraudulent_transactions
+
+```
+
+# EXTENSION - Question 2
+
+```{r}
+
+exam_scores <- read_csv("data/exam_scores.csv")
+
+```
+
+```{r}
+
+exam_scores_long <- exam_scores %>% 
+  pivot_longer(cols = starts_with("exam"),
+               names_to = "exam_question",
+               values_to = "score") %>% 
+  separate(col = exam_question,
+           into = c("exam", "exam_question"),
+           sep = "_") %>% 
+  select(-exam)
+
+```
+

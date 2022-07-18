@@ -8,12 +8,10 @@ output: html_notebook
 library(tidyverse)
 library(janitor)
 
-```
-
-```{r}
-
 books <- read_csv("data/books.csv")
-clean_names(books)
+books <- clean_names(books)
+
+skimr::skim(books)
 
 ```
 
@@ -58,11 +56,11 @@ books %>%
 
 # Categorise each book based on number of pages, filter out any NA values
 # and calculate the average rating per book length type
-books_clean %>% 
+books %>% 
   mutate(book_length = case_when(
-    num_pages <= 100 ~ "Short Book",
-    num_pages <= 300 ~ "Medium Book",
-    num_pages > 300  ~ "Long Book"),
+    num_pages <= 100 ~ "Short",
+    num_pages <= 300 ~ "Medium",
+    num_pages > 300  ~ "Long"),
     .after = num_pages
   ) %>% 
   group_by(book_length) %>% 
@@ -84,7 +82,6 @@ books %>%
   filter(num_books >= 5) %>% 
   arrange(desc(avg_rating))
 
-  
 ```
 
 # Q: Which publisher has published the most books (and what is their average 
@@ -100,11 +97,12 @@ books %>%
 # Q: What is the average rating of books written by JK Rowling?
 
 ```{r}
+# Q: What is the average rating of books written by JK Rowling?
+
 books %>% 
-  select(authors, title, average_rating, language_code) %>% 
+  select(authors, title, average_rating) %>% 
   filter(str_detect(authors, "Rowling")) %>%
-  group_by(language_code, title) %>% 
-  #group_by(language_code) %>% 
+  group_by(title) %>% 
   summarise(avg_rating = round(mean(average_rating), digits = 2))
 
 
@@ -127,4 +125,10 @@ highest_rating_sk
 lowest_rating_sk
 ```
 
-# What is the average rating across the entire dataset and how
+# How many books have a zero rating?
+```{r}
+books %>% 
+  filter(average_rating == 0) %>% 
+  summarise(count = n())
+
+```
