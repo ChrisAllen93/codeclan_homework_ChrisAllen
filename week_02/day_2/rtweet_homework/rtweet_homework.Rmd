@@ -1,0 +1,162 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+library(tidyverse)
+library(stringr)
+
+code_clan_tweets <- read_csv("data/code_clan_tweets.csv")
+
+```
+
+# Question 1
+
+```{r}
+
+glimpse(code_clan_tweets)
+
+```
+# Question 2
+
+Find total number of favourites, omit quoted tweets.
+
+```{r}
+
+code_clan_tweets %>% 
+  filter(is_quote == F) %>% 
+  summarise(total_favourites = sum(favorite_count))
+  
+```
+
+# Question 3
+
+Summarise mean number of retweets, split by platform type, omitting quoted
+tweets.
+
+```{r}
+
+code_clan_tweets %>%
+  filter(is_quote == F) %>% 
+  group_by(source) %>% 
+  summarise(avg_retweet_count = sum(retweet_count))
+
+```
+
+# Question 4
+
+Count total number of likes, split by media type and arrange in descending
+order, assume tweets without listed media type are "text".
+
+```{r}
+
+code_clan_tweets %>% 
+  mutate(media_type = if_else(is.na(media_type), "text", media_type)) %>% 
+  group_by(media_type) %>% 
+  summarise(sum_favs = sum(favorite_count)) %>% 
+  arrange(desc(sum_favs))
+
+```
+
+# Question 5
+
+Find mean number of character in CodeClan tweet.
+
+```{r}
+
+code_clan_tweets %>% 
+  summarise(avg_tweet_length_text = mean(nchar(text)),
+            avg_tweet_length_display_width = mean(display_text_width))
+
+
+```
+
+The two methods do not give the same results, this is because the "display_text_
+width" column sums the characters which are not hashtags or urls.
+
+# Question 6
+
+```{r}
+
+code_clan_info <- read_csv("data/code_clan_info.csv")
+
+```
+
+
+```{r}
+
+code_clan_tweets_joined <- code_clan_tweets %>% 
+  left_join(code_clan_info, by = "tweet_id")
+
+view(code_clan_tweets_joined)
+
+```
+
+# Question 7
+
+```{r}
+
+codeclan_hashtags <- code_clan_tweets_joined %>% 
+  select(tweet_id, hashtags) %>% 
+  mutate(hashtags = str_to_lower(hashtags)) %>% 
+  filter(!is.na(hashtags))
+
+codeclan_hashtags
+
+```
+
+### Extension
+
+# Question 8
+
+```{r}
+view(codeclan_hashtags)
+```
+
+
+```{r}
+codeclan_hashtags %>% 
+  mutate(hashtags_subbed = str_sub(hashtags, start = 1, end = 2)) %>% 
+  filter(str_detect(hashtags_subbed,"c\\("))
+
+```
+
+# Question 9
+
+```{r}
+
+code_clan_tweets %>% 
+  filter(str_detect(text, "(?i)Edinburgh")) %>% 
+  summarise(count = n())
+
+```
+
+```{r}
+code_clan_tweets %>% 
+  filter(str_detect(text, "Edinburgh|edinburgh")) %>% 
+  summarise(count = n())
+
+
+```
+
+# Question 10
+
+number of "@"s
+
+```{r}
+
+pattern <- "@[A-Za-z0-9_]+"
+
+code_clan_tweets %>% 
+  select(text) %>%
+  mutate(text = str_to_lower(text)) %>% 
+  str_extract_all(pattern) %>% 
+  flatten_chr() %>% 
+  tibble() %>% 
+  mutate(cleaned_name = str_sub(.,2,-1)) %>% 
+  group_by(cleaned_name) %>% 
+  summarise(num_tags = length(cleaned_name))
+
+```
+
