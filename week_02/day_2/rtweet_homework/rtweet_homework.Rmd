@@ -40,7 +40,7 @@ tweets.
 code_clan_tweets %>%
   filter(is_quote == F) %>% 
   group_by(source) %>% 
-  summarise(avg_retweet_count = sum(retweet_count))
+  summarise(avg_retweet_count = mean(retweet_count))
 
 ```
 
@@ -80,7 +80,7 @@ width" column sums the characters which are not hashtags or urls.
 ```{r}
 
 code_clan_info <- read_csv("data/code_clan_info.csv")
-
+View(code_clan_info)
 ```
 
 

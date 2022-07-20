@@ -1,0 +1,302 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# Question 1.
+Find the weather forecast for the next three days online. Create a list of lists in which each inner list should be labelled with the name of the day of the week. Each inner list should contain named elements telling you the temperature, chance of rain and wind speed.
+
+list ->
+  day_of_week list
+  temp, chance of rain, wind speed
+  
+```{r}
+
+forecast <- list(Thursday = list(temp = 21, chance_rain = "10%",wind_speed = 6 ),
+                 Friday = list(temp = 19, chance_rain = "90%", wind_speed = 7),
+                 Saturday = list(temp = 21, chance_rain = "90%", wind_speed = 12))
+
+```
+
+# Question 2.
+Using the list you’ve just made find:
+
+The chance of rain tomorrow
+The wind speed on the day after tomorrow
+The temperature tomorrow.
+
+```{r}
+
+forecast[["Thursday"]][["chance_rain"]]
+forecast[["Friday"]][["wind_speed"]]
+forecast[["Thursday"]][["temp"]]
+
+```
+
+# Question 3.
+Find a 14 day forecast online and create a matrix of the forecasts for temperature, where each week is one row and columns correspond to days.
+
+You will want to give a name to the matrix you create.
+
+```{r}
+
+fortnight_temp <- c(19, 20, 18, 19, 20, 18, 17, 17, 18, 19, 19, 18, 18, 18)
+forecast_14_day <- matrix(fortnight_temp, nrow = 2, byrow = TRUE)
+colnames(forecast_14_day) <- paste0("day_", 1:7)
+rownames(forecast_14_day) <- paste0("week_", 1:2)
+
+forecast_14_day
+
+```
+
+# Question 4
+From the matrix you just made select:
+
+The third day of the second week
+The whole second week
+The first, third and fifth days in both weeks.
+
+```{r}
+
+forecast_14_day[2,3]
+forecast_14_day[2,]
+forecast_14_day[,c(1,3,5)]
+
+```
+
+#Question 5.
+Write a function that pre-appends “The answer is:” to any character input, while for numeric input, it either just returns the number for numbers less than 10, or divides the number by 10 for numbers greater than 10. For anything else return “Invalid input”.
+
+```{r}
+
+my_func <- function(x) {
+  if(is.character(x)) {
+    output <- paste("The answer is:", x)
+  } else {
+    if(is.numeric(x)){
+      if(x < 10){
+        output <- x
+      } else {
+        output <- x / 10
+      } 
+    } else {
+        output <- "Invalid Input"
+    }
+  }
+
+  output
+}
+
+my_func("hello")
+my_func(5)
+my_func(20)
+my_func(NA)
+
+```
+
+#Question 6.
+Write a function which checks if two vectors have the same elements.
+
+If they have the same elements in the same order, return “Exactly the same”
+If they have the same elements but in a different order, return “The same”
+If they don’t have the same elements, return “Different”.
+
+Before reading the Hints section for this question I attempted two different
+approaches to solve this problem
+
+[ATTEMPT 1]
+- returns correctly when both vectors are identical
+- abandoned for alternative scenarios
+
+```{r}
+
+check_same <- function(x, y, count_matches = 0){
+  if(length(x) == length(y)) {#check if both vectors have the same length
+    length <- length(x)       #set length of vector as maximum loop number
+    
+    for (i in 1:length) {
+      if(x[i] == y[i]) {
+        count_matches <- count_matches + 1
+      }
+    }
+    
+    if(count_matches == length){
+      output <- "Exactly the same"
+    } else {
+      
+  
+      
+      
+      
+    }
+    
+  }
+  
+  output
+}
+
+v1 <- c(1,2,3)
+v2 <- c(1,2,3)
+
+check_same(v1, v2)
+
+```
+
+[ATTEMPT 2]
+- nested for loops to compare each element in the first vector with all elements in the second vector and keep a tally of the number of exact or non-exact matches there are
+- based on the results of the tally, the output would be selected
+- works for all cases except when there are duplicates in one of the vectors
+        - i.e. v1 = c(1, 2, 3) and v2 = c(1, 1, 1) returns "The Same"
+- code abandoned once homework hint was read
+
+```{r}
+
+check_same <- function(x, y){
+  if(length(x) == length(y)) {#check if both vectors have the same length
+    length <- length(x)       #set length of vector as maximum loop number
+    exact_matches = 0
+    count_matches = 0
+    
+    for(i in 1:length) {
+      for (j in 1:length) {
+        if(x[i] == y[j]){
+          if(i == j){ # if indexes are same then increment exact_matches
+            exact_matches <- exact_matches + 1
+            count_matches <- count_matches + 1
+          } else {  # if indexes are  different then increment count_matches
+            count_matches <- count_matches + 1
+          }
+        }
+      }
+    }
+    
+    if(exact_matches == length){
+      output <- "Exactly the same"
+    } else {
+      if(count_matches == length){
+      output <- "The same"
+      } else {
+        output <- "Different"
+      }
+    }
+    
+  } else {
+    output <- "Different"
+  }
+  
+  c(op = output, em = exact_matches, cm = count_matches)
+}
+
+v1 <- c(1,2,3)
+v2 <- c(1,1,1)
+
+check_same(v1, v2)
+
+```
+[ATTEMPT 3] - QUESTION COMPLETED
+
+```{r}
+
+check_same <- function(x, y){
+  if(all(x == y)) { # test if all elements are equal and in the same order
+    output <- "Exactly the same"
+  } else {
+    if(all(sort(x) == sort(y))) { # test if values are equal but in different order
+      output <- "The same"
+    } else {
+      output <- "Different"
+    }
+  }
+  output
+}
+
+```
+
+
+
+```{r}
+#1 - same values, same order - expected output - "Exactly the same"
+v1 <- c(1, 2, 3)
+v2 <- c(1, 2, 3)
+
+check_same(v1, v2)
+
+#2 - same values, different order - expected output - "The same"
+v1 <- c(1, 2, 3)
+v2 <- c(3, 2, 1)
+
+check_same(v1, v2)
+
+#3 - different values, regardless of order - expected output - "Different"
+v1 <- c(1, 2, 3)
+v2 <- c(1, 2, 4)
+
+check_same(v1, v2)
+
+```
+
+### EXTENSION
+
+#Question 7
+Write code that prints a multiplication table for numbers up to 12. i.e. there will be 12 rows and 12 columns, and each element should be the row number multiplied by the column number.
+
+From: https://adriann.github.io/programming_problems.html
+
+```{r}
+
+print_times_table <- function(x){
+  
+  if(x <= 12){
+    
+  times_table <- matrix(nrow = x, ncol = x)
+  colnames(times_table) <- c(1:x)
+  rownames(times_table) <- c(1:x)
+  
+  for (i in 1:x) {
+    for (j in 1:x) {
+      times_table[i, j] <- i * j
+    }
+  }
+    
+  } else {
+    times_table <- "Please select a value less than or equal to 12."
+  }
+  
+ 
+  times_table
+}
+
+print_times_table(15)
+
+```
+
+#Question 8
+Write a function that takes a vector, and creates a text art histogram, like the one below.
+
+You may want to use the function cat(). This is similar to print(), but prints directly, without vector markers. You can also include newlines "\n" when using cat().
+
+For example, the vector c(1, 2, 3, 4, 5, 1, 3, 4, 5, 1, 3, 4, 4, 3, 3, 3, 3) should produce the histogram below - the histogram dislpays the number of times each number appears in the vector.
+
+[ATTEMPT 1]
+
+```{r}
+
+create_histogram <- function(x, symbol = "*") {
+  
+  min_val <- min(x)
+  max_val <- max(x)
+  len <- length(x)
+  y <- min_val:max_val
+  
+  for(i in y) {
+    count = sum(x == i)
+    cat(y[i]," | ", rep(symbol, count), "\n", sep = "")
+  }
+}
+
+vector <- c(1, 2, 3, 4, 5, 1, 3, 4, 5, 1, 3, 4, 4, 3, 3, 3, 3)
+
+create_histogram(vector)
+
+```
+

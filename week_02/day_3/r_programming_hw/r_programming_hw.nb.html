@@ -1768,367 +1768,394 @@ pre code {
 
 
 <!-- rnb-text-begin -->
+<div id="question-1." class="section level1">
+<h1>Question 1.</h1>
+<p>Find the weather forecast for the next three days online. Create a
+list of lists in which each inner list should be labelled with the name
+of the day of the week. Each inner list should contain named elements
+telling you the temperature, chance of rain and wind speed.</p>
+<p>list -&gt; day_of_week list temp, chance of rain, wind speed</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeSh0aWR5dmVyc2UpXG5gYGAifQ== -->
-<pre class="r"><code>library(tidyverse)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2RzIG92ZXJ3cml0dGVuIGJ5ICdkYnBseXInOlxuICBtZXRob2QgICAgICAgICBmcm9tXG4gIHByaW50LnRibF9sYXp5ICAgICBcbiAgcHJpbnQudGJsX3NxbCAgICAgIFxu4pSA4pSAIEF0dGFjaGluZyBwYWNrYWdlcyDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIDilIAgdGlkeXZlcnNlIDEuMy4xIOKUgOKUgFxu4pyUIGdncGxvdDIgMy4zLjYgICAgIOKclCBwdXJyciAgIDAuMy40XG7inJQgdGliYmxlICAzLjEuNiAgICAg4pyUIGRwbHlyICAgMS4wLjlcbuKclCB0aWR5ciAgIDEuMi4wICAgICDinJQgc3RyaW5nciAxLjQuMFxu4pyUIHJlYWRyICAgMi4xLjIgICAgIOKclCBmb3JjYXRzIDAuNS4xXG5XYXJuaW5nOiBwYWNrYWdlIOKAmGdncGxvdDLigJkgd2FzIGJ1aWx0IHVuZGVyIFIgdmVyc2lvbiA0LjIuMVxuV2FybmluZzogcGFja2FnZSDigJhkcGx5cuKAmSB3YXMgYnVpbHQgdW5kZXIgUiB2ZXJzaW9uIDQuMi4xXG7ilIDilIAgQ29uZmxpY3RzIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgCB0aWR5dmVyc2VfY29uZmxpY3RzKCkg4pSA4pSAXG7inJYgZHBseXI6OmZpbHRlcigpIG1hc2tzIHN0YXRzOjpmaWx0ZXIoKVxu4pyWIGRwbHlyOjpsYWcoKSAgICBtYXNrcyBzdGF0czo6bGFnKClcbiJ9 -->
-<pre><code>Registered S3 methods overwritten by &#39;dbplyr&#39;:
-  method         from
-  print.tbl_lazy     
-  print.tbl_sql      
-── Attaching packages ──────────────────────────────────────────────────── tidyverse 1.3.1 ──
-✔ ggplot2 3.3.6     ✔ purrr   0.3.4
-✔ tibble  3.1.6     ✔ dplyr   1.0.9
-✔ tidyr   1.2.0     ✔ stringr 1.4.0
-✔ readr   2.1.2     ✔ forcats 0.5.1
-Warning: package ‘ggplot2’ was built under R version 4.2.1
-Warning: package ‘dplyr’ was built under R version 4.2.1
-── Conflicts ─────────────────────────────────────────────────────── tidyverse_conflicts() ──
-✖ dplyr::filter() masks stats::filter()
-✖ dplyr::lag()    masks stats::lag()</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShzdHJpbmdyKVxuXG5jb2RlX2NsYW5fdHdlZXRzIDwtIHJlYWRfY3N2KFwiZGF0YS9jb2RlX2NsYW5fdHdlZXRzLmNzdlwiKVxuYGBgIn0= -->
-<pre class="r"><code>library(stringr)
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5mb3JlY2FzdCA8LSBsaXN0KFRodXJzZGF5ID0gbGlzdCh0ZW1wID0gMjEsIGNoYW5jZV9yYWluID0gXCIxMCVcIix3aW5kX3NwZWVkID0gNiApLFxuICAgICAgICAgICAgICAgICBGcmlkYXkgPSBsaXN0KHRlbXAgPSAxOSwgY2hhbmNlX3JhaW4gPSBcIjkwJVwiLCB3aW5kX3NwZWVkID0gNyksXG4gICAgICAgICAgICAgICAgIFNhdHVyZGF5ID0gbGlzdCh0ZW1wID0gMjEsIGNoYW5jZV9yYWluID0gXCI5MCVcIiwgd2luZF9zcGVlZCA9IDEyKSlcblxuZm9yZWNhc3RbW1wiVGh1cnNkYXlcIl1dXG5gYGAifQ== -->
+<pre class="r"><code>
+forecast &lt;- list(Thursday = list(temp = 21, chance_rain = &quot;10%&quot;,wind_speed = 6 ),
+                 Friday = list(temp = 19, chance_rain = &quot;90%&quot;, wind_speed = 7),
+                 Saturday = list(temp = 21, chance_rain = &quot;90%&quot;, wind_speed = 12))
 
-code_clan_tweets &lt;- read_csv(&quot;data/code_clan_tweets.csv&quot;)</code></pre>
+forecast[[&quot;Thursday&quot;]]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMjM0IENvbHVtbnM6IDI3XG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiLFwiXG5jaHIgKDEyKTogY3JlYXRlZF9hdCwgc2NyZWVuX25hbWUsIHRleHQsIHNvdXJjZSwgcmVwbHlfdG9fc2NyZWVuX25hbWUsIGhhc2h0YWdzLCB1cmxzX3VybC4uLlxuZGJsICgxMCk6IHR3ZWV0X2lkLCB1c2VyX2lkLCBkaXNwbGF5X3RleHRfd2lkdGgsIHJlcGx5X3RvX3N0YXR1c19pZCwgcmVwbHlfdG9fdXNlcl9pZCwgZmEuLi5cbmxnbCAgKDUpOiBpc19xdW90ZSwgaXNfcmV0d2VldCwgcXVvdGVfY291bnQsIHJlcGx5X2NvdW50LCBzeW1ib2xzXG5cbuKEuSBVc2UgYHNwZWMoKWAgdG8gcmV0cmlldmUgdGhlIGZ1bGwgY29sdW1uIHNwZWNpZmljYXRpb24gZm9yIHRoaXMgZGF0YS5cbuKEuSBTcGVjaWZ5IHRoZSBjb2x1bW4gdHlwZXMgb3Igc2V0IGBzaG93X2NvbF90eXBlcyA9IEZBTFNFYCB0byBxdWlldCB0aGlzIG1lc3NhZ2UuXG4ifQ== -->
-<pre><code>Rows: 234 Columns: 27
-── Column specification ─────────────────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-chr (12): created_at, screen_name, text, source, reply_to_screen_name, hashtags, urls_url...
-dbl (10): tweet_id, user_id, display_text_width, reply_to_status_id, reply_to_user_id, fa...
-lgl  (5): is_quote, is_retweet, quote_count, reply_count, symbols
+<!-- rnb-output-begin eyJkYXRhIjoiJHRlbXBcblsxXSAyMVxuXG4kY2hhbmNlX3JhaW5cblsxXSBcIjEwJVwiXG5cbiR3aW5kX3NwZWVkXG5bMV0gNlxuIn0= -->
+<pre><code>$temp
+[1] 21
 
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
-<!-- rnb-output-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<div id="question-1" class="section level1">
-<h1>Question 1</h1>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5nbGltcHNlKGNvZGVfY2xhbl90d2VldHMpXG5gYGAifQ== -->
-<pre class="r"><code>
-glimpse(code_clan_tweets)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMjM0XG5Db2x1bW5zOiAyN1xuJCB0d2VldF9pZCAgICAgICAgICAgICAgIDxkYmw+IDM0NywgMzQ2LCAzNDUsIDM0NCwgMzQzLCAzNDIsIDM0MSwgMzQwLCAzMzksIDMzOCwgMzM3LCAzMzYsIOKAplxuJCB1c2VyX2lkICAgICAgICAgICAgICAgIDxkYmw+IDMyNTA3MjEzNTEsIDMyNTA3MjEzNTEsIDMyNTA3MjEzNTEsIDMyNTA3MjEzNTEsIDMyNTA3MjEzNTEsIOKAplxuJCBjcmVhdGVkX2F0ICAgICAgICAgICAgIDxjaHI+IFwiMjMvMDUvMTkgMDg6MzJcIiwgXCIyMi8wNS8xOSAxNDowNFwiLCBcIjIyLzA1LzE5IDE0OjAxXCIsIFwiMjIvMDXigKZcbiQgc2NyZWVuX25hbWUgICAgICAgICAgICA8Y2hyPiBcIkNvZGVDbGFuU2NvdFwiLCBcIkNvZGVDbGFuU2NvdFwiLCBcIkNvZGVDbGFuU2NvdFwiLCBcIkNvZGVDbGFuU2Nv4oCmXG4kIHRleHQgICAgICAgICAgICAgICAgICAgPGNocj4gXCJAQ29kZUNsYW5TY290IGhhcyBhcnJpdmVkIGluIHRoZSBIaWdobGFuZHMhIGh0dHBzOi8vdC5jby9JSuKAplxuJCBzb3VyY2UgICAgICAgICAgICAgICAgIDxjaHI+IFwiVHdpdHRlciBXZWIgQXBwXCIsIFwiVHdpdHRlciBXZWIgQXBwXCIsIFwiVHdpdHRlciBXZWIgQXBwXCIsIFwiVHfigKZcbiQgZGlzcGxheV90ZXh0X3dpZHRoICAgICA8ZGJsPiAxMDAsIDE0OCwgMTQwLCAxNDAsIDE5NiwgMTQwLCAyOSwgMTM5LCAyNjEsIDIzMywgMTAsIDExOSwgMTjigKZcbiQgcmVwbHlfdG9fc3RhdHVzX2lkICAgICA8ZGJsPiBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCAxLjEzZSsxOCwgTkEsIE5BLCBOQSwgMS4xM2UrMTgsIE5BLCDigKZcbiQgcmVwbHlfdG9fdXNlcl9pZCAgICAgICA8ZGJsPiBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCAxLjg3NTYzNWUrMDksIE5BLCBOQSwgTkEsIDguNTU0NjY4ZSvigKZcbiQgcmVwbHlfdG9fc2NyZWVuX25hbWUgICA8Y2hyPiBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBcIlRlY2htdW1zSFFcIiwgTkEsIE5BLCBOQSwgXCJfTGF1cmVuQWzigKZcbiQgaXNfcXVvdGUgICAgICAgICAgICAgICA8bGdsPiBGQUxTRSwgRkFMU0UsIEZBTFNFLCBGQUxTRSwgRkFMU0UsIEZBTFNFLCBGQUxTRSwgRkFMU0UsIEZBTFPigKZcbiQgaXNfcmV0d2VldCAgICAgICAgICAgICA8bGdsPiBUUlVFLCBGQUxTRSwgVFJVRSwgVFJVRSwgRkFMU0UsIFRSVUUsIEZBTFNFLCBUUlVFLCBGQUxTRSwgRkHigKZcbiQgZmF2b3JpdGVfY291bnQgICAgICAgICA8ZGJsPiAwLCA1LCAwLCAwLCAzLCAwLCAyLCAwLCAyLCA0LCAxLCAwLCAyLCAwLCAxLCAwLCA3LCAwLCAwLCAwLCDigKZcbiQgcmV0d2VldF9jb3VudCAgICAgICAgICA8ZGJsPiAxLCAxLCA1LCA0LCAxLCAzLCAxLCA3LCAxLCAyLCAwLCAyLCAxLCAyLCAwLCAxLCAyLCAzLCA0LCAzLCDigKZcbiQgcXVvdGVfY291bnQgICAgICAgICAgICA8bGdsPiBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCDigKZcbiQgcmVwbHlfY291bnQgICAgICAgICAgICA8bGdsPiBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCDigKZcbiQgaGFzaHRhZ3MgICAgICAgICAgICAgICA8Y2hyPiBOQSwgTkEsIFwiRHVuZGVlXCIsIFwidGVjaFwiLCBOQSwgXCJ0ZWNobXVtc1wiLCBcInRlY2htdW1zXCIsIFwidGVjaG3igKZcbiQgc3ltYm9scyAgICAgICAgICAgICAgICA8bGdsPiBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCDigKZcbiQgdXJsc191cmwgICAgICAgICAgICAgICA8Y2hyPiBcInlvdXR1LmJlL3IzOTcwWFJNZ2VnXCIsIFwiYml0Lmx5LzJIdzhUMWVcIiwgTkEsIE5BLCBcImJpdC5seS8ySuKAplxuJCB1cmxzX3QuY28gICAgICAgICAgICAgIDxjaHI+IFwiaHR0cHM6Ly90LmNvL0lKVDZ6YmhFQlRcIiwgXCJodHRwczovL3QuY28vVXVGTGdPRm1jQlwiLCBOQSwgTkHigKZcbiQgdXJsc19leHBhbmRlZF91cmwgICAgICA8Y2hyPiBcImh0dHBzOi8veW91dHUuYmUvcjM5NzBYUk1nZWdcIiwgXCJodHRwczovL2JpdC5seS8ySHc4VDFlXCIsIE5B4oCmXG4kIG1lZGlhX3R5cGUgICAgICAgICAgICAgPGNocj4gTkEsIE5BLCBOQSwgTkEsIFwicGhvdG9cIiwgTkEsIE5BLCBOQSwgTkEsIFwicGhvdG9cIiwgTkEsIFwicGhvdG/igKZcbiQgcmV0d2VldF9zb3VyY2UgICAgICAgICA8Y2hyPiBcIlR3aXR0ZXIgZm9yIGlQaG9uZVwiLCBOQSwgXCJIb290c3VpdGUgSW5jLlwiLCBcIlR3aXR0ZXIgV2ViIENsaeKAplxuJCByZXR3ZWV0X2Zhdm9yaXRlX2NvdW50IDxkYmw+IDUsIE5BLCA2LCA2LCBOQSwgOCwgTkEsIDE3LCBOQSwgTkEsIE5BLCAxNCwgTkEsIDUsIE5BLCA1LCBOQeKAplxuJCByZXR3ZWV0X3JldHdlZXRfY291bnQgIDxkYmw+IDEsIE5BLCA1LCA0LCBOQSwgMywgTkEsIDcsIE5BLCBOQSwgTkEsIDIsIE5BLCAyLCBOQSwgMSwgTkEsIOKAplxuJCByZXR3ZWV0X3VzZXJfaWQgICAgICAgIDxkYmw+IDEuMTEwMDAwZSsxOCwgTkEsIDMuOTk3ODgxZSswNywgMy4yODgwNzhlKzA5LCBOQSwgOS40MzkxNzBlK+KAplxuJCByZXR3ZWV0X2xvY2F0aW9uICAgICAgIDxjaHI+IFwiRWRpbmJ1cmdoLCBTY290bGFuZFwiLCBOQSwgXCJTY290bGFuZFwiLCBcIkVkaW5idXJnaCwgU2NvdGxhbmRcIuKAplxuIn0= -->
-<pre><code>Rows: 234
-Columns: 27
-$ tweet_id               &lt;dbl&gt; 347, 346, 345, 344, 343, 342, 341, 340, 339, 338, 337, 336, …
-$ user_id                &lt;dbl&gt; 3250721351, 3250721351, 3250721351, 3250721351, 3250721351, …
-$ created_at             &lt;chr&gt; &quot;23/05/19 08:32&quot;, &quot;22/05/19 14:04&quot;, &quot;22/05/19 14:01&quot;, &quot;22/05…
-$ screen_name            &lt;chr&gt; &quot;CodeClanScot&quot;, &quot;CodeClanScot&quot;, &quot;CodeClanScot&quot;, &quot;CodeClanSco…
-$ text                   &lt;chr&gt; &quot;@CodeClanScot has arrived in the Highlands! https://t.co/IJ…
-$ source                 &lt;chr&gt; &quot;Twitter Web App&quot;, &quot;Twitter Web App&quot;, &quot;Twitter Web App&quot;, &quot;Tw…
-$ display_text_width     &lt;dbl&gt; 100, 148, 140, 140, 196, 140, 29, 139, 261, 233, 10, 119, 18…
-$ reply_to_status_id     &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 1.13e+18, NA, NA, NA, 1.13e+18, NA, …
-$ reply_to_user_id       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, 1.875635e+09, NA, NA, NA, 8.554668e+…
-$ reply_to_screen_name   &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;TechmumsHQ&quot;, NA, NA, NA, &quot;_LaurenAl…
-$ is_quote               &lt;lgl&gt; FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALS…
-$ is_retweet             &lt;lgl&gt; TRUE, FALSE, TRUE, TRUE, FALSE, TRUE, FALSE, TRUE, FALSE, FA…
-$ favorite_count         &lt;dbl&gt; 0, 5, 0, 0, 3, 0, 2, 0, 2, 4, 1, 0, 2, 0, 1, 0, 7, 0, 0, 0, …
-$ retweet_count          &lt;dbl&gt; 1, 1, 5, 4, 1, 3, 1, 7, 1, 2, 0, 2, 1, 2, 0, 1, 2, 3, 4, 3, …
-$ quote_count            &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-$ reply_count            &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-$ hashtags               &lt;chr&gt; NA, NA, &quot;Dundee&quot;, &quot;tech&quot;, NA, &quot;techmums&quot;, &quot;techmums&quot;, &quot;techm…
-$ symbols                &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
-$ urls_url               &lt;chr&gt; &quot;youtu.be/r3970XRMgeg&quot;, &quot;bit.ly/2Hw8T1e&quot;, NA, NA, &quot;bit.ly/2J…
-$ urls_t.co              &lt;chr&gt; &quot;https://t.co/IJT6zbhEBT&quot;, &quot;https://t.co/UuFLgOFmcB&quot;, NA, NA…
-$ urls_expanded_url      &lt;chr&gt; &quot;https://youtu.be/r3970XRMgeg&quot;, &quot;https://bit.ly/2Hw8T1e&quot;, NA…
-$ media_type             &lt;chr&gt; NA, NA, NA, NA, &quot;photo&quot;, NA, NA, NA, NA, &quot;photo&quot;, NA, &quot;photo…
-$ retweet_source         &lt;chr&gt; &quot;Twitter for iPhone&quot;, NA, &quot;Hootsuite Inc.&quot;, &quot;Twitter Web Cli…
-$ retweet_favorite_count &lt;dbl&gt; 5, NA, 6, 6, NA, 8, NA, 17, NA, NA, NA, 14, NA, 5, NA, 5, NA…
-$ retweet_retweet_count  &lt;dbl&gt; 1, NA, 5, 4, NA, 3, NA, 7, NA, NA, NA, 2, NA, 2, NA, 1, NA, …
-$ retweet_user_id        &lt;dbl&gt; 1.110000e+18, NA, 3.997881e+07, 3.288078e+09, NA, 9.439170e+…
-$ retweet_location       &lt;chr&gt; &quot;Edinburgh, Scotland&quot;, NA, &quot;Scotland&quot;, &quot;Edinburgh, Scotland&quot;…</code></pre>
+$chance_rain
+[1] &quot;10%&quot;
+
+$wind_speed
+[1] 6</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="question-2" class="section level1">
-<h1>Question 2</h1>
-<p>Find total number of favourites, omit quoted tweets.</p>
+<div id="question-2." class="section level1">
+<h1>Question 2.</h1>
+<p>Using the list you’ve just made find:</p>
+<p>The chance of rain tomorrow The wind speed on the day after tomorrow
+The temperature tomorrow.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jb2RlX2NsYW5fdHdlZXRzICU+JSBcbiAgZmlsdGVyKGlzX3F1b3RlID09IEYpICU+JSBcbiAgc3VtbWFyaXNlKHRvdGFsX2Zhdm91cml0ZXMgPSBzdW0oZmF2b3JpdGVfY291bnQpKVxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5mb3JlY2FzdFtbXCJUaHVyc2RheVwiXV1bW1wiY2hhbmNlX3JhaW5cIl1dXG5gYGAifQ== -->
 <pre class="r"><code>
-code_clan_tweets %&gt;% 
-  filter(is_quote == F) %&gt;% 
-  summarise(total_favourites = sum(favorite_count))</code></pre>
+forecast[[&quot;Thursday&quot;]][[&quot;chance_rain&quot;]]</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6MSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDEiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbDFRd1FyQ01Bek5wbFVjcUFPL1k3dnM0dEdEK0FHaTRFM3EzSFJZVytrNkZVOStnbC9zVEdzTDJrS2E1S1V2eWV0eXZzbWlUUVFBSGVpR2VCTU1nYXhYaTJRS0JvRUF1akRRL283bGlRRUFSdHJQSGkvNG5yK0hoTk56VVdNUS80Q3hFb3F5YlVtdm9wR1YwdlUvMGtDS1crcUlRN1R3aVZlTHgrK2VNMXI3M2FNOVZUUXRKZkl4ZTN1VXZyaW9TbkFraFhwLzRwRUQ2UUhqaHV0TjlrbCtiUGdweWZRQXF4dnNkb0cxbjFpUERGdmJpdGhXdllJZktsNjQzUm5kRmN3bUkxUnNCS2NYV1hIbGxDQmFwK2F6SEpJTDVoQ2pEZDRmcW41N0ZyWUJBQUE9In0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["total_favourites"],"name":[1],"type":["dbl"],"align":["right"]}],"data":[{"1":"425"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
-<pre class="r"><code>NA</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiMTAlXCJcbiJ9 -->
+<pre><code>[1] &quot;10%&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yZWNhc3RbW1wiRnJpZGF5XCJdXVtbXCJ3aW5kX3NwZWVkXCJdXVxuYGBgIn0= -->
+<pre class="r"><code>forecast[[&quot;Friday&quot;]][[&quot;wind_speed&quot;]]</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDdcbiJ9 -->
+<pre><code>[1] 7</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yZWNhc3RbW1wiVGh1cnNkYXlcIl1dW1tcInRlbXBcIl1dXG5gYGAifQ== -->
+<pre class="r"><code>forecast[[&quot;Thursday&quot;]][[&quot;temp&quot;]]</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDIxXG4ifQ== -->
+<pre><code>[1] 21</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
-<div id="question-3" class="section level1">
-<h1>Question 3</h1>
-<p>Summarise mean number of retweets, split by platform type, omitting
-quoted tweets.</p>
+<div id="question-3." class="section level1">
+<h1>Question 3.</h1>
+<p>Find a 14 day forecast online and create a matrix of the forecasts
+for temperature, where each week is one row and columns correspond to
+days.</p>
+<p>You will want to give a name to the matrix you create.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jb2RlX2NsYW5fdHdlZXRzICU+JVxuICBmaWx0ZXIoaXNfcXVvdGUgPT0gRikgJT4lIFxuICBncm91cF9ieShzb3VyY2UpICU+JSBcbiAgc3VtbWFyaXNlKGF2Z19yZXR3ZWV0X2NvdW50ID0gbWVhbihyZXR3ZWV0X2NvdW50KSlcbmBgYCJ9 -->
-<pre class="r"><code>
-code_clan_tweets %&gt;%
-  filter(is_quote == F) %&gt;% 
-  group_by(source) %&gt;% 
-  summarise(avg_retweet_count = mean(retweet_count))</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yZWNhc3RfMTRfZGF5XG5cbmBgYCJ9 -->
+<pre class="r"><code>forecast_14_day
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NiwibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyI2IMOXIDIiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbDJTVFU0Q01SVEh5OENnVElMaXh3SG1Ba3hpaklrYjRoaUkwWVdKTVJqWmtWSUtWSVoyMHVtQVN6MkI1L0FDdXZJVzdMaUhDeGVNcjBOclpKcE0rK2IzK2o3K2JlODd2Vk92NXlHRXlxaml3T3lDaWR5SDdsWHpIT1VFbFZBRjFmVDZETzRqTURSc3dGYzFqcjFySVZTU01rWDlHMDRDUXh2ZEJhVnFJSlEvRXRLL3hjVHdXczQ3bEV3Tk9Pd3VtRkpVNXZ2WTNVUndhano3MXZOSUIvNWxIQmNETkc1SGpIS2x1OUFkWFh5dlpoK3IyV2VvKzRNUkhwdDE5NGw4dmI2L2hlVmxxNzFzZFVKa3g1WkVsK01aVFl3OHg4QnFJbEpKYkU4SGVEN3VTNnEwaUQ0UnFhNjlsYU1teFNLd2VlbzZ6d3RNV1piOUZJdVJDQ2UybUlYZUVDc2NqQ1RFdzkrNkVMSWpZc1VFaHlCSFg0UmJDQzdKQW1pa1hIY3liSkpKeXFmTmt6TmRJZmR2UnQzWTFYKzJzNm5wWkNhWGE0K0I4akg3dXhvM3dnTWEyUWNBa25QRlFTd1pISWlSQWpRSmxGRFk3dk9JaUN6SnhhSDFMNFlKKzJxQUFnQUEifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["source"],"name":[1],"type":["chr"],"align":["left"]},{"label":["avg_retweet_count"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"Hootsuite Inc.","2":"1.428571"},{"1":"Tweetbot for Mac","2":"4.000000"},{"1":"TweetDeck","2":"5.000000"},{"1":"Twitter for iPhone","2":"3.051948"},{"1":"Twitter Web App","2":"2.478632"},{"1":"Twitter Web Client","2":"2.000000"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[6]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
-<pre class="r"><code>NA</code></pre>
-<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgIGRheV8xIGRheV8yIGRheV8zIGRheV80IGRheV81IGRheV82IGRheV83XG53ZWVrXzEgICAgMTkgICAgMjAgICAgMTggICAgMTkgICAgMjAgICAgMTggICAgMTdcbndlZWtfMiAgICAxNyAgICAxOCAgICAxOSAgICAxOSAgICAxOCAgICAxOCAgICAxOFxuIn0= -->
+<pre><code>       day_1 day_2 day_3 day_4 day_5 day_6 day_7
+week_1    19    20    18    19    20    18    17
+week_2    17    18    19    19    18    18    18</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 </div>
 <div id="question-4" class="section level1">
 <h1>Question 4</h1>
-<p>Count total number of likes, split by media type and arrange in
-descending order, assume tweets without listed media type are
-“text”.</p>
+<p>From the matrix you just made select:</p>
+<p>The third day of the second week The whole second week The first,
+third and fifth days in both weeks.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jb2RlX2NsYW5fdHdlZXRzICU+JSBcbiAgbXV0YXRlKG1lZGlhX3R5cGUgPSBpZl9lbHNlKGlzLm5hKG1lZGlhX3R5cGUpLCBcInRleHRcIiwgbWVkaWFfdHlwZSkpICU+JSBcbiAgZ3JvdXBfYnkobWVkaWFfdHlwZSkgJT4lIFxuICBzdW1tYXJpc2Uoc3VtX2ZhdnMgPSBzdW0oZmF2b3JpdGVfY291bnQpKSAlPiUgXG4gIGFycmFuZ2UoZGVzYyhzdW1fZmF2cykpXG5gYGAifQ== -->
-<pre class="r"><code>
-code_clan_tweets %&gt;% 
-  mutate(media_type = if_else(is.na(media_type), &quot;text&quot;, media_type)) %&gt;% 
-  group_by(media_type) %&gt;% 
-  summarise(sum_favs = sum(favorite_count)) %&gt;% 
-  arrange(desc(sum_favs))</code></pre>
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZm9yZWNhc3RfMTRfZGF5WyxjKDEsMyw1KV1cblxuYGBgIn0= -->
+<pre class="r"><code>forecast_14_day[,c(1,3,5)]
+</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MiwibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIyIMOXIDIiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbDFQeTI3Q01CQmMwcmdVUzlCS2ZFZWlTaFVTUnc1VlB3QzFFamRrRWxPaUpuWVVid3E5OWRQNlphUnJ4ejVnSC9ZeHV6UHIyYjd1WHZpT0E4QWRwQWxGUmlXd2ovZTNiQTBPZ1Fta01MUDVRdU1sRlJaOGNua2NzUGFrVWZzbVJYbEJ5Z3U3c0RrL1d6blliUDlnZkRlS1RJbEdta2lOTjdLc3hCNS9XdW1SQjlNMys2UDROaEY5MXVsekhpVG1WdUtYd2pBTTEvaE9VUXNUN2dTUWx3SkZmdXlJVDExTW1lb1dLNjJJbEZqTExDSlB1Z2g0N0pYOVNaa1ZwMTU5WlN0N3dJM0hOL2QxY2x2Yms4bmdwWmlYdXBmcXMxTEJQS3ZGUWRhK1daQmpaemh2dTBwaGNFS295VkdqQ0h1ODBIVkFuRGU0L2dPa3k4SU42UUVBQUE9PSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["media_type"],"name":[1],"type":["chr"],"align":["left"]},{"label":["sum_favs"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"photo","2":"371"},{"1":"text","2":"75"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[2]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
-<pre class="r"><code>NA</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="question-5" class="section level1">
-<h1>Question 5</h1>
-<p>Find mean number of character in CodeClan tweet.</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jb2RlX2NsYW5fdHdlZXRzICU+JSBcbiAgc3VtbWFyaXNlKGF2Z190d2VldF9sZW5ndGhfdGV4dCA9IG1lYW4obmNoYXIodGV4dCkpLFxuICAgICAgICAgICAgYXZnX3R3ZWV0X2xlbmd0aF9kaXNwbGF5X3dpZHRoID0gbWVhbihkaXNwbGF5X3RleHRfd2lkdGgpKVxuYGBgIn0= -->
-<pre class="r"><code>
-code_clan_tweets %&gt;% 
-  summarise(avg_tweet_length_text = mean(nchar(text)),
-            avg_tweet_length_display_width = mean(display_text_width))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6Miwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDIiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbVZRUzA3RE1CQ2RoQnBVU3kxSWlDMDNTRFpJaUNVTHhBRVFTSlZZUkc3aWZJUnJSNGxMeW80OVorRUtQVVp2MEd1MGpCMGJJZVBGK00wYnY1bDVmbnBZM05BRkJZQVRtTVFZQ1VJZ0w4K1B5UjFZQmlLWXdOVGNHeXhmSWpEazNCRDMxZGQrKzdyZi91Ykw3M0szS25lQmtFaTI0ajJDQ3lzZXlTdjJYbVY2NEZ4bmdzdEsxNW5tRysySzEvK0tSZE8zZ24xa1ExUG9PdWcvN2RTUStoa3pNK01Ud3hGUHVFZ3VXTzhYOFNRdG1HWnAyYUVlczBNZ09WT3RicFJFVVd5c2swQWNkUUZ4dnBabWt5TEo2N1Y4UzI3TkFGc2V6OHpoNkErT3g1SHgwYlVpcnRVcE9tOGs5N3NMdHVUQ0pYTjBiQTJuYmRkSS8yc1UyVDdWU2pQL2p1WktlTVo2ZzhNUGR0dkhPdkVCQUFBPSJ9 -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["avg_tweet_length_text"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["avg_tweet_length_display_width"],"name":[2],"type":["dbl"],"align":["right"]}],"data":[{"1":"188.3718","2":"149.4188"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbk5BXG5gYGAifQ== -->
-<pre class="r"><code>NA
-NA</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<p>The two methods do not give the same results, this is because the
-“display_text_ width” column sums the characters which are not hashtags
-or urls.</p>
-</div>
-<div id="question-6" class="section level1">
-<h1>Question 6</h1>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jb2RlX2NsYW5faW5mbyA8LSByZWFkX2NzdihcImRhdGEvY29kZV9jbGFuX2luZm8uY3N2XCIpXG5gYGAifQ== -->
-<pre class="r"><code>
-code_clan_info &lt;- read_csv(&quot;data/code_clan_info.csv&quot;)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMjM0IENvbHVtbnM6IDE1XG7ilIDilIAgQ29sdW1uIHNwZWNpZmljYXRpb24g4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSA4pSAXG5EZWxpbWl0ZXI6IFwiLFwiXG5jaHIgKDcpOiBzdGF0dXNfdXJsLCBuYW1lLCBsb2NhdGlvbiwgZGVzY3JpcHRpb24sIHVybCwgYWNjb3VudF9jcmVhdGVkX2F0LCBwcm9maWxlX3VybFxuZGJsICg2KTogdHdlZXRfaWQsIGZvbGxvd2Vyc19jb3VudCwgZnJpZW5kc19jb3VudCwgbGlzdGVkX2NvdW50LCBzdGF0dXNlc19jb3VudCwgZmF2b3VyaXQuLi5cbmxnbCAoMik6IHByb3RlY3RlZCwgdmVyaWZpZWRcblxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
-<pre><code>Rows: 234 Columns: 15
-── Column specification ─────────────────────────────────────────────────────────────────────
-Delimiter: &quot;,&quot;
-chr (7): status_url, name, location, description, url, account_created_at, profile_url
-dbl (6): tweet_id, followers_count, friends_count, listed_count, statuses_count, favourit...
-lgl (2): protected, verified
-
-ℹ Use `spec()` to retrieve the full column specification for this data.
-ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgIGRheV8xIGRheV8zIGRheV81XG53ZWVrXzEgICAgMTkgICAgMTggICAgMjBcbndlZWtfMiAgICAxNyAgICAxOSAgICAxOFxuIn0= -->
+<pre><code>       day_1 day_3 day_5
+week_1    19    18    20
+week_2    17    19    18</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuVmlldyhjb2RlX2NsYW5faW5mbylcbmBgYCJ9 -->
-<pre class="r"><code>View(code_clan_info)</code></pre>
-<!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
+<p>#Question 5. Write a function that pre-appends “The answer is:” to
+any character input, while for numeric input, it either just returns the
+number for numbers less than 10, or divides the number by 10 for numbers
+greater than 10. For anything else return “Invalid input”.</p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jb2RlX2NsYW5fdHdlZXRzX2pvaW5lZCA8LSBjb2RlX2NsYW5fdHdlZXRzICU+JSBcbiAgbGVmdF9qb2luKGNvZGVfY2xhbl9pbmZvLCBieSA9IFwidHdlZXRfaWRcIilcblxudmlldyhjb2RlX2NsYW5fdHdlZXRzX2pvaW5lZClcblxuYGBgIn0= -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5teV9mdW5jIDwtIGZ1bmN0aW9uKHgpIHtcbiAgaWYoaXMuY2hhcmFjdGVyKHgpKSB7XG4gICAgb3V0cHV0IDwtIHBhc3RlKFwiVGhlIGFuc3dlciBpczpcIiwgeClcbiAgfSBlbHNlIHtcbiAgICBpZihpcy5udW1lcmljKHgpKXtcbiAgICAgIGlmKHggPCAxMCl7XG4gICAgICAgIG91dHB1dCA8LSB4XG4gICAgICB9IGVsc2Uge1xuICAgICAgICBvdXRwdXQgPC0geCAvIDEwXG4gICAgICB9IFxuICAgIH0gZWxzZSB7XG4gICAgICAgIG91dHB1dCA8LSBcIkludmFsaWQgSW5wdXRcIlxuICAgIH1cbiAgfVxuXG4gIG91dHB1dFxufVxuXG5teV9mdW5jKFwiaGVsbG9cIilcbmBgYCJ9 -->
 <pre class="r"><code>
-code_clan_tweets_joined &lt;- code_clan_tweets %&gt;% 
-  left_join(code_clan_info, by = &quot;tweet_id&quot;)
+my_func &lt;- function(x) {
+  if(is.character(x)) {
+    output &lt;- paste(&quot;The answer is:&quot;, x)
+  } else {
+    if(is.numeric(x)){
+      if(x &lt; 10){
+        output &lt;- x
+      } else {
+        output &lt;- x / 10
+      } 
+    } else {
+        output &lt;- &quot;Invalid Input&quot;
+    }
+  }
 
-view(code_clan_tweets_joined)
+  output
+}
+
+my_func(&quot;hello&quot;)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiVGhlIGFuc3dlciBpczogaGVsbG9cIlxuIn0= -->
+<pre><code>[1] &quot;The answer is: hello&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXlfZnVuYyg1KVxuYGBgIn0= -->
+<pre class="r"><code>my_func(5)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDVcbiJ9 -->
+<pre><code>[1] 5</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXlfZnVuYygyMClcbmBgYCJ9 -->
+<pre class="r"><code>my_func(20)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIDJcbiJ9 -->
+<pre><code>[1] 2</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubXlfZnVuYyhOQSlcbmBgYCJ9 -->
+<pre class="r"><code>my_func(NA)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiSW52YWxpZCBJbnB1dFwiXG4ifQ== -->
+<pre><code>[1] &quot;Invalid Input&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>#Question 6. Write a function which checks if two vectors have the
+same elements.</p>
+<p>If they have the same elements in the same order, return “Exactly the
+same” If they have the same elements but in a different order, return
+“The same” If they don’t have the same elements, return “Different”.</p>
+<p>Before reading the Hints section for this question I attempted two
+different approaches to solve this problem</p>
+<p>[ATTEMPT 1] - returns correctly when both vectors are identical -
+abandoned for alternative scenarios</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jaGVja19zYW1lIDwtIGZ1bmN0aW9uKHgsIHksIGNvdW50X21hdGNoZXMgPSAwKXtcbiAgaWYobGVuZ3RoKHgpID09IGxlbmd0aCh5KSkgeyNjaGVjayBpZiBib3RoIHZlY3RvcnMgaGF2ZSB0aGUgc2FtZSBsZW5ndGhcbiAgICBsZW5ndGggPC0gbGVuZ3RoKHgpICAgICAgICNzZXQgbGVuZ3RoIG9mIHZlY3RvciBhcyBtYXhpbXVtIGxvb3AgbnVtYmVyXG4gICAgXG4gICAgZm9yIChpIGluIDE6bGVuZ3RoKSB7XG4gICAgICBpZih4W2ldID09IHlbaV0pIHtcbiAgICAgICAgY291bnRfbWF0Y2hlcyA8LSBjb3VudF9tYXRjaGVzICsgMVxuICAgICAgfVxuICAgIH1cbiAgICBcbiAgICBpZihjb3VudF9tYXRjaGVzID09IGxlbmd0aCl7XG4gICAgICBvdXRwdXQgPC0gXCJFeGFjdGx5IHRoZSBzYW1lXCJcbiAgICB9XG4gICAgXG4gIH1cbiAgXG4gIG91dHB1dFxufVxuXG52MSA8LSBjKDEsMiwzKVxudjIgPC0gYygxLDIsMylcblxuY2hlY2tfc2FtZSh2MSwgdjIpXG5gYGAifQ== -->
+<pre class="r"><code>
+check_same &lt;- function(x, y, count_matches = 0){
+  if(length(x) == length(y)) {#check if both vectors have the same length
+    length &lt;- length(x)       #set length of vector as maximum loop number
+    
+    for (i in 1:length) {
+      if(x[i] == y[i]) {
+        count_matches &lt;- count_matches + 1
+      }
+    }
+    
+    if(count_matches == length){
+      output &lt;- &quot;Exactly the same&quot;
+    }
+    
+  }
+  
+  output
+}
+
+v1 &lt;- c(1,2,3)
+v2 &lt;- c(1,2,3)
+
+check_same(v1, v2)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiRXhhY3RseSB0aGUgc2FtZVwiXG4ifQ== -->
+<pre><code>[1] &quot;Exactly the same&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>[ATTEMPT 2] - nested for loops to compare each element in the first
+vector with all elements in the second vector and keep a tally of the
+number of exact or non-exact matches there are - based on the results of
+the tally, the output would be selected - works for all cases except
+when there are duplicates in one of the vectors - i.e. v1 = c(1, 2, 3)
+and v2 = c(1, 1, 1) returns “The Same” - code abandoned once homework
+hint was read</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jaGVja19zYW1lIDwtIGZ1bmN0aW9uKHgsIHkpe1xuICBpZihsZW5ndGgoeCkgPT0gbGVuZ3RoKHkpKSB7I2NoZWNrIGlmIGJvdGggdmVjdG9ycyBoYXZlIHRoZSBzYW1lIGxlbmd0aFxuICAgIGxlbmd0aCA8LSBsZW5ndGgoeCkgICAgICAgI3NldCBsZW5ndGggb2YgdmVjdG9yIGFzIG1heGltdW0gbG9vcCBudW1iZXJcbiAgICBleGFjdF9tYXRjaGVzID0gMFxuICAgIGNvdW50X21hdGNoZXMgPSAwXG4gICAgXG4gICAgZm9yKGkgaW4gMTpsZW5ndGgpIHtcbiAgICAgIGZvciAoaiBpbiAxOmxlbmd0aCkge1xuICAgICAgICBpZih4W2ldID09IHlbal0pe1xuICAgICAgICAgIGlmKGkgPT0gail7ICMgaWYgaW5kZXhlcyBhcmUgc2FtZSB0aGVuIGluY3JlbWVudCBleGFjdF9tYXRjaGVzXG4gICAgICAgICAgICBleGFjdF9tYXRjaGVzIDwtIGV4YWN0X21hdGNoZXMgKyAxXG4gICAgICAgICAgICBjb3VudF9tYXRjaGVzIDwtIGNvdW50X21hdGNoZXMgKyAxXG4gICAgICAgICAgfSBlbHNlIHsgICMgaWYgaW5kZXhlcyBhcmUgIGRpZmZlcmVudCB0aGVuIGluY3JlbWVudCBjb3VudF9tYXRjaGVzXG4gICAgICAgICAgICBjb3VudF9tYXRjaGVzIDwtIGNvdW50X21hdGNoZXMgKyAxXG4gICAgICAgICAgfVxuICAgICAgICB9XG4gICAgICB9XG4gICAgfVxuICAgIFxuICAgIGlmKGV4YWN0X21hdGNoZXMgPT0gbGVuZ3RoKXtcbiAgICAgIG91dHB1dCA8LSBcIkV4YWN0bHkgdGhlIHNhbWVcIlxuICAgIH0gZWxzZSB7XG4gICAgICBpZihjb3VudF9tYXRjaGVzID09IGxlbmd0aCl7XG4gICAgICBvdXRwdXQgPC0gXCJUaGUgc2FtZVwiXG4gICAgICB9IGVsc2Uge1xuICAgICAgICBvdXRwdXQgPC0gXCJEaWZmZXJlbnRcIlxuICAgICAgfVxuICAgIH1cbiAgICBcbiAgfSBlbHNlIHtcbiAgICBvdXRwdXQgPC0gXCJEaWZmZXJlbnRcIlxuICB9XG4gIFxuICBjKG9wID0gb3V0cHV0LCBlbSA9IGV4YWN0X21hdGNoZXMsIGNtID0gY291bnRfbWF0Y2hlcylcbn1cblxudjEgPC0gYygxLDIsMylcbnYyIDwtIGMoMSwxLDEpXG5cbiNkZWJ1Z29uY2UoY2hlY2tfc2FtZSlcblxuY2hlY2tfc2FtZSh2MSwgdjIpXG5gYGAifQ== -->
+<pre class="r"><code>
+check_same &lt;- function(x, y){
+  if(length(x) == length(y)) {#check if both vectors have the same length
+    length &lt;- length(x)       #set length of vector as maximum loop number
+    exact_matches = 0
+    count_matches = 0
+    
+    for(i in 1:length) {
+      for (j in 1:length) {
+        if(x[i] == y[j]){
+          if(i == j){ # if indexes are same then increment exact_matches
+            exact_matches &lt;- exact_matches + 1
+            count_matches &lt;- count_matches + 1
+          } else {  # if indexes are  different then increment count_matches
+            count_matches &lt;- count_matches + 1
+          }
+        }
+      }
+    }
+    
+    if(exact_matches == length){
+      output &lt;- &quot;Exactly the same&quot;
+    } else {
+      if(count_matches == length){
+      output &lt;- &quot;The same&quot;
+      } else {
+        output &lt;- &quot;Different&quot;
+      }
+    }
+    
+  } else {
+    output &lt;- &quot;Different&quot;
+  }
+  
+  c(op = output, em = exact_matches, cm = count_matches)
+}
+
+v1 &lt;- c(1,2,3)
+v2 &lt;- c(1,1,1)
+
+#debugonce(check_same)
+
+check_same(v1, v2)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiICAgICAgICBvcCAgICAgICAgIGVtICAgICAgICAgY20gXG5cIlRoZSBzYW1lXCIgICAgICAgIFwiMVwiICAgICAgICBcIjNcIiBcbiJ9 -->
+<pre><code>        op         em         cm 
+&quot;The same&quot;        &quot;1&quot;        &quot;3&quot; </code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>[ATTEMPT 3] - QUESTION COMPLETED</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jaGVja19zYW1lIDwtIGZ1bmN0aW9uKHgsIHkpe1xuICBpZihhbGwoeCA9PSB5KSkgeyAjIHRlc3QgaWYgYWxsIGVsZW1lbnRzIGFyZSBlcXVhbCBhbmQgaW4gdGhlIHNhbWUgb3JkZXJcbiAgICBvdXRwdXQgPC0gXCJFeGFjdGx5IHRoZSBzYW1lXCJcbiAgfSBlbHNlIHtcbiAgICBpZihhbGwoc29ydCh4KSA9PSBzb3J0KHkpKSkgeyAjIHRlc3QgaWYgdmFsdWVzIGFyZSBlcXVhbCBidXQgaW4gZGlmZmVyZW50IG9yZGVyXG4gICAgICBvdXRwdXQgPC0gXCJUaGUgc2FtZVwiXG4gICAgfSBlbHNlIHtcbiAgICAgIG91dHB1dCA8LSBcIkRpZmZlcmVudFwiXG4gICAgfVxuICB9XG4gIG91dHB1dFxufVxuXG5gYGAifQ== -->
+<pre class="r"><code>
+check_same &lt;- function(x, y){
+  if(all(x == y)) { # test if all elements are equal and in the same order
+    output &lt;- &quot;Exactly the same&quot;
+  } else {
+    if(all(sort(x) == sort(y))) { # test if values are equal but in different order
+      output &lt;- &quot;The same&quot;
+    } else {
+      output &lt;- &quot;Different&quot;
+    }
+  }
+  output
+}
 </code></pre>
 <!-- rnb-source-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
-</div>
-<div id="question-7" class="section level1">
-<h1>Question 7</h1>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jb2RlY2xhbl9oYXNodGFncyA8LSBjb2RlX2NsYW5fdHdlZXRzX2pvaW5lZCAlPiUgXG4gIHNlbGVjdCh0d2VldF9pZCwgaGFzaHRhZ3MpICU+JSBcbiAgbXV0YXRlKGhhc2h0YWdzID0gc3RyX3RvX2xvd2VyKGhhc2h0YWdzKSkgJT4lIFxuICBmaWx0ZXIoIWlzLm5hKGhhc2h0YWdzKSlcblxuY29kZWNsYW5faGFzaHRhZ3NcbmBgYCJ9 -->
-<pre class="r"><code>
-codeclan_hashtags &lt;- code_clan_tweets_joined %&gt;% 
-  select(tweet_id, hashtags) %&gt;% 
-  mutate(hashtags = str_to_lower(hashtags)) %&gt;% 
-  filter(!is.na(hashtags))
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzEgLSBzYW1lIHZhbHVlcywgc2FtZSBvcmRlclxudjEgPC0gYygxLCAyLCAzKVxudjIgPC0gYygxLCAyLCAzKVxuXG5jaGVja19zYW1lKHYxLCB2MilcbmBgYCJ9 -->
+<pre class="r"><code>#1 - same values, same order
+v1 &lt;- c(1, 2, 3)
+v2 &lt;- c(1, 2, 3)
 
-codeclan_hashtags</code></pre>
+check_same(v1, v2)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTE3LCJuY29sIjoyLCJzdW1tYXJ5Ijp7IkEgdGliYmxlIjpbIjExNyDDlyAyIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQnMxWXpYTGJOaEJtSEt1eDNUanhKTFhiOU5manpIUnFUKzM2NTVLYzZrTW41MDZubmNtcEZnaENKQ1FLb0FCU3Nuckt2WmMrUWgraGo5Qkg2Q1BrRWZvRWNSZlVCNG1pcEVodWVxaG5iSUM3MzM2N0MyQVhwSC80N3VYRjFzdXRJQWp1QnV0cjlMZEIwNkR4MDQ4dmpwOEZwU1M0RTZ3SG0yNjhKdlZqbWpqaEEvb3RMb3ZmSERxNExGNWhiR0w4SHVNbHhtQTA1bjlqL0JQakh4akJrMmNZd1pQdmowWUxuUDBkSS94WjRDMzhXZml6cHhoM01NSy9lWTN4TDR6Z05lQTFpTU9BMzREZmdOZUExeUF1QTM0RC9oNTRlOGl2Qi80ZWVIdXc3OEUrQXo0RFBnTStnLzhNL2pQa2x5R09ERHlaNTRGL2pXY0ZQb1c4bEpjRDEzMk5FZm9VdkIzZ09zQzFnV3NEMTBaYzdTWkc0Q1RrRW5JSlBnaytDVndDdmdUeEpiQkxZSmZBTGdFK0JpNkdQb1krQm04TVhBdTRGdmhhd0FuNEU0aGZRQy9BSnp3T2ZBSjhFZXdpOEVhd2oyQWZ3VDZDWFFRN0Rqekhjd2k3RVBnUS9rTG9HZkFNdkF4OFRjaWJzRy9DdnVuMXNMOEM3Z3IyVitDL2d2N253UC9zMEcrQlFuNHZLbFFrQko3V2M4RVR6RGZjdkZ0MDdiOThmdFRTUmlncnVVMjB5SXhVK2J0b05xWHFDNk9FWFFFcUlxbkN3c1Era3pWK2pkbDlyaVBCVTZaUzJmSTVOMWdzVS8rd1lXV3MyTm5aRU0vNy9LdUROdXN6eTQzTThvT3Y5dy9pbE5sWUQ5eTBiUThPZ1h0Qk9HZm14SXh6Q2xPR01wVjVLYkM2bFErWUVXNmVGR3dnWkhaeG1obGQ2aEtkYXpXU2p0a2VFNXRiVFFjWTdjOVk5VUIyTThaelczUzdNajk3RHVrWFpHQkVxNGlGc001b0dyVEUrSWlNYXdaRTBXZHBBVEphZVp0ck04bjJYbGFZVEZ2eFZ0b25STnMzdDQ1bXZ2UWJJaHVJTkhVSFlBNGxTYW83TzNaeE1EYzEyYVV0RDFrdXRSb2o5K2NpT1ZPUmJsSDJ0OFp0QzVVYk9wZENpY0xZV3hwL09SZVhDOVlOWXpjTHVUYlprblg4cnhPNjc4dWJwMFc0b09TZmRDbHJsaWFDcFhuQzNKRjMrelVRb2dQQU0zSTJyczZaWFN0ejVJbWZPNTBTZzFCTzl2TWpzaWV4VkxFL21HVkxHT3NmUmpLV0ZJR2pPVDhkcjhYL1Ird0tkUksycTMrdWM4by9LaGQ4S3MvNk9ybWtsK1Q1TFptbEJlOE00N09MV3ErcUx6UlUxWFdmbERlVWIybWF1MlU5aHFQNjltNE9GeHlMZVFRblJCQWJGaFdqTWx3UzRlRmJtRDZ2TDZuSHVLVWRXMzVLcUZhUnBqWm52Rk0yNzBsWFA2eHNUdHZXbExPTHYxZmZISWVlSW9rWWVXRW1jejJndkFGeUdRMHBRanZKNUJPQ1RlODl3WVFVbGY3NG9mTlRTcHhxN05Dckc2WHVIUjdlZDl0RXQyaXNkZVR2ZnhkNXBYL0hxUTVaNnVLMHMvRk5rVzN6WWVnUzVJV2hXdy9DYzFldXFhUmx1TTZFb1pHUEN2dDZRdVlXSjVFbUlrdTZZdVp6TDFtSW1WZURQVnlmN2dndUNYdlA1WlpMbXppOExVeGZEQ3YxOUtqcTJPYWl1OExpZitaeUx1aSs3SXF5T0tvdGNXR0ZMS1o3NmtLd21UYlZIWERYczR5RWpsbFgyTnNlaU9vZTcxUVRwRzN4VkVkVGllT1lTcXVtZTBrb2YxbVlVZjE1bGZvN1d2bDI4Qllma3dXOVNGRWpvYXRyZENuVWl2VURsT084UHJWaXFhNEltem1HcmpGTjljZTVacnVWQVAxS1QzV3RxUldKUkYra21vckpMdXJXNTdOTFFvMGFkdTR3bGpUa2tDbVdEcTJjRU8xYTl4b2Q4MVF3TmRTRm9YeUZNRkRlbGJyNkZyTktzMTV3UjB6L0k2R2gzQm5HUjhuYStQRFFPME4rSlgxYjJrZ1lWU2lMYmMxNDArakJpU2ZZZGdTdjZNL056YzJ2ZFM4VXEvVmV2SERMcmNKSml4YktmZXE5cVpuYzA1bTdtY2hvemYyZm8xRXp2bU5xZ29lRmNwRkV4endwVk9mNHVYTlFxa2MvMjVnWGxmbmF5T1hhRGFnYS9wdE1xRmlxOGZkSnlrS1IrbmM5eXJoTStLVDg1UEdaa05TZTVKb2FqWmR3blhwSm1Wdnc1aC9YOUZrNzNoRUFBQT09In0= -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["tweet_id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["hashtags"],"name":[2],"type":["chr"],"align":["left"]}],"data":[{"1":"345","2":"dundee"},{"1":"344","2":"tech"},{"1":"342","2":"techmums"},{"1":"341","2":"techmums"},{"1":"340","2":"techmums"},{"1":"336","2":"techmums"},{"1":"335","2":"forensicshoeprints"},{"1":"332","2":"forensicshoeprints"},{"1":"331","2":"forensicshoeprints"},{"1":"329","2":"inverness"},{"1":"327","2":"forensicshoeprints"},{"1":"326","2":"edinburgh"},{"1":"322","2":"cx"},{"1":"315","2":"codeclanlife"},{"1":"314","2":"agile"},{"1":"312","2":"signa11y"},{"1":"311","2":"c(\"javascript\", \"glasgow\", \"js\")"},{"1":"309","2":"c(\"a11y\", \"accessibility\", \"software\", \"huaweip30pro\", \"shotonhuawei\")"},{"1":"308","2":"c(\"tech\", \"dundee\")"},{"1":"307","2":"impactsummit19"},{"1":"305","2":"c(\"refugees\", \"impactsummit19\")"},{"1":"304","2":"impactsummit19"},{"1":"302","2":"c(\"impactsummit19\", \"values\", \"investors\")"},{"1":"301","2":"purpose"},{"1":"299","2":"impactsummit19"},{"1":"298","2":"c(\"vr\", \"impactsummit19\")"},{"1":"297","2":"impactsummit19"},{"1":"296","2":"impactsummit19"},{"1":"295","2":"c(\"wellness\", \"impactsummit19\", \"codeclanlife\")"},{"1":"292","2":"c(\"impactsummit19\", \"imagibation\")"},{"1":"291","2":"c(\"impactsummit19\", \"candofest\")"},{"1":"290","2":"c(\"impactsummit19\", \"candofest\")"},{"1":"289","2":"entrepreneurs"},{"1":"288","2":"c(\"impactsummit19\", \"candofest\")"},{"1":"285","2":"c(\"impactsummit19\", \"teambg\", \"bcorp\")"},{"1":"284","2":"impactsummit19"},{"1":"283","2":"c(\"impactsummit19\", \"candofest\")"},{"1":"281","2":"c(\"impactsummit19\", \"candofest\")"},{"1":"275","2":"techmumsclub"},{"1":"274","2":"techmums"},{"1":"269","2":"mentalhealthawarenessweek"},{"1":"268","2":"c(\"edinburgh\", \"codeclanlife\", \"techlife\", \"codenewbie\")"},{"1":"267","2":"c(\"coding\", \"inverness\")"},{"1":"264","2":"digitaltech2019"},{"1":"263","2":"digitaltech2019"},{"1":"261","2":"digitaltech2019"},{"1":"260","2":"digitaltech2019"},{"1":"259","2":"digitaltech2019"},{"1":"258","2":"digitaltech2019"},{"1":"256","2":"digitaltech2019"},{"1":"249","2":"c(\"inverness\", \"scotlandcando\")"},{"1":"246","2":"c(\"edinburgh\", \"coding\")"},{"1":"245","2":"digitaltech2019"},{"1":"241","2":"c(\"luckyg13\", \"glasgow\", \"codeclanlife\", \"glasgowlife\", \"tech\")"},{"1":"240","2":"glasgow"},{"1":"239","2":"codeclanlife"},{"1":"237","2":"c(\"webvr\", \"glasgow\")"},{"1":"226","2":"techmums"},{"1":"217","2":"codeclanlife"},{"1":"216","2":"c(\"graduation\", \"codeclanlife\", \"glasgowlife\")"},{"1":"215","2":"codeclanlife"},{"1":"213","2":"c(\"inverness\", \"codeclanscot\")"},{"1":"212","2":"c(\"fullstack\", \"javascript\")"},{"1":"211","2":"c(\"js\", \"javascript\", \"coding\")"},{"1":"208","2":"c(\"edinburgh\", \"java\")"},{"1":"204","2":"c(\"datacarpentry\", \"tidyverse\")"},{"1":"203","2":"c(\"scotlandcando\", \"eie19\")"},{"1":"202","2":"c(\"eie19\", \"edinburgh\")"},{"1":"201","2":"eie19"},{"1":"200","2":"eie19"},{"1":"199","2":"eie19"},{"1":"198","2":"eie19"},{"1":"196","2":"eie19"},{"1":"195","2":"techforgood"},{"1":"194","2":"data"},{"1":"192","2":"c(\"globalscots\", \"eie19\")"},{"1":"190","2":"eie19"},{"1":"187","2":"cybersecurity"},{"1":"186","2":"c(\"clientxperience\", \"cx\", \"eie19\", \"thirdsector\")"},{"1":"185","2":"eie19"},{"1":"184","2":"c(\"eie19\", \"edinburgh\")"},{"1":"182","2":"inverness"},{"1":"180","2":"c(\"techmums\", \"eie19\")"},{"1":"178","2":"eie19"},{"1":"175","2":"scottishtechsurvey2019"},{"1":"173","2":"c(\"eie19\", \"stem\")"},{"1":"172","2":"eie19"},{"1":"171","2":"eie19"},{"1":"170","2":"c(\"customer\", \"mentalhealth\")"},{"1":"169","2":"techmums"},{"1":"168","2":"eie19"},{"1":"167","2":"eie19"},{"1":"166","2":"c(\"esports\", \"eie19\", \"videogames\")"},{"1":"165","2":"eie19"},{"1":"164","2":"eie19"},{"1":"163","2":"eie19"},{"1":"161","2":"data"},{"1":"160","2":"c(\"eie19\", \"cx\")"},{"1":"158","2":"c(\"eie19\", \"scotlandisnow\", \"codeclanbiz\")"},{"1":"152","2":"techmums"},{"1":"149","2":"techmums"},{"1":"147","2":"c(\"fullstack\", \"javascript\")"},{"1":"146","2":"c(\"edinburgh\", \"codeclanlife\", \"techlife\")"},{"1":"144","2":"c(\"programming\", \"coding\")"},{"1":"142","2":"c(\"data\", \"glasgow\")"},{"1":"140","2":"c(\"datacarpentry\", \"tidyverse\")"},{"1":"137","2":"c(\"datacarpentry\", \"tidyverse\")"},{"1":"134","2":"inverness"},{"1":"133","2":"c(\"r\", \"glasgow\", \"tidyverse\")"},{"1":"131","2":"c(\"data\", \"scotland\")"},{"1":"129","2":"c(\"edinburgh\", \"developers\")"},{"1":"128","2":"glasgow"},{"1":"127","2":"c(\"programming\", \"webdevelopment\", \"dataanalysis\")"},{"1":"126","2":"springcleanyourcareer"},{"1":"125","2":"ios"},{"1":"124","2":"c(\"codeclanlife\", \"glasgowlife\")"},{"1":"120","2":"c(\"webvr\", \"glasgow\")"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[117]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
-<pre class="r"><code>NA</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiRXhhY3RseSB0aGUgc2FtZVwiXG4ifQ== -->
+<pre><code>[1] &quot;Exactly the same&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzIgLSBzYW1lIHZhbHVlcywgZGlmZmVyZW50IG9yZGVyXG52MSA8LSBjKDEsIDIsIDMpXG52MiA8LSBjKDMsIDIsIDEpXG5cbmNoZWNrX3NhbWUodjEsIHYyKVxuYGBgIn0= -->
+<pre class="r"><code>#2 - same values, different order
+v1 &lt;- c(1, 2, 3)
+v2 &lt;- c(3, 2, 1)
+
+check_same(v1, v2)</code></pre>
 <!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiVGhlIHNhbWVcIlxuIn0= -->
+<pre><code>[1] &quot;The same&quot;</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIzMgLSBkaWZmZXJlbnQgdmFsdWVzLCByZWdhcmRsZXNzIG9mIG9yZGVyXG52MSA8LSBjKDEsIDIsIDMpXG52MiA8LSBjKDEsIDIsIDQpXG5cbmNoZWNrX3NhbWUodjEsIHYyKVxuYGBgIn0= -->
+<pre class="r"><code>#3 - different values, regardless of order
+v1 &lt;- c(1, 2, 3)
+v2 &lt;- c(1, 2, 4)
+
+check_same(v1, v2)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiRGlmZmVyZW50XCJcbiJ9 -->
+<pre><code>[1] &quot;Different&quot;</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <div id="extension" class="section level3">
-<h3>Extension</h3>
-</div>
-</div>
-<div id="question-8" class="section level1">
-<h1>Question 8</h1>
+<h3>EXTENSION</h3>
+<p>#Question 7 Write code that prints a multiplication table for numbers
+up to 12. i.e. there will be 12 rows and 12 columns, and each element
+should be the row number multiplied by the column number.</p>
+<p>From: <a href="https://adriann.github.io/programming_problems.html" class="uri">https://adriann.github.io/programming_problems.html</a></p>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxudmlldyhjb2RlY2xhbl9oYXNodGFncylcbmBgYCJ9 -->
-<pre class="r"><code>view(codeclan_hashtags)</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29kZWNsYW5faGFzaHRhZ3MgJT4lIFxuICBtdXRhdGUoaGFzaHRhZ3Nfc3ViYmVkID0gc3RyX3N1YihoYXNodGFncywgc3RhcnQgPSAxLCBlbmQgPSAyKSkgJT4lIFxuICBmaWx0ZXIoc3RyX2RldGVjdChoYXNodGFnc19zdWJiZWQsXCJjXFxcXChcIikpXG5gYGAifQ== -->
-<pre class="r"><code>codeclan_hashtags %&gt;% 
-  mutate(hashtags_subbed = str_sub(hashtags, start = 1, end = 2)) %&gt;% 
-  filter(str_detect(hashtags_subbed,&quot;c\\(&quot;))</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6NDksIm5jb2wiOjMsInN1bW1hcnkiOnsiQSB0aWJibGUiOlsiNDkgw5cgMyJdfX0sInJkZiI6Ikg0c0lBQUFBQUFBQUJ1MVh6WTRjTlJEdTdHWWdXU2xoUlVqNGg5RWdvUkN4azNUMkVrN3NBZVdNRUVnNXNldTJhN285NjdZYjJ6Mnp5eW1Qd0NQa0VYZ0UzZ0FlZ1NmSlV1NHVULy9zUUpaRExvaVdwc3V1K3VyUHJxcVorZTZiWjRkN3ovYVNKTmxOcnUvZ2U0TExaUExEOTA4UG5pUU5KN21XWEU5dUJucUc0anNOTWtsdTR5YzljbFZBSjBmdVc2SkhSUGRiYXY4aytvSW80UzNoN0NPaVU2SkpTMy82ZytpdlJIOXBhZlViVWVJYjB0UEUxN1F2eWQ4cDJWdlNmdm1jNkFsUmtrdmlTK0pMaXE4Z2VVNzduUFlMd2dQWkJaSUxpa01RanRNK0k3c1o0VEtTTTVJenNzY28vaE95ZTBKNko4US9Kdnd4NmYrWXhHY2ZQeWxkMUpUZm55M1ppamx1WmVWblgwNW51V0l1Tit1d1hMclpGNFI3aWppV3B1ZUJ6VGdINTJRbWxmUU53NW1GWHpNTFlWM1ViQTJ5T254VVdkUElDdU9OYnJrYmEzZlFtZ2RlQklDb3RRRFlpRDVGa1lWRm5RTzRJSlpseGJoM2RWbEtuMzYxZ1QxQTJFaUU0QlZUTmFucEZUaHZiSmZCKzZpeHN2OWc4aUVDMXFDVXh1UzJ3SkREalFDdW1GWnkwUVU4MnhxSkxGa3VNK2FsMFJ2a2RDdVNNeTNNQW9OOWJialB0K0k4c0RMTHd5cmp4bGF2emZzVHhJR1FPcXR0WGx3NnhTWVFYc1Ixa0dsWVo3STczL2RRSDlsUzUvRmViWE5EL1lMcHVLSGl1UEZvWGpTaERNeU13d2cyby94cmxLdWFuNTduNmVHb0RjWUJrNmdmLzhiTTNhYUlzcmJRb28wb25LTXd0MHpVYlYyOHduVFUrbVNjWUZRS2lXNVFIeUZxVVN2bFBPT25UZk4yWGQwL3FxVWJDUzhmeGIzeFVRWDB3SWhnNklYWkNyUzN6UVR3VXB4amhLNkwra09FRFc4Q1lTQ2gxM0R2Qmo4Tko0ZzJEdnNObXl1VE1SWHN1TXY2ajBObEtJbEJuRlZna2ZLMmhzNDZhQWl0a0ZZNDREZ01ydXI1SG8ybnNpNjN1SDI3cit3OGxCdkp4eUdnR3NkT0NjMzlseGdhVXdVdzVUdmpud1YxVnhuYlR5bk1MaW5BNUt5RXJyVDMrNTR3cmY3dzZ5S2dRNVpPRDhzMWt6Ly9xK3A0Y09WR2pSb2ZvQWFPZVN4cEhBQnRmNDVLNlIwcWxtM2RjTVZDdWlJc2RNbWc2YmFpN3ZiaWlRYzNPS1RCQVFoWWdUSllXMjVRYzZPVXNkMEpHTzY3MFVNUFRETjE3bVNuT1czbjJDdmIvVzhteVBCcmU0ZmYvMy8xSDE4TmYxRlBkQmdOVkFhN3hMemgxd0QrV0lxNEw1Z3JQTXNkN2QrSysyTlhaeG1Ja2MyYjFxem4wZTZ0NFBZNXZpNHVMbjRmTzhlaWRkRjVaTzZGTXA4dnNCTUFkeTlIS20rYUtuekpvZEpPK0I4d0dTbGZzeVBHZnExREpPS0FGN1UrUFVqVDRLR1J0ODh0V3FlOTlXN3JjK2VDYkUzSTFodWdjNmtoQnE5WUJvbzJ0ekhsSnVONVphWDJNUlhrdXJrM09LMGpoeHNWT1UxeXljdS9BTE43WDVYL0RBQUEifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["tweet_id"],"name":[1],"type":["dbl"],"align":["right"]},{"label":["hashtags"],"name":[2],"type":["chr"],"align":["left"]},{"label":["hashtags_subbed"],"name":[3],"type":["chr"],"align":["left"]}],"data":[{"1":"311","2":"c(\"javascript\", \"glasgow\", \"js\")","3":"c("},{"1":"309","2":"c(\"a11y\", \"accessibility\", \"software\", \"huaweip30pro\", \"shotonhuawei\")","3":"c("},{"1":"308","2":"c(\"tech\", \"dundee\")","3":"c("},{"1":"305","2":"c(\"refugees\", \"impactsummit19\")","3":"c("},{"1":"302","2":"c(\"impactsummit19\", \"values\", \"investors\")","3":"c("},{"1":"298","2":"c(\"vr\", \"impactsummit19\")","3":"c("},{"1":"295","2":"c(\"wellness\", \"impactsummit19\", \"codeclanlife\")","3":"c("},{"1":"292","2":"c(\"impactsummit19\", \"imagibation\")","3":"c("},{"1":"291","2":"c(\"impactsummit19\", \"candofest\")","3":"c("},{"1":"290","2":"c(\"impactsummit19\", \"candofest\")","3":"c("},{"1":"288","2":"c(\"impactsummit19\", \"candofest\")","3":"c("},{"1":"285","2":"c(\"impactsummit19\", \"teambg\", \"bcorp\")","3":"c("},{"1":"283","2":"c(\"impactsummit19\", \"candofest\")","3":"c("},{"1":"281","2":"c(\"impactsummit19\", \"candofest\")","3":"c("},{"1":"268","2":"c(\"edinburgh\", \"codeclanlife\", \"techlife\", \"codenewbie\")","3":"c("},{"1":"267","2":"c(\"coding\", \"inverness\")","3":"c("},{"1":"249","2":"c(\"inverness\", \"scotlandcando\")","3":"c("},{"1":"246","2":"c(\"edinburgh\", \"coding\")","3":"c("},{"1":"241","2":"c(\"luckyg13\", \"glasgow\", \"codeclanlife\", \"glasgowlife\", \"tech\")","3":"c("},{"1":"237","2":"c(\"webvr\", \"glasgow\")","3":"c("},{"1":"216","2":"c(\"graduation\", \"codeclanlife\", \"glasgowlife\")","3":"c("},{"1":"213","2":"c(\"inverness\", \"codeclanscot\")","3":"c("},{"1":"212","2":"c(\"fullstack\", \"javascript\")","3":"c("},{"1":"211","2":"c(\"js\", \"javascript\", \"coding\")","3":"c("},{"1":"208","2":"c(\"edinburgh\", \"java\")","3":"c("},{"1":"204","2":"c(\"datacarpentry\", \"tidyverse\")","3":"c("},{"1":"203","2":"c(\"scotlandcando\", \"eie19\")","3":"c("},{"1":"202","2":"c(\"eie19\", \"edinburgh\")","3":"c("},{"1":"192","2":"c(\"globalscots\", \"eie19\")","3":"c("},{"1":"186","2":"c(\"clientxperience\", \"cx\", \"eie19\", \"thirdsector\")","3":"c("},{"1":"184","2":"c(\"eie19\", \"edinburgh\")","3":"c("},{"1":"180","2":"c(\"techmums\", \"eie19\")","3":"c("},{"1":"173","2":"c(\"eie19\", \"stem\")","3":"c("},{"1":"170","2":"c(\"customer\", \"mentalhealth\")","3":"c("},{"1":"166","2":"c(\"esports\", \"eie19\", \"videogames\")","3":"c("},{"1":"160","2":"c(\"eie19\", \"cx\")","3":"c("},{"1":"158","2":"c(\"eie19\", \"scotlandisnow\", \"codeclanbiz\")","3":"c("},{"1":"147","2":"c(\"fullstack\", \"javascript\")","3":"c("},{"1":"146","2":"c(\"edinburgh\", \"codeclanlife\", \"techlife\")","3":"c("},{"1":"144","2":"c(\"programming\", \"coding\")","3":"c("},{"1":"142","2":"c(\"data\", \"glasgow\")","3":"c("},{"1":"140","2":"c(\"datacarpentry\", \"tidyverse\")","3":"c("},{"1":"137","2":"c(\"datacarpentry\", \"tidyverse\")","3":"c("},{"1":"133","2":"c(\"r\", \"glasgow\", \"tidyverse\")","3":"c("},{"1":"131","2":"c(\"data\", \"scotland\")","3":"c("},{"1":"129","2":"c(\"edinburgh\", \"developers\")","3":"c("},{"1":"127","2":"c(\"programming\", \"webdevelopment\", \"dataanalysis\")","3":"c("},{"1":"124","2":"c(\"codeclanlife\", \"glasgowlife\")","3":"c("},{"1":"120","2":"c(\"webvr\", \"glasgow\")","3":"c("}],"options":{"columns":{"min":{},"max":[10],"total":[3]},"rows":{"min":[10],"max":[10],"total":[49]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
-<pre class="r"><code>NA</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="question-9" class="section level1">
-<h1>Question 9</h1>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jb2RlX2NsYW5fdHdlZXRzICU+JSBcbiAgZmlsdGVyKHN0cl9kZXRlY3QodGV4dCwgXCIoP2kpRWRpbmJ1cmdoXCIpKSAlPiUgXG4gIHN1bW1hcmlzZShjb3VudCA9IG4oKSlcbmBgYCJ9 -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5wcmludF90aW1lc190YWJsZSA8LSBmdW5jdGlvbih4KXtcbiAgXG4gIGlmKHggPD0gMTIpe1xuICAgIFxuICB0aW1lc190YWJsZSA8LSBtYXRyaXgobnJvdyA9IHgsIG5jb2wgPSB4KVxuICBjb2xuYW1lcyh0aW1lc190YWJsZSkgPC0gYygxOngpXG4gIHJvd25hbWVzKHRpbWVzX3RhYmxlKSA8LSBjKDE6eClcbiAgXG4gIGZvciAoaSBpbiAxOngpIHtcbiAgICBmb3IgKGogaW4gMTp4KSB7XG4gICAgICB0aW1lc190YWJsZVtpLGpdIDwtIGkgKiBqXG4gICAgfVxuICB9XG4gICAgXG4gIH0gZWxzZSB7XG4gICAgdGltZXNfdGFibGUgPC0gXCJQbGVhc2Ugc2VsZWN0IGEgdmFsdWUgbGVzcyB0aGFuIG9yIGVxdWFsIHRvIDEyLlwiXG4gIH1cbiAgXG4gXG4gIHRpbWVzX3RhYmxlXG59XG5cbnByaW50X3RpbWVzX3RhYmxlKDE1KVxuYGBgIn0= -->
 <pre class="r"><code>
-code_clan_tweets %&gt;% 
-  filter(str_detect(text, &quot;(?i)Edinburgh&quot;)) %&gt;% 
-  summarise(count = n())</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6MSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDEiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbDFRUVE2Q01CQmNrR29nMFpENEFoOUFFL1hpQTR3UE1KcHdyYlVxRVZzQ0pYcjA1ZUMyS1FtMmgrM3VkSFoycDhkOXZrM3lCQUFtRUlVWUNhWkF6cWREdGdPTFFBQVJ4T2IrNFBQU0FnQnpkNjg4RXBIc0pScE0wakhJVlN1MXg0eHI5YVlEMjhpRlh3dzlIbCtTbDZ6eEpaTXIwNHplYXV6SHF2TmFacXJTaFpMWUZKcUZpZGNjMUI2UXR0SnNjczM0bzVYUGJMMHhFNXhER0xrTi9uTXpNK3lkRm5GYVV5SHZoUlREOGlXN2lOSVZDN1JzSGRPcUx2QkRuQlZFRzZxVlpnTXY0YW9jRUdzT3VoL2hmNnRCcUFFQUFBPT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["count"],"name":[1],"type":["int"],"align":["right"]}],"data":[{"1":"33"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbmBgYCJ9 -->
-<pre class="r"><code>NA</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY29kZV9jbGFuX3R3ZWV0cyAlPiUgXG4gIGZpbHRlcihzdHJfZGV0ZWN0KHRleHQsIFwiRWRpbmJ1cmdofGVkaW5idXJnaFwiKSkgJT4lIFxuICBzdW1tYXJpc2UoY291bnQgPSBuKCkpXG5gYGAifQ== -->
-<pre class="r"><code>code_clan_tweets %&gt;% 
-  filter(str_detect(text, &quot;Edinburgh|edinburgh&quot;)) %&gt;% 
-  summarise(count = n())</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MSwibmNvbCI6MSwic3VtbWFyeSI6eyJBIHRpYmJsZSI6WyIxIMOXIDEiXX19LCJyZGYiOiJINHNJQUFBQUFBQUFCbDFRUVE2Q01CQmNrR29nMFpENEFoOUFFOFBGQnhnZllEVGhXaEdWaUMwcEpYcjA1ZUMyYVJOc0Q5dmQ2ZXpzVG8vN0lrK0tCQUJtRUlVWUNhWkF6cWREdGdPRFFBQVJ4UHIrNFBQYUFBQkxlMjg4RXVIc1ZYV1lwRk93RkQxWEhqT1c0azBkVzh1Rlh3d2pIbCt5YkZqblN5WlhwaGk5U2V6SGF2QmFGcUpWdGVEWUZPcUZpZGNjU0E5SWU2NDN1V2JsbytmUGJKdnJDZFloVE53Ry83bWVHWTVXaTFpdGVjWHZOYS9jOGcyN1ZJMHRWbWpaT0thdHJQRkRyQlZFTzZxRVlvNlhsS0p4aURFSHd3L0RYZlVpcUFFQUFBPT0ifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["count"],"name":[1],"type":["int"],"align":["right"]}],"data":[{"1":"33"}],"options":{"columns":{"min":{},"max":[10],"total":[1]},"rows":{"min":[10],"max":[10],"total":[1]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuTkFcbk5BXG5gYGAifQ== -->
-<pre class="r"><code>NA
-NA</code></pre>
-<!-- rnb-source-end -->
-<!-- rnb-chunk-end -->
-<!-- rnb-text-begin -->
-</div>
-<div id="question-10" class="section level1">
-<h1>Question 10</h1>
-<p>number of “@”s</p>
-<!-- rnb-text-end -->
-<!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5wYXR0ZXJuIDwtIFwiQFtBLVphLXowLTlfXStcIlxuXG5jb2RlX2NsYW5fdHdlZXRzICU+JSBcbiAgc2VsZWN0KHRleHQpICU+JVxuICBtdXRhdGUodGV4dCA9IHN0cl90b19sb3dlcih0ZXh0KSkgJT4lIFxuICBzdHJfZXh0cmFjdF9hbGwocGF0dGVybikgJT4lIFxuICBmbGF0dGVuX2NocigpICU+JSBcbiAgdGliYmxlKCkgJT4lIFxuICBtdXRhdGUoY2xlYW5lZF9uYW1lID0gc3RyX3N1YiguLDIsLTEpKSAlPiUgXG4gIGdyb3VwX2J5KGNsZWFuZWRfbmFtZSkgJT4lIFxuICBzdW1tYXJpc2UobnVtX3RhZ3MgPSBsZW5ndGgoY2xlYW5lZF9uYW1lKSlcbmBgYCJ9 -->
-<pre class="r"><code>
-pattern &lt;- &quot;@[A-Za-z0-9_]+&quot;
+print_times_table &lt;- function(x){
+  
+  if(x &lt;= 12){
+    
+  times_table &lt;- matrix(nrow = x, ncol = x)
+  colnames(times_table) &lt;- c(1:x)
+  rownames(times_table) &lt;- c(1:x)
+  
+  for (i in 1:x) {
+    for (j in 1:x) {
+      times_table[i,j] &lt;- i * j
+    }
+  }
+    
+  } else {
+    times_table &lt;- &quot;Please select a value less than or equal to 12.&quot;
+  }
+  
+ 
+  times_table
+}
 
-code_clan_tweets %&gt;% 
-  select(text) %&gt;%
-  mutate(text = str_to_lower(text)) %&gt;% 
-  str_extract_all(pattern) %&gt;% 
-  flatten_chr() %&gt;% 
-  tibble() %&gt;% 
-  mutate(cleaned_name = str_sub(.,2,-1)) %&gt;% 
-  group_by(cleaned_name) %&gt;% 
-  summarise(num_tags = length(cleaned_name))</code></pre>
+print_times_table(15)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiV2FybmluZyBpbiBzdHJpX2V4dHJhY3RfYWxsX3JlZ2V4KHN0cmluZywgcGF0dGVybiwgc2ltcGxpZnkgPSBzaW1wbGlmeSwgIDpcbiAgYXJndW1lbnQgaXMgbm90IGFuIGF0b21pYyB2ZWN0b3I7IGNvZXJjaW5nXG4ifQ== -->
-<pre><code>Warning in stri_extract_all_regex(string, pattern, simplify = simplify,  :
-  argument is not an atomic vector; coercing</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiWzFdIFwiUGxlYXNlIHNlbGVjdCBhIHZhbHVlIGxlc3MgdGhhbiBvciBlcXVhbCB0byAxMi5cIlxuIn0= -->
+<pre><code>[1] &quot;Please select a value less than or equal to 12.&quot;</code></pre>
 <!-- rnb-output-end -->
-<!-- rnb-frame-begin eyJtZXRhZGF0YSI6eyJjbGFzc2VzIjpbInRibF9kZiIsInRibCIsImRhdGEuZnJhbWUiXSwibnJvdyI6MTIwLCJuY29sIjoyLCJzdW1tYXJ5Ijp7IkEgdGliYmxlIjpbIjEyMCDDlyAyIl19fSwicmRmIjoiSDRzSUFBQUFBQUFBQm8xVzI0N2pOZ3pOWmlZems5dGtnZjJPR1dDN0xYWmVDeFQ5Z0tJRjlzMmdaY2JXV0JldkpNZHhudnJZcjk0cGxaaHlOcGk5UERpeGFFb2tEOGxEL2ZYSHB3K0xUNHZKWkhJMXVaN1M3NHhlSjdOLy92N3o0V2x5bEV6ZVRLNG44L2kvcDgvdjZDVUszOUt6SHo1c01nV3RRd05LU1c5Tk5vZ1hrS01MMExkR0RwSTcyRHJRdUhOcExWM3dLaFREK2g3b2dFRENyWFU1K2tHNm9uTWh0SjdPQ1QyYmpMWkVCU0hiMmIyWE5wbFVBVjBIUHVBZ3VRVjE4TUtHMGNKeFdjaFNCbENEZEFtTms2cEQ0NUZGYTNDaWtqbW80aG1OWVUveVhEZ29wRDA3Y1pFakh0QkIwL2l2SmRnQzcxdm1Da1NkN3p1NVpTald1Y0lnS29WOUE2NGVoUFBjWVZkYVd6QkE5N2tqTjQyUjBJT28yT1NkeUJUQ0RsbHJLVkFwNjJWcFVrVHpJellSSkQ1SkVIZ09TMmxOZ1VsdEl4U2hqVmhRNkJRU0cxZ0pXMkFPSGdPS0toa2xHYW1iYzUyNFBzTmlmUzdMa2lza2RHZGFteWpvYmV1MmJhQ3l5Y2JOU3ByTXlhS2djRVlyU21HSi9tdy9lZUlDN3JzdWhkK3FJSGNRc1BxY3RyVk8ydFpubE1NbW5kK0RvY0tpVUtYZ1hHMEtvREtBUEI1UGZuTWhyZ3JhNkN1cmRDVzVrdFlFaVhWUWFTaGw4WjVocGRDdzFwUmQ2TDFoVTNmSDh0cjJEUDY4c0pTYVFndVZGRngycklta01Ld1RhRVZMZWNLeGRUWUlwY0lzdXBwaElUa0xkMWhzblRRbE83bUszL0xXbGRXNDlSNGJPaG8xbW5DTzR2WllrNVk3NnBheWdjNUIrbnhhcHV5Y2tyVXZsYzNIS2lzaE96bktXaVh0NmJVUXJhOVRlVzVLREZCb2FhaTNIYVRPWEpaNENCVTJlSGg2NHM0cEpWVXNwY0VLUHJDQ0E2cXNsSGxPZVdPMUN2dFNPdVZieHU5TzVnU3ViUk9SMExyQUhTcmJvRXRhYTZrYkVNRzNXc3RVbmt0cHRqdUNob0pMUlVHQUt1cUpqbWlrcVpDeFhrZ1RiR2RkL2R2SEpDSHNpVHV3WU5qV3oyQWtaalZ4QmhZTTdlclpWdWE1UWFTZVR6RThXM01BaDZKT2pGQVROaWZpMDU0cjZiWkc1U2xhZHJhV3poLzdPUFhocHFiV0QwQ09FSmkrWnBzTFJiV3FQcmN5a2RkTU9iRmw4M01OVk02T1NJVDFOV2ppREhKYkpRazZJZUdNQWxhYXp1eEpTK2NwdVNjWkNtdXNUcllOUVZjUXI0aEVrdFRGdllLdUdEbHJsSEFtVnRhUXJWaEFSS2FjU0VxZ29WSW1zdk1qKzk5YkowdWJlWFE3S1VaSXFlRXYycmlCbGpyRzJjNDgvY3FJTm1XMmM4Z1Q0NmFKanJDNW04OGRqU3cyTTNmVWJKM1ZxUUtXSk1oYkx3M3hFVmVlRTY2Vm91YjEra2g5RjBxYktOeFNvd2piR2lFVHd1eXVaTVdsUnpDYXVrUmdpdFZIdktsd05QVkdnbTlOTXkrbmRPbGFxcEI4OGFiS05LUkJ0UEtXRXFqaVFFbk11QmhxZXV2NlpMT05NOWRBcmtaUkIwNWJRM3lNbzZqOFVDcndwV1hlWGROa2tqUnFJWTZ5bElSWUw3clZmdVJpcXN1S01rclpUb0FzWTYxUzhGNlBNekpJamI4UWUySHExMFd3bEowK2pIUzlKR2dLekR5MWNScndkQUdRRmhKUGRqVDBNRnpXeG9ydUJJMzNvWTNEbTQvdklaSlM2WUNMNFphbVVtaHpQbnArSUxjaGp2WVk3ZkhDRTY5SjhVWTAvaysvOFQ4Yi9uLzBURitSUmVPL0Q5K20zOUI1N2R2VjJmdk5EK3hOWDVIOTZMbjZ6cDZiVjc2eC92VjNmUDdXYzRuZitaN3JuOWgvanVYVno4ZjQxWTEzWnVpMjZpZW4yKzQwM1MzbzhrWHNuc1dQM0htbTFWbUEwbDhjTUNmcWVlUkRZZ1ZOLzZXZmw1ZVgveTR0aVdOM25DeXhjQkV2SjQvSEt6T3R2bHhzdWJWTm9Oc2NiWnErRy9BNjMvekdYUWpldGlaNlVqd0l1aHZVRCs4L1JndEQ0SlBCdmZpK1AzdWZubXhPWDRhelpzeVRhTXFSRzJiRXNXbHMzRWUyalJFL05uRW1jU2drOVkvQmpuZnVCZDNzV0hJTWJ2TGxmNVlWM3MyTURBQUEifQ== -->
-<div data-pagedtable="false">
-<script data-pagedtable-source type="application/json">
-{"columns":[{"label":["cleaned_name"],"name":[1],"type":["chr"],"align":["left"]},{"label":["num_tags"],"name":[2],"type":["int"],"align":["right"]}],"data":[{"1":"_laurenallison_","2":"3"},{"1":"abertayuni","2":"1"},{"1":"aframevr","2":"3"},{"1":"airtsltd","2":"1"},{"1":"alistairforbes","2":"2"},{"1":"allatusunity","2":"1"},{"1":"allichat_voxsio","2":"2"},{"1":"alterwaste","2":"1"},{"1":"alzscot","2":"2"},{"1":"alzscotdigital","2":"1"},{"1":"aprilwensel","2":"5"},{"1":"archibaldjenn","2":"1"},{"1":"bbcradioscot","2":"1"},{"1":"beezerapps","2":"1"},{"1":"beezereuan","2":"1"},{"1":"blackbxwifi","2":"1"},{"1":"bletchleypark","2":"1"},{"1":"brewgoodr","2":"1"},{"1":"britanniayacht","2":"1"},{"1":"c_leaver","2":"1"},{"1":"cellosignal","2":"2"},{"1":"chat_alli","2":"1"},{"1":"cityregiondeal","2":"1"},{"1":"claireedenscott","2":"1"},{"1":"codebasetech","2":"1"},{"1":"codeclan","2":"9"},{"1":"codeclanscot","2":"65"},{"1":"codeclanscot_","2":"2"},{"1":"coderscot","2":"2"},{"1":"codeyourfuture_","2":"2"},{"1":"colin_riddell","2":"1"},{"1":"collegesscot","2":"1"},{"1":"cortexww","2":"1"},{"1":"cultivatehq","2":"1"},{"1":"curious_chip","2":"2"},{"1":"cyanforensics","2":"2"},{"1":"datalabscotland","2":"2"},{"1":"dchisholmhie","2":"1"},{"1":"deborahmagid1","2":"1"},{"1":"derekmackaysnp","2":"3"},{"1":"digitfyi","2":"1"},{"1":"donaldmcl","2":"1"},{"1":"dr_black","2":"6"},{"1":"dr_black_","2":"1"},{"1":"dundeeuni","2":"1"},{"1":"eagle_labs_edin","2":"1"},{"1":"edfringe","2":"1"},{"1":"edinburghuni","2":"1"},{"1":"eplacementscot","2":"2"},{"1":"flackboy","2":"1"},{"1":"futerra","2":"2"},{"1":"futerra_","2":"1"},{"1":"futurexglobal","2":"1"},{"1":"ga_dundee","2":"2"},{"1":"gerrymccusker","2":"1"},{"1":"getadministrate","2":"1"},{"1":"gezthepez88","2":"1"},{"1":"gilliandoc","2":"1"},{"1":"hazel_gibbens","2":"1"},{"1":"heygirlsuk","2":"1"},{"1":"ibmcloud","2":"1"},{"1":"ibmdeveloperuk","2":"1"},{"1":"impactsummit_","2":"1"},{"1":"infventures","2":"3"},{"1":"ingledewstephen","2":"1"},{"1":"intowork57","2":"1"},{"1":"irinapreda","2":"2"},{"1":"janie_kennedy","2":"1"},{"1":"johnjpeebles","2":"1"},{"1":"jonzarecki","2":"1"},{"1":"kateforbesmsp","2":"6"},{"1":"kelseyg","2":"1"},{"1":"kirstyregan","2":"1"},{"1":"klostarinthesky","2":"2"},{"1":"loralquinn","2":"1"},{"1":"lrcfs","2":"3"},{"1":"madebrave","2":"1"},{"1":"mamchannel","2":"4"},{"1":"merciatech","2":"1"},{"1":"moraychamber","2":"2"},{"1":"morayeconomy","2":"2"},{"1":"newsdirect","2":"2"},{"1":"ollylawder","2":"1"},{"1":"ollylawder_","2":"1"},{"1":"onecherryapp","2":"1"},{"1":"openuniversity","2":"1"},{"1":"origo_services","2":"1"},{"1":"ouscotland","2":"1"},{"1":"paulabrown84","2":"1"},{"1":"pg_vreo","2":"1"},{"1":"pollyp","2":"5"},{"1":"qwerty","2":"1"},{"1":"rbs_women","2":"1"},{"1":"rbsbusiness","2":"1"},{"1":"rcruicks","2":"2"},{"1":"scot_business","2":"1"},{"1":"scotfundcouncil","2":"1"},{"1":"scotlandis","2":"4"},{"1":"seanmtracey","2":"1"},{"1":"shamblesmiller","2":"1"},{"1":"siobhanmkilts","2":"1"},{"1":"snh_maps","2":"1"},{"1":"socialgoodhq","2":"1"},{"1":"stephenfry","2":"1"},{"1":"sustainably","2":"1"},{"1":"swarmonline","2":"1"},{"1":"swg3glasgow","2":"1"},{"1":"taniastablets","2":"1"},{"1":"techmumshq","2":"9"},{"1":"thehappylass","2":"3"},{"1":"thescotsman","2":"2"},{"1":"time2dineuk","2":"1"},{"1":"topolytics","2":"1"},{"1":"trade_space","2":"1"},{"1":"voxioai","2":"1"},{"1":"wallet_services","2":"1"},{"1":"waspsstudios","2":"1"},{"1":"yaminigrao","2":"1"},{"1":"youtube","2":"1"},{"1":"zapparapp","2":"1"}],"options":{"columns":{"min":{},"max":[10],"total":[2]},"rows":{"min":[10],"max":[10],"total":[120]},"pages":{}}}
-  </script>
-</div>
-<!-- rnb-frame-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<p>#Question 8 Write a function that takes a vector, and creates a text
+art histogram, like the one below.</p>
+<p>You may want to use the function cat(). This is similar to print(),
+but prints directly, without vector markers. You can also include
+newlines “” when using cat().</p>
+<p>For example, the vector c(1, 2, 3, 4, 5, 1, 3, 4, 5, 1, 3, 4, 4, 3,
+3, 3, 3) should produce the histogram below - the histogram dislpays the
+number of times each number appears in the vector.</p>
+<p>[ATTEMPT 1]</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuXG5jcmVhdGVfaGlzdG9ncmFtIDwtIGZ1bmN0aW9uKHgsIHN5bWJvbCA9IFwiKlwiKSB7XG4gIFxuICBtaW5fdmFsIDwtIG1pbih4KVxuICBtYXhfdmFsIDwtIG1heCh4KVxuICBsZW4gPC0gbGVuZ3RoKHgpXG4gIHkgPC0gbWluX3ZhbDptYXhfdmFsXG4gIFxuICBmb3IoaSBpbiB5KSB7XG4gICAgY291bnQgPSBzdW0oeCA9PSBpKVxuICAgIGNhdCh5W2ldLFwiIHwgXCIsIHJlcChzeW1ib2wsIGNvdW50KSwgXCJcXG5cIiwgc2VwID0gXCJcIilcbiAgfVxufVxuXG52ZWN0b3IgPC0gYygxLCAyLCAzLCA0LCA1LCAxLCAzLCA0LCA1LCAxLCAzLCA0LCA0LCAzLCAzLCAzLCAzKVxuXG5jcmVhdGVfaGlzdG9ncmFtKHZlY3RvcilcbmBgYCJ9 -->
+<pre class="r"><code>
+create_histogram &lt;- function(x, symbol = &quot;*&quot;) {
+  
+  min_val &lt;- min(x)
+  max_val &lt;- max(x)
+  len &lt;- length(x)
+  y &lt;- min_val:max_val
+  
+  for(i in y) {
+    count = sum(x == i)
+    cat(y[i],&quot; | &quot;, rep(symbol, count), &quot;\n&quot;, sep = &quot;&quot;)
+  }
+}
+
+vector &lt;- c(1, 2, 3, 4, 5, 1, 3, 4, 5, 1, 3, 4, 4, 3, 3, 3, 3)
+
+create_histogram(vector)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiMSB8ICoqKlxuMiB8ICpcbjMgfCAqKioqKioqXG40IHwgKioqKlxuNSB8ICoqXG4ifQ== -->
+<pre><code>1 | ***
+2 | *
+3 | *******
+4 | ****
+5 | **</code></pre>
+<!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
 <!-- rnb-text-end -->
 </div>
+</div>
 
-<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQpgYGB7cn0NCmxpYnJhcnkodGlkeXZlcnNlKQ0KbGlicmFyeShzdHJpbmdyKQ0KDQpjb2RlX2NsYW5fdHdlZXRzIDwtIHJlYWRfY3N2KCJkYXRhL2NvZGVfY2xhbl90d2VldHMuY3N2IikNCg0KYGBgDQoNCiMgUXVlc3Rpb24gMQ0KDQpgYGB7cn0NCg0KZ2xpbXBzZShjb2RlX2NsYW5fdHdlZXRzKQ0KDQpgYGANCiMgUXVlc3Rpb24gMg0KDQpGaW5kIHRvdGFsIG51bWJlciBvZiBmYXZvdXJpdGVzLCBvbWl0IHF1b3RlZCB0d2VldHMuDQoNCmBgYHtyfQ0KDQpjb2RlX2NsYW5fdHdlZXRzICU+JSANCiAgZmlsdGVyKGlzX3F1b3RlID09IEYpICU+JSANCiAgc3VtbWFyaXNlKHRvdGFsX2Zhdm91cml0ZXMgPSBzdW0oZmF2b3JpdGVfY291bnQpKQ0KICANCmBgYA0KDQojIFF1ZXN0aW9uIDMNCg0KU3VtbWFyaXNlIG1lYW4gbnVtYmVyIG9mIHJldHdlZXRzLCBzcGxpdCBieSBwbGF0Zm9ybSB0eXBlLCBvbWl0dGluZyBxdW90ZWQNCnR3ZWV0cy4NCg0KYGBge3J9DQoNCmNvZGVfY2xhbl90d2VldHMgJT4lDQogIGZpbHRlcihpc19xdW90ZSA9PSBGKSAlPiUgDQogIGdyb3VwX2J5KHNvdXJjZSkgJT4lIA0KICBzdW1tYXJpc2UoYXZnX3JldHdlZXRfY291bnQgPSBtZWFuKHJldHdlZXRfY291bnQpKQ0KDQpgYGANCg0KIyBRdWVzdGlvbiA0DQoNCkNvdW50IHRvdGFsIG51bWJlciBvZiBsaWtlcywgc3BsaXQgYnkgbWVkaWEgdHlwZSBhbmQgYXJyYW5nZSBpbiBkZXNjZW5kaW5nDQpvcmRlciwgYXNzdW1lIHR3ZWV0cyB3aXRob3V0IGxpc3RlZCBtZWRpYSB0eXBlIGFyZSAidGV4dCIuDQoNCmBgYHtyfQ0KDQpjb2RlX2NsYW5fdHdlZXRzICU+JSANCiAgbXV0YXRlKG1lZGlhX3R5cGUgPSBpZl9lbHNlKGlzLm5hKG1lZGlhX3R5cGUpLCAidGV4dCIsIG1lZGlhX3R5cGUpKSAlPiUgDQogIGdyb3VwX2J5KG1lZGlhX3R5cGUpICU+JSANCiAgc3VtbWFyaXNlKHN1bV9mYXZzID0gc3VtKGZhdm9yaXRlX2NvdW50KSkgJT4lIA0KICBhcnJhbmdlKGRlc2Moc3VtX2ZhdnMpKQ0KDQpgYGANCg0KIyBRdWVzdGlvbiA1DQoNCkZpbmQgbWVhbiBudW1iZXIgb2YgY2hhcmFjdGVyIGluIENvZGVDbGFuIHR3ZWV0Lg0KDQpgYGB7cn0NCg0KY29kZV9jbGFuX3R3ZWV0cyAlPiUgDQogIHN1bW1hcmlzZShhdmdfdHdlZXRfbGVuZ3RoX3RleHQgPSBtZWFuKG5jaGFyKHRleHQpKSwNCiAgICAgICAgICAgIGF2Z190d2VldF9sZW5ndGhfZGlzcGxheV93aWR0aCA9IG1lYW4oZGlzcGxheV90ZXh0X3dpZHRoKSkNCg0KDQpgYGANCg0KVGhlIHR3byBtZXRob2RzIGRvIG5vdCBnaXZlIHRoZSBzYW1lIHJlc3VsdHMsIHRoaXMgaXMgYmVjYXVzZSB0aGUgImRpc3BsYXlfdGV4dF8NCndpZHRoIiBjb2x1bW4gc3VtcyB0aGUgY2hhcmFjdGVycyB3aGljaCBhcmUgbm90IGhhc2h0YWdzIG9yIHVybHMuDQoNCiMgUXVlc3Rpb24gNg0KDQpgYGB7cn0NCg0KY29kZV9jbGFuX2luZm8gPC0gcmVhZF9jc3YoImRhdGEvY29kZV9jbGFuX2luZm8uY3N2IikNClZpZXcoY29kZV9jbGFuX2luZm8pDQpgYGANCg0KDQpgYGB7cn0NCg0KY29kZV9jbGFuX3R3ZWV0c19qb2luZWQgPC0gY29kZV9jbGFuX3R3ZWV0cyAlPiUgDQogIGxlZnRfam9pbihjb2RlX2NsYW5faW5mbywgYnkgPSAidHdlZXRfaWQiKQ0KDQp2aWV3KGNvZGVfY2xhbl90d2VldHNfam9pbmVkKQ0KDQpgYGANCg0KIyBRdWVzdGlvbiA3DQoNCmBgYHtyfQ0KDQpjb2RlY2xhbl9oYXNodGFncyA8LSBjb2RlX2NsYW5fdHdlZXRzX2pvaW5lZCAlPiUgDQogIHNlbGVjdCh0d2VldF9pZCwgaGFzaHRhZ3MpICU+JSANCiAgbXV0YXRlKGhhc2h0YWdzID0gc3RyX3RvX2xvd2VyKGhhc2h0YWdzKSkgJT4lIA0KICBmaWx0ZXIoIWlzLm5hKGhhc2h0YWdzKSkNCg0KY29kZWNsYW5faGFzaHRhZ3MNCg0KYGBgDQoNCiMjIyBFeHRlbnNpb24NCg0KIyBRdWVzdGlvbiA4DQoNCmBgYHtyfQ0Kdmlldyhjb2RlY2xhbl9oYXNodGFncykNCmBgYA0KDQoNCmBgYHtyfQ0KY29kZWNsYW5faGFzaHRhZ3MgJT4lIA0KICBtdXRhdGUoaGFzaHRhZ3Nfc3ViYmVkID0gc3RyX3N1YihoYXNodGFncywgc3RhcnQgPSAxLCBlbmQgPSAyKSkgJT4lIA0KICBmaWx0ZXIoc3RyX2RldGVjdChoYXNodGFnc19zdWJiZWQsImNcXCgiKSkNCg0KYGBgDQoNCiMgUXVlc3Rpb24gOQ0KDQpgYGB7cn0NCg0KY29kZV9jbGFuX3R3ZWV0cyAlPiUgDQogIGZpbHRlcihzdHJfZGV0ZWN0KHRleHQsICIoP2kpRWRpbmJ1cmdoIikpICU+JSANCiAgc3VtbWFyaXNlKGNvdW50ID0gbigpKQ0KDQpgYGANCg0KYGBge3J9DQpjb2RlX2NsYW5fdHdlZXRzICU+JSANCiAgZmlsdGVyKHN0cl9kZXRlY3QodGV4dCwgIkVkaW5idXJnaHxlZGluYnVyZ2giKSkgJT4lIA0KICBzdW1tYXJpc2UoY291bnQgPSBuKCkpDQoNCg0KYGBgDQoNCiMgUXVlc3Rpb24gMTANCg0KbnVtYmVyIG9mICJAInMNCg0KYGBge3J9DQoNCnBhdHRlcm4gPC0gIkBbQS1aYS16MC05X10rIg0KDQpjb2RlX2NsYW5fdHdlZXRzICU+JSANCiAgc2VsZWN0KHRleHQpICU+JQ0KICBtdXRhdGUodGV4dCA9IHN0cl90b19sb3dlcih0ZXh0KSkgJT4lIA0KICBzdHJfZXh0cmFjdF9hbGwocGF0dGVybikgJT4lIA0KICBmbGF0dGVuX2NocigpICU+JSANCiAgdGliYmxlKCkgJT4lIA0KICBtdXRhdGUoY2xlYW5lZF9uYW1lID0gc3RyX3N1YiguLDIsLTEpKSAlPiUgDQogIGdyb3VwX2J5KGNsZWFuZWRfbmFtZSkgJT4lIA0KICBzdW1tYXJpc2UobnVtX3RhZ3MgPSBsZW5ndGgoY2xlYW5lZF9uYW1lKSkNCg0KYGBgDQoNCg==</div>
+<div id="rmd-source-code">LS0tDQp0aXRsZTogIlIgTm90ZWJvb2siDQpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sNCi0tLQ0KDQojIFF1ZXN0aW9uIDEuDQpGaW5kIHRoZSB3ZWF0aGVyIGZvcmVjYXN0IGZvciB0aGUgbmV4dCB0aHJlZSBkYXlzIG9ubGluZS4gQ3JlYXRlIGEgbGlzdCBvZiBsaXN0cyBpbiB3aGljaCBlYWNoIGlubmVyIGxpc3Qgc2hvdWxkIGJlIGxhYmVsbGVkIHdpdGggdGhlIG5hbWUgb2YgdGhlIGRheSBvZiB0aGUgd2Vlay4gRWFjaCBpbm5lciBsaXN0IHNob3VsZCBjb250YWluIG5hbWVkIGVsZW1lbnRzIHRlbGxpbmcgeW91IHRoZSB0ZW1wZXJhdHVyZSwgY2hhbmNlIG9mIHJhaW4gYW5kIHdpbmQgc3BlZWQuDQoNCmxpc3QgLT4NCiAgZGF5X29mX3dlZWsgbGlzdA0KICB0ZW1wLCBjaGFuY2Ugb2YgcmFpbiwgd2luZCBzcGVlZA0KICANCmBgYHtyfQ0KDQpmb3JlY2FzdCA8LSBsaXN0KFRodXJzZGF5ID0gbGlzdCh0ZW1wID0gMjEsIGNoYW5jZV9yYWluID0gIjEwJSIsd2luZF9zcGVlZCA9IDYgKSwNCiAgICAgICAgICAgICAgICAgRnJpZGF5ID0gbGlzdCh0ZW1wID0gMTksIGNoYW5jZV9yYWluID0gIjkwJSIsIHdpbmRfc3BlZWQgPSA3KSwNCiAgICAgICAgICAgICAgICAgU2F0dXJkYXkgPSBsaXN0KHRlbXAgPSAyMSwgY2hhbmNlX3JhaW4gPSAiOTAlIiwgd2luZF9zcGVlZCA9IDEyKSkNCg0KYGBgDQoNCiMgUXVlc3Rpb24gMi4NClVzaW5nIHRoZSBsaXN0IHlvdeKAmXZlIGp1c3QgbWFkZSBmaW5kOg0KDQpUaGUgY2hhbmNlIG9mIHJhaW4gdG9tb3Jyb3cNClRoZSB3aW5kIHNwZWVkIG9uIHRoZSBkYXkgYWZ0ZXIgdG9tb3Jyb3cNClRoZSB0ZW1wZXJhdHVyZSB0b21vcnJvdy4NCg0KYGBge3J9DQoNCmZvcmVjYXN0W1siVGh1cnNkYXkiXV1bWyJjaGFuY2VfcmFpbiJdXQ0KZm9yZWNhc3RbWyJGcmlkYXkiXV1bWyJ3aW5kX3NwZWVkIl1dDQpmb3JlY2FzdFtbIlRodXJzZGF5Il1dW1sidGVtcCJdXQ0KDQpgYGANCg0KIyBRdWVzdGlvbiAzLg0KRmluZCBhIDE0IGRheSBmb3JlY2FzdCBvbmxpbmUgYW5kIGNyZWF0ZSBhIG1hdHJpeCBvZiB0aGUgZm9yZWNhc3RzIGZvciB0ZW1wZXJhdHVyZSwgd2hlcmUgZWFjaCB3ZWVrIGlzIG9uZSByb3cgYW5kIGNvbHVtbnMgY29ycmVzcG9uZCB0byBkYXlzLg0KDQpZb3Ugd2lsbCB3YW50IHRvIGdpdmUgYSBuYW1lIHRvIHRoZSBtYXRyaXggeW91IGNyZWF0ZS4NCg0KYGBge3J9DQoNCmZvcnRuaWdodF90ZW1wIDwtIGMoMTksIDIwLCAxOCwgMTksIDIwLCAxOCwgMTcsIDE3LCAxOCwgMTksIDE5LCAxOCwgMTgsIDE4KQ0KZm9yZWNhc3RfMTRfZGF5IDwtIG1hdHJpeChmb3J0bmlnaHRfdGVtcCwgbnJvdyA9IDIsIGJ5cm93ID0gVFJVRSkNCmNvbG5hbWVzKGZvcmVjYXN0XzE0X2RheSkgPC0gcGFzdGUwKCJkYXlfIiwgMTo3KQ0Kcm93bmFtZXMoZm9yZWNhc3RfMTRfZGF5KSA8LSBwYXN0ZTAoIndlZWtfIiwgMToyKQ0KDQpmb3JlY2FzdF8xNF9kYXkNCg0KYGBgDQoNCiMgUXVlc3Rpb24gNA0KRnJvbSB0aGUgbWF0cml4IHlvdSBqdXN0IG1hZGUgc2VsZWN0Og0KDQpUaGUgdGhpcmQgZGF5IG9mIHRoZSBzZWNvbmQgd2Vlaw0KVGhlIHdob2xlIHNlY29uZCB3ZWVrDQpUaGUgZmlyc3QsIHRoaXJkIGFuZCBmaWZ0aCBkYXlzIGluIGJvdGggd2Vla3MuDQoNCmBgYHtyfQ0KDQpmb3JlY2FzdF8xNF9kYXlbMiwzXQ0KZm9yZWNhc3RfMTRfZGF5WzIsXQ0KZm9yZWNhc3RfMTRfZGF5WyxjKDEsMyw1KV0NCg0KYGBgDQoNCiNRdWVzdGlvbiA1Lg0KV3JpdGUgYSBmdW5jdGlvbiB0aGF0IHByZS1hcHBlbmRzIOKAnFRoZSBhbnN3ZXIgaXM64oCdIHRvIGFueSBjaGFyYWN0ZXIgaW5wdXQsIHdoaWxlIGZvciBudW1lcmljIGlucHV0LCBpdCBlaXRoZXIganVzdCByZXR1cm5zIHRoZSBudW1iZXIgZm9yIG51bWJlcnMgbGVzcyB0aGFuIDEwLCBvciBkaXZpZGVzIHRoZSBudW1iZXIgYnkgMTAgZm9yIG51bWJlcnMgZ3JlYXRlciB0aGFuIDEwLiBGb3IgYW55dGhpbmcgZWxzZSByZXR1cm4g4oCcSW52YWxpZCBpbnB1dOKAnS4NCg0KYGBge3J9DQoNCm15X2Z1bmMgPC0gZnVuY3Rpb24oeCkgew0KICBpZihpcy5jaGFyYWN0ZXIoeCkpIHsNCiAgICBvdXRwdXQgPC0gcGFzdGUoIlRoZSBhbnN3ZXIgaXM6IiwgeCkNCiAgfSBlbHNlIHsNCiAgICBpZihpcy5udW1lcmljKHgpKXsNCiAgICAgIGlmKHggPCAxMCl7DQogICAgICAgIG91dHB1dCA8LSB4DQogICAgICB9IGVsc2Ugew0KICAgICAgICBvdXRwdXQgPC0geCAvIDEwDQogICAgICB9IA0KICAgIH0gZWxzZSB7DQogICAgICAgIG91dHB1dCA8LSAiSW52YWxpZCBJbnB1dCINCiAgICB9DQogIH0NCg0KICBvdXRwdXQNCn0NCg0KbXlfZnVuYygiaGVsbG8iKQ0KbXlfZnVuYyg1KQ0KbXlfZnVuYygyMCkNCm15X2Z1bmMoTkEpDQoNCmBgYA0KDQojUXVlc3Rpb24gNi4NCldyaXRlIGEgZnVuY3Rpb24gd2hpY2ggY2hlY2tzIGlmIHR3byB2ZWN0b3JzIGhhdmUgdGhlIHNhbWUgZWxlbWVudHMuDQoNCklmIHRoZXkgaGF2ZSB0aGUgc2FtZSBlbGVtZW50cyBpbiB0aGUgc2FtZSBvcmRlciwgcmV0dXJuIOKAnEV4YWN0bHkgdGhlIHNhbWXigJ0NCklmIHRoZXkgaGF2ZSB0aGUgc2FtZSBlbGVtZW50cyBidXQgaW4gYSBkaWZmZXJlbnQgb3JkZXIsIHJldHVybiDigJxUaGUgc2FtZeKAnQ0KSWYgdGhleSBkb27igJl0IGhhdmUgdGhlIHNhbWUgZWxlbWVudHMsIHJldHVybiDigJxEaWZmZXJlbnTigJ0uDQoNCkJlZm9yZSByZWFkaW5nIHRoZSBIaW50cyBzZWN0aW9uIGZvciB0aGlzIHF1ZXN0aW9uIEkgYXR0ZW1wdGVkIHR3byBkaWZmZXJlbnQNCmFwcHJvYWNoZXMgdG8gc29sdmUgdGhpcyBwcm9ibGVtDQoNCltBVFRFTVBUIDFdDQotIHJldHVybnMgY29ycmVjdGx5IHdoZW4gYm90aCB2ZWN0b3JzIGFyZSBpZGVudGljYWwNCi0gYWJhbmRvbmVkIGZvciBhbHRlcm5hdGl2ZSBzY2VuYXJpb3MNCg0KYGBge3J9DQoNCmNoZWNrX3NhbWUgPC0gZnVuY3Rpb24oeCwgeSwgY291bnRfbWF0Y2hlcyA9IDApew0KICBpZihsZW5ndGgoeCkgPT0gbGVuZ3RoKHkpKSB7I2NoZWNrIGlmIGJvdGggdmVjdG9ycyBoYXZlIHRoZSBzYW1lIGxlbmd0aA0KICAgIGxlbmd0aCA8LSBsZW5ndGgoeCkgICAgICAgI3NldCBsZW5ndGggb2YgdmVjdG9yIGFzIG1heGltdW0gbG9vcCBudW1iZXINCiAgICANCiAgICBmb3IgKGkgaW4gMTpsZW5ndGgpIHsNCiAgICAgIGlmKHhbaV0gPT0geVtpXSkgew0KICAgICAgICBjb3VudF9tYXRjaGVzIDwtIGNvdW50X21hdGNoZXMgKyAxDQogICAgICB9DQogICAgfQ0KICAgIA0KICAgIGlmKGNvdW50X21hdGNoZXMgPT0gbGVuZ3RoKXsNCiAgICAgIG91dHB1dCA8LSAiRXhhY3RseSB0aGUgc2FtZSINCiAgICB9IGVsc2Ugew0KICAgICAgDQogIA0KICAgICAgDQogICAgICANCiAgICAgIA0KICAgIH0NCiAgICANCiAgfQ0KICANCiAgb3V0cHV0DQp9DQoNCnYxIDwtIGMoMSwyLDMpDQp2MiA8LSBjKDEsMiwzKQ0KDQpjaGVja19zYW1lKHYxLCB2MikNCg0KYGBgDQoNCltBVFRFTVBUIDJdDQotIG5lc3RlZCBmb3IgbG9vcHMgdG8gY29tcGFyZSBlYWNoIGVsZW1lbnQgaW4gdGhlIGZpcnN0IHZlY3RvciB3aXRoIGFsbCBlbGVtZW50cyBpbiB0aGUgc2Vjb25kIHZlY3RvciBhbmQga2VlcCBhIHRhbGx5IG9mIHRoZSBudW1iZXIgb2YgZXhhY3Qgb3Igbm9uLWV4YWN0IG1hdGNoZXMgdGhlcmUgYXJlDQotIGJhc2VkIG9uIHRoZSByZXN1bHRzIG9mIHRoZSB0YWxseSwgdGhlIG91dHB1dCB3b3VsZCBiZSBzZWxlY3RlZA0KLSB3b3JrcyBmb3IgYWxsIGNhc2VzIGV4Y2VwdCB3aGVuIHRoZXJlIGFyZSBkdXBsaWNhdGVzIGluIG9uZSBvZiB0aGUgdmVjdG9ycw0KICAgICAgICAtIGkuZS4gdjEgPSBjKDEsIDIsIDMpIGFuZCB2MiA9IGMoMSwgMSwgMSkgcmV0dXJucyAiVGhlIFNhbWUiDQotIGNvZGUgYWJhbmRvbmVkIG9uY2UgaG9tZXdvcmsgaGludCB3YXMgcmVhZA0KDQpgYGB7cn0NCg0KY2hlY2tfc2FtZSA8LSBmdW5jdGlvbih4LCB5KXsNCiAgaWYobGVuZ3RoKHgpID09IGxlbmd0aCh5KSkgeyNjaGVjayBpZiBib3RoIHZlY3RvcnMgaGF2ZSB0aGUgc2FtZSBsZW5ndGgNCiAgICBsZW5ndGggPC0gbGVuZ3RoKHgpICAgICAgICNzZXQgbGVuZ3RoIG9mIHZlY3RvciBhcyBtYXhpbXVtIGxvb3AgbnVtYmVyDQogICAgZXhhY3RfbWF0Y2hlcyA9IDANCiAgICBjb3VudF9tYXRjaGVzID0gMA0KICAgIA0KICAgIGZvcihpIGluIDE6bGVuZ3RoKSB7DQogICAgICBmb3IgKGogaW4gMTpsZW5ndGgpIHsNCiAgICAgICAgaWYoeFtpXSA9PSB5W2pdKXsNCiAgICAgICAgICBpZihpID09IGopeyAjIGlmIGluZGV4ZXMgYXJlIHNhbWUgdGhlbiBpbmNyZW1lbnQgZXhhY3RfbWF0Y2hlcw0KICAgICAgICAgICAgZXhhY3RfbWF0Y2hlcyA8LSBleGFjdF9tYXRjaGVzICsgMQ0KICAgICAgICAgICAgY291bnRfbWF0Y2hlcyA8LSBjb3VudF9tYXRjaGVzICsgMQ0KICAgICAgICAgIH0gZWxzZSB7ICAjIGlmIGluZGV4ZXMgYXJlICBkaWZmZXJlbnQgdGhlbiBpbmNyZW1lbnQgY291bnRfbWF0Y2hlcw0KICAgICAgICAgICAgY291bnRfbWF0Y2hlcyA8LSBjb3VudF9tYXRjaGVzICsgMQ0KICAgICAgICAgIH0NCiAgICAgICAgfQ0KICAgICAgfQ0KICAgIH0NCiAgICANCiAgICBpZihleGFjdF9tYXRjaGVzID09IGxlbmd0aCl7DQogICAgICBvdXRwdXQgPC0gIkV4YWN0bHkgdGhlIHNhbWUiDQogICAgfSBlbHNlIHsNCiAgICAgIGlmKGNvdW50X21hdGNoZXMgPT0gbGVuZ3RoKXsNCiAgICAgIG91dHB1dCA8LSAiVGhlIHNhbWUiDQogICAgICB9IGVsc2Ugew0KICAgICAgICBvdXRwdXQgPC0gIkRpZmZlcmVudCINCiAgICAgIH0NCiAgICB9DQogICAgDQogIH0gZWxzZSB7DQogICAgb3V0cHV0IDwtICJEaWZmZXJlbnQiDQogIH0NCiAgDQogIGMob3AgPSBvdXRwdXQsIGVtID0gZXhhY3RfbWF0Y2hlcywgY20gPSBjb3VudF9tYXRjaGVzKQ0KfQ0KDQp2MSA8LSBjKDEsMiwzKQ0KdjIgPC0gYygxLDEsMSkNCg0KY2hlY2tfc2FtZSh2MSwgdjIpDQoNCmBgYA0KW0FUVEVNUFQgM10gLSBRVUVTVElPTiBDT01QTEVURUQNCg0KYGBge3J9DQoNCmNoZWNrX3NhbWUgPC0gZnVuY3Rpb24oeCwgeSl7DQogIGlmKGFsbCh4ID09IHkpKSB7ICMgdGVzdCBpZiBhbGwgZWxlbWVudHMgYXJlIGVxdWFsIGFuZCBpbiB0aGUgc2FtZSBvcmRlcg0KICAgIG91dHB1dCA8LSAiRXhhY3RseSB0aGUgc2FtZSINCiAgfSBlbHNlIHsNCiAgICBpZihhbGwoc29ydCh4KSA9PSBzb3J0KHkpKSkgeyAjIHRlc3QgaWYgdmFsdWVzIGFyZSBlcXVhbCBidXQgaW4gZGlmZmVyZW50IG9yZGVyDQogICAgICBvdXRwdXQgPC0gIlRoZSBzYW1lIg0KICAgIH0gZWxzZSB7DQogICAgICBvdXRwdXQgPC0gIkRpZmZlcmVudCINCiAgICB9DQogIH0NCiAgb3V0cHV0DQp9DQoNCmBgYA0KDQoNCg0KYGBge3J9DQojMSAtIHNhbWUgdmFsdWVzLCBzYW1lIG9yZGVyIC0gZXhwZWN0ZWQgb3V0cHV0IC0gIkV4YWN0bHkgdGhlIHNhbWUiDQp2MSA8LSBjKDEsIDIsIDMpDQp2MiA8LSBjKDEsIDIsIDMpDQoNCmNoZWNrX3NhbWUodjEsIHYyKQ0KDQojMiAtIHNhbWUgdmFsdWVzLCBkaWZmZXJlbnQgb3JkZXIgLSBleHBlY3RlZCBvdXRwdXQgLSAiVGhlIHNhbWUiDQp2MSA8LSBjKDEsIDIsIDMpDQp2MiA8LSBjKDMsIDIsIDEpDQoNCmNoZWNrX3NhbWUodjEsIHYyKQ0KDQojMyAtIGRpZmZlcmVudCB2YWx1ZXMsIHJlZ2FyZGxlc3Mgb2Ygb3JkZXIgLSBleHBlY3RlZCBvdXRwdXQgLSAiRGlmZmVyZW50Ig0KdjEgPC0gYygxLCAyLCAzKQ0KdjIgPC0gYygxLCAyLCA0KQ0KDQpjaGVja19zYW1lKHYxLCB2MikNCg0KYGBgDQoNCiMjIyBFWFRFTlNJT04NCg0KI1F1ZXN0aW9uIDcNCldyaXRlIGNvZGUgdGhhdCBwcmludHMgYSBtdWx0aXBsaWNhdGlvbiB0YWJsZSBmb3IgbnVtYmVycyB1cCB0byAxMi4gaS5lLiB0aGVyZSB3aWxsIGJlIDEyIHJvd3MgYW5kIDEyIGNvbHVtbnMsIGFuZCBlYWNoIGVsZW1lbnQgc2hvdWxkIGJlIHRoZSByb3cgbnVtYmVyIG11bHRpcGxpZWQgYnkgdGhlIGNvbHVtbiBudW1iZXIuDQoNCkZyb206IGh0dHBzOi8vYWRyaWFubi5naXRodWIuaW8vcHJvZ3JhbW1pbmdfcHJvYmxlbXMuaHRtbA0KDQpgYGB7cn0NCg0KcHJpbnRfdGltZXNfdGFibGUgPC0gZnVuY3Rpb24oeCl7DQogIA0KICBpZih4IDw9IDEyKXsNCiAgICANCiAgdGltZXNfdGFibGUgPC0gbWF0cml4KG5yb3cgPSB4LCBuY29sID0geCkNCiAgY29sbmFtZXModGltZXNfdGFibGUpIDwtIGMoMTp4KQ0KICByb3duYW1lcyh0aW1lc190YWJsZSkgPC0gYygxOngpDQogIA0KICBmb3IgKGkgaW4gMTp4KSB7DQogICAgZm9yIChqIGluIDE6eCkgew0KICAgICAgdGltZXNfdGFibGVbaSwgal0gPC0gaSAqIGoNCiAgICB9DQogIH0NCiAgICANCiAgfSBlbHNlIHsNCiAgICB0aW1lc190YWJsZSA8LSAiUGxlYXNlIHNlbGVjdCBhIHZhbHVlIGxlc3MgdGhhbiBvciBlcXVhbCB0byAxMi4iDQogIH0NCiAgDQogDQogIHRpbWVzX3RhYmxlDQp9DQoNCnByaW50X3RpbWVzX3RhYmxlKDE1KQ0KDQpgYGANCg0KI1F1ZXN0aW9uIDgNCldyaXRlIGEgZnVuY3Rpb24gdGhhdCB0YWtlcyBhIHZlY3RvciwgYW5kIGNyZWF0ZXMgYSB0ZXh0IGFydCBoaXN0b2dyYW0sIGxpa2UgdGhlIG9uZSBiZWxvdy4NCg0KWW91IG1heSB3YW50IHRvIHVzZSB0aGUgZnVuY3Rpb24gY2F0KCkuIFRoaXMgaXMgc2ltaWxhciB0byBwcmludCgpLCBidXQgcHJpbnRzIGRpcmVjdGx5LCB3aXRob3V0IHZlY3RvciBtYXJrZXJzLiBZb3UgY2FuIGFsc28gaW5jbHVkZSBuZXdsaW5lcyAiXG4iIHdoZW4gdXNpbmcgY2F0KCkuDQoNCkZvciBleGFtcGxlLCB0aGUgdmVjdG9yIGMoMSwgMiwgMywgNCwgNSwgMSwgMywgNCwgNSwgMSwgMywgNCwgNCwgMywgMywgMywgMykgc2hvdWxkIHByb2R1Y2UgdGhlIGhpc3RvZ3JhbSBiZWxvdyAtIHRoZSBoaXN0b2dyYW0gZGlzbHBheXMgdGhlIG51bWJlciBvZiB0aW1lcyBlYWNoIG51bWJlciBhcHBlYXJzIGluIHRoZSB2ZWN0b3IuDQoNCltBVFRFTVBUIDFdDQoNCmBgYHtyfQ0KDQpjcmVhdGVfaGlzdG9ncmFtIDwtIGZ1bmN0aW9uKHgsIHN5bWJvbCA9ICIqIikgew0KICANCiAgbWluX3ZhbCA8LSBtaW4oeCkNCiAgbWF4X3ZhbCA8LSBtYXgoeCkNCiAgbGVuIDwtIGxlbmd0aCh4KQ0KICB5IDwtIG1pbl92YWw6bWF4X3ZhbA0KICANCiAgZm9yKGkgaW4geSkgew0KICAgIGNvdW50ID0gc3VtKHggPT0gaSkNCiAgICBjYXQoeVtpXSwiIHwgIiwgcmVwKHN5bWJvbCwgY291bnQpLCAiXG4iLCBzZXAgPSAiIikNCiAgfQ0KfQ0KDQp2ZWN0b3IgPC0gYygxLCAyLCAzLCA0LCA1LCAxLCAzLCA0LCA1LCAxLCAzLCA0LCA0LCAzLCAzLCAzLCAzKQ0KDQpjcmVhdGVfaGlzdG9ncmFtKHZlY3RvcikNCg0KYGBgDQoNCg==</div>
 
 
 
@@ -2175,7 +2202,7 @@ $(document).ready(function () {
 <!-- code folding -->
 <script>
 $(document).ready(function () {
-  window.initializeSourceEmbed("rtweet_homework.Rmd");
+  window.initializeSourceEmbed("r_programming_hw.Rmd");
   window.initializeCodeFolding("show" === "show");
 });
 </script>
