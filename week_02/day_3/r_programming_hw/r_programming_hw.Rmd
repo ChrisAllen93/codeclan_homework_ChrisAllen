@@ -123,11 +123,7 @@ check_same <- function(x, y, count_matches = 0){
     if(count_matches == length){
       output <- "Exactly the same"
     } else {
-      
-  
-      
-      
-      
+
     }
     
   }
@@ -147,7 +143,7 @@ check_same(v1, v2)
 - based on the results of the tally, the output would be selected
 - works for all cases except when there are duplicates in one of the vectors
         - i.e. v1 = c(1, 2, 3) and v2 = c(1, 1, 1) returns "The Same"
-- code abandoned once homework hint was read
+- code abandoned once homework hint was read(!!!)
 
 ```{r}
 
@@ -187,8 +183,8 @@ check_same <- function(x, y){
   c(op = output, em = exact_matches, cm = count_matches)
 }
 
-v1 <- c(1,2,3)
-v2 <- c(1,1,1)
+v1 <- c(1, 2, 3)
+v2 <- c(1, 2, 3)
 
 check_same(v1, v2)
 
@@ -266,7 +262,7 @@ print_times_table <- function(x){
   times_table
 }
 
-print_times_table(15)
+print_times_table(12)
 
 ```
 
@@ -275,9 +271,7 @@ Write a function that takes a vector, and creates a text art histogram, like the
 
 You may want to use the function cat(). This is similar to print(), but prints directly, without vector markers. You can also include newlines "\n" when using cat().
 
-For example, the vector c(1, 2, 3, 4, 5, 1, 3, 4, 5, 1, 3, 4, 4, 3, 3, 3, 3) should produce the histogram below - the histogram dislpays the number of times each number appears in the vector.
-
-[ATTEMPT 1]
+For example, the vector c(1, 2, 3, 4, 5, 1, 3, 4, 5, 1, 3, 4, 4, 3, 3, 3, 3) should produce the histogram below - the histogram displays the number of times each number appears in the vector.
 
 ```{r}
 
@@ -288,15 +282,14 @@ create_histogram <- function(x, symbol = "*") {
   range <- min_val:max_val
 
   for(i in range) {
-    count = sum(x == i)
+    count <- sum(x == i)
     cat(range[i]," | ", rep(symbol, count), "\n", sep = "")
   }
 }
 
+#vector <- sample(1:5, size = 50, replace = TRUE)
 vector <- c(1, 2, 3, 4, 5, 1, 3, 4, 5, 1, 3, 4, 4, 3, 3, 3, 3)
 
 create_histogram(vector)
 
 ```
-
-
