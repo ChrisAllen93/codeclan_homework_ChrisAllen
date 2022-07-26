@@ -26,7 +26,7 @@ WHERE department = 'Legal';
  */
 
 SELECT 
-	count(country) AS portugal_employees
+	count(*) AS portugal_employees
 FROM employees 
 WHERE country = 'Portugal';
 
@@ -196,6 +196,7 @@ WHERE first_name IS NOT NULL AND last_name IS NOT NULL AND department IS NOT NUL
 
 SELECT
 	concat(first_name, ' ', last_name, ' - ', department, ' (joined ',
+	to_char(start_date, 'Mon'), ' ',
 	EXTRACT(YEAR FROM start_date), ')') AS badge_label
 FROM employees
 WHERE
