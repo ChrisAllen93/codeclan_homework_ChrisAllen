@@ -140,7 +140,6 @@ ORDER BY T.id;
 
 SELECT 
 	count(DISTINCT(employee_id)) AS distinct_employees_in_comittees,
-	count(employee_id) AS distinct_employees_in_comittees
 FROM employees_committees
 
 -- Q6
