@@ -46,7 +46,11 @@ LEFT JOIN pay_details AS PD ON E.pay_detail_id = PD.id;
 -- (b). Amend your query above to also return the name of the team that each employee
 -- belongs to.
 
-SELECT *
+SELECT 
+	E.*,
+	PD.local_account_no,
+	PD.local_sort_code,
+	t.name
 FROM employees AS E
 LEFT JOIN pay_details AS PD ON E.pay_detail_id = PD.id
 LEFT JOIN teams AS T ON E.team_id = T.id;
@@ -139,8 +143,8 @@ ORDER BY T.id;
 --GROUP BY C.name, E.first_name, E.last_name;
 
 SELECT 
-	count(DISTINCT(employee_id)) AS distinct_employees_in_comittees,
-FROM employees_committees
+	count(DISTINCT(employee_id)) AS distinct_employees_in_comittees
+FROM employees_committees;
 
 -- Q6
 -- How many of the employees do not serve on a committee?
