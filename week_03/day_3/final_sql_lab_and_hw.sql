@@ -35,9 +35,11 @@ LIMIT 10;
 -- Obtain a count by department of the employees who started work with the corporation in 2003.
 
 SELECT
+	department,
 	count(id) AS count_started_in_2003
 FROM employees 
-WHERE start_date BETWEEN '2003-01-01' AND '2003-12-31';
+WHERE start_date BETWEEN '2003-01-01' AND '2003-12-31'
+GROUP BY department;
 
 -- Question 5.
 -- Obtain a table showing department, fte_hours and the number of employees in each department who work
@@ -115,7 +117,9 @@ WHERE T.name LIKE 'Data Team%';
 -- Question 11.
 -- Find the first name and last name of all employees who lack a local_tax_code.
 
-SELECT *
+SELECT
+	first_name,
+	last_name
 FROM employees AS E
 INNER JOIN pay_details AS PD ON E.pay_detail_id = PD.id
 WHERE PD.local_tax_code IS NULL;
@@ -124,9 +128,6 @@ WHERE PD.local_tax_code IS NULL;
 -- The expected_profit of an employee is defined as (48 * 35 * charge_cost - salary) * fte_hours, where
 -- charge_cost depends upon the team to which the employee belongs. Get a table showing expected_profit
 --  for each employee.
-
-(48 * 35 * charge_cost - salary) * fte_hours AS expected_profit
-
 
 SELECT
 	E.first_name,
@@ -184,6 +185,7 @@ SELECT
 FROM employees
 WHERE first_name IS NOT NULL
 GROUP BY first_name
+HAVING count(id) > 1
 ORDER BY num_matches DESC, first_name;
 
 -- Question 16
@@ -217,7 +219,7 @@ WHERE department = (
 	GROUP BY department
 	ORDER BY count(id) DESC
 	LIMIT 1
-	);
+);
 
 -- [Extension - really tough! - how could you generalise your query to be able to handle the fact that
 -- two or more departments may be tied in their counts of employees. In that case, we probably don’t want
