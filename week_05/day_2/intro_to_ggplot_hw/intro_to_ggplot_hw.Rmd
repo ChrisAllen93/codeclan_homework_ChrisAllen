@@ -154,6 +154,23 @@ backpack %>%
 ```
 The pie chart above shows that 32% of students experience back problems.
 
+```{r}
+
+backpack %>% 
+  ggplot(aes(back_problems)) +
+  geom_bar()
+  # coord_polar(theta = "y") +
+  # geom_text(size = 5, position = position_fill(vjust = 0.5)) +
+  # labs(title = "Proportion of students reporting back problems",
+  #      fill = "Back Problems") +
+  # theme(panel.background = element_rect(fill = "white"),
+  #       axis.text = element_blank(),
+  #       axis.title = element_blank(),
+  #       panel.grid = element_blank(),
+  #       axis.ticks = element_blank())
+
+```
+
 
 # Question 7.
 
