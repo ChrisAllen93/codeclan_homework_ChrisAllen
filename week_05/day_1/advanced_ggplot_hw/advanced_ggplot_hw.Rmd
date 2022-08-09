@@ -186,11 +186,10 @@ qb_monthly_sales %>%
   filter(cashflow == "Kwikbit Unit 1 Sales") %>% 
   ggplot(aes(x = date, 
             y = amount)) +
-  geom_line(colour = "#BD7040") +
+  geom_line(size = 2, colour = col_scheme[4]) +
   labs(x = "\nDate",
        y = "Sales Amount (£)\n",
        title = "Monthly sales amount in the last year\n") +
-  scale_colour_manual(values = col_scheme) + # this line doesn't work
   hw_theme()
 
 ```
@@ -205,7 +204,7 @@ qb_monthly_sales %>%
   ggplot(aes(x = date,
              y = amount,
              colour = cashflow)) +
-  geom_line() +
+  geom_line(size = 2) +
   labs(x = "Date",
        title = "Revenue and costs in the last year",
        colour = "Type") +
@@ -229,12 +228,12 @@ qb_competitors %>%
   geom_area() +
   labs(x = "\nYear",
        y = "Revenue",
-       title = "Competitor Revenues - last 5 years\n",
+       title = "Competitor Revenues",
+       subtitle = "2015 - 2019",
        fill = "Company") +
-  scale_y_continuous("Revenue (£)\n",
-                     labels = label_comma()) +
-  scale_fill_manual(values = col_scheme) +
-  hw_theme()
+  scale_y_continuous("Revenue\n",
+                     labels = dollar_format(prefix = "£")) +
+  hw_theme
 
 
 ```
@@ -251,12 +250,12 @@ qb_competitors %>%
   geom_line() +
   geom_point() +
   labs(x = "",
-       y = "Revenue (£)\n",
-       title = "Competitor Revenues - last 5 years\n",
+       y = "Revenue\n",
+       title = "Competitor Revenues - last 5 years",
+       subtitle = "2015 - 2019",
        colour = "Company") +
-  scale_colour_manual(values = col_scheme) +
-  scale_y_continuous(labels = label_comma()) +
-  hw_theme()
+  scale_y_continuous(labels = dollar_format(prefix = "£")) +
+  hw_theme
 
 
 ```
@@ -276,8 +275,7 @@ qb_device_data %>%
        y = "Steps",
        colour = "ID",
        title = "Daily Steps pattern per person and device") +
-  scale_colour_manual(values = col_scheme) +
-  hw_theme()
+  hw_theme
 
 ```
 

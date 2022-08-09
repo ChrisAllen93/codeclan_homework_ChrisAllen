@@ -1,5 +1,5 @@
 
-hw_theme <- function() {
+hw_theme <- list(
   
   theme(panel.background = element_rect(fill = "white"),
         panel.border = element_rect(fill = NA, colour = "gray75"),
@@ -9,7 +9,9 @@ hw_theme <- function() {
         text = element_text(size = 12),
         title = element_text(size = 14),
         legend.title = element_text(size = 12),
-        legend.key = element_rect(fill = NA))
+        legend.key = element_rect(fill = NA)),
+  scale_colour_manual(values = col_scheme),
+  scale_fill_manual(values = col_scheme)
   
-}
+)
   
