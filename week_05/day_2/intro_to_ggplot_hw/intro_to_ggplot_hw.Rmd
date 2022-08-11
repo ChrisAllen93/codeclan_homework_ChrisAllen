@@ -140,7 +140,8 @@ backpack %>%
   summarise(percent = n()/nrow(backpack)) %>% 
   ggplot(aes(x = "", y = percent, label = paste0(percent*100, "%"))) +
   geom_col(position = "fill",
-           fill = c("gray","red")) +
+           fill = c("gray","red"),
+           colour = c("black")) +
   coord_polar(theta = "y") +
   geom_text(size = 5, position = position_fill(vjust = 0.5)) +
   labs(title = "Proportion of students reporting back problems",
@@ -331,6 +332,7 @@ Is there a difference between how heavy the bags those in different years carry?
 ```{r}
 
 backpack %>% 
+  filter(year != 0) %>% 
   group_by(year) %>% 
   summarise(avg_backpack_weight = mean(backpack_weight, na.rm = TRUE)) %>% 
   ggplot(aes(x = year, y = avg_backpack_weight)) +
@@ -348,9 +350,10 @@ backpack %>%
 
 
 ```
-The average backpack weight increases significantly from year groups 0 to 1 and
-plateaus at Year group 2. Year groups 2 - 4 are very similar (approx. 12lb) with
-a further increase in Year Group 5 up to 13lb, before a significant drop down to around 8lb for Year Group 6. The data shows a good correlation with what might 
-be expected, i.e. first year of college has the least amount of materials to be 
-carried, years 2-4 are very similar and year 5 (final year) is the most 
-demanding therefore needs the most materials (i.e. heavier backpack).
+The average backpack weight increases significantly from year groups 1 to 2 
+where it plateaus at Year group 2. Year groups 2 - 4 are very similar (approx.
+12lb) with a further increase in Year Group 5 up to 13lb, before a significant
+drop down to around 8lb for Year Group 6. The data shows a good correlation with
+what might be expected, i.e. first year of college has the least amount of
+materials to be carried, years 2-4 are very similar and year 5 (final year) is 
+the most demanding therefore needs the most materials (i.e. heavier backpack).
