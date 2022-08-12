@@ -7,6 +7,7 @@ library(tidyverse)
 library(ggplot2)
 library(shiny)
 library(bslib)
+library(scales)
 
 scottish_exports <- read_csv("scottish_exports.csv")
 
@@ -78,7 +79,7 @@ server <- function(input, output) {
                  fill = sector)) +
       geom_col(position = "fill") +
       scale_x_continuous(breaks = as.numeric(input$year_input)) +
-      # geom_text(aes(label = frac), vjust = 0.5) +
+      geom_text(aes(label = frac), vjust = 0.5) +
       labs(x = "Year",
            y = "Fraction of Exports",
            fill = "Sector")
