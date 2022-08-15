@@ -1,0 +1,347 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(tidyverse)
+library(scales)
+
+game_sales <- CodeClanData::game_sales
+
+summary(game_sales)
+
+```
+
+```{r}
+
+game_sales %>% 
+  group_by(year_of_release) %>% 
+  summarise(n = n())
+
+```
+
+
+```{r}
+
+game_sales %>% 
+  distinct(developer) %>% 
+  pull(developer)
+
+```
+
+```{r}
+
+game_sales %>% 
+  distinct(publisher) %>% 
+  pull(publisher)
+
+```
+
+```{r}
+
+game_sales %>% 
+  distinct(publisher, developer) %>% 
+  arrange(publisher)
+
+```
+# Plot 1 - game sales vs year
+Can add in filter for developer/publisher
+```{r}
+
+game_sales %>% 
+  #filter(developer == "Ubisoft") %>% # to be controlled by input choices
+  group_by(year_of_release) %>% 
+  summarise(annual_sales = sum(sales)) %>% 
+  ggplot(aes(x = year_of_release, 
+             y = annual_sales)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks = (min(game_sales$year_of_release):max(game_sales$year_of_release))) +
+  labs(x = "Year of Release",
+       y = "Annual Sales (£m)",
+       title = "Annual Game Sales vs Year of Release",
+       subtitle = "") + # can be updated to include text noting input selection
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "gray90"),
+        axis.line = element_line(colour = "gray90"))
+
+
+```
+# Highest-rated games - top 5
+
+```{r}
+
+game_sales %>% 
+  filter(developer == "Ubisoft") %>% 
+  select(name, critic_score, user_score) %>%
+  mutate(critic_score = critic_score/10) %>% 
+  mutate(avg_score = (critic_score + user_score)/2) %>% 
+  slice_max(avg_score, n = 5, with_ties = F) %>% 
+  pivot_longer(critic_score:user_score, names_to = "score_criteria") %>% 
+  mutate(score_criteria = factor(score_criteria, levels = c("critic_score", "user_score")),name = factor(name, levels = rev(name))) %>% ) %>% 
+  ggplot(aes(y = name,
+             x = value,
+             fill = score_criteria)) +
+  geom_col(position = "dodge") +
+  scale_x_continuous(sec.axis = sec_axis( trans=~.*10, name = "Critic Score"),
+                     breaks = seq(0, 10),
+                     limits = c(0,10),
+                     expand = c(0,0)) +
+  labs(x = "User Score") +
+  theme(axis.title.y = element_blank()) +
+  geom_text(aes(label = avg_score), check_overlap = T )
+
+```
+
+```{r}
+
+game_sales %>% 
+  filter(developer %in% "Nintendo" &
+               publisher %in% input$publisher_input &
+               genre %in% input$genre_input) 
+  select(name, critic_score, user_score) %>%
+  mutate(critic_score = critic_score/10) %>% 
+  mutate(avg_score = (critic_score + user_score)/2) %>% 
+  slice_max(avg_score, n = 5, with_ties = F) %>% 
+  mutate(name = factor(name, levels = rev(name))) %>%
+  pivot_longer(critic_score:user_score, names_to = "score_criteria") %>% 
+  mutate(score_criteria = factor(score_criteria,
+                                 levels = c("user_score", "critic_score"))) %>% 
+  ggplot(aes(y = name,
+             x = value,
+             fill = score_criteria)) +
+  guides(fill = guide_legend(reverse = T)) +
+  geom_col(position = "dodge",
+           width = 0.6) +
+  scale_x_continuous(sec.axis = sec_axis(trans = ~.*10,
+                                         name = "Critic Score",
+                                         breaks = seq(0, 100, by = 10)),
+                     breaks = seq(0, 10),
+                     limits = c(0,10),
+                     expand = c(0,0)) +
+
+  labs(x = "User Score",
+       title = "Top 5 Highest Rated Games") +
+  theme(axis.title.y = element_blank(),
+        plot.margin = unit(c(1,1,1,1), "lines"),
+        legend.position = "right",
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major.x = element_line(colour = "gray90"),
+        axis.ticks = element_blank(),
+        axis.text.y = element_text(size = 8, face = "bold"),
+        legend.text = element_text(size = 6),
+        legend.title = element_text(size = 10),
+        legend.title.align = 0) 
+
+# %>% 
+#   pivot_longer(critic_score:user_score, names_to = "score_criteria") %>% 
+#   mutate(score_criteria = factor(score_criteria, levels = c("critic_score", "user_score")),
+#          name = factor(name))
+
+```
+
+```{r}
+
+sort_by_input <- "User Score"
+
+if(sort_by_input == "User Score") {
+  
+  game_sales %>%
+    select(name, platform, user_score) %>%
+    slice_max(user_score, n = 5, with_ties = FALSE) %>% 
+    mutate(Rank = c(1:5), .before = name) %>% 
+    rename("Name" = "name",
+           "Platform" = "platform",
+           "User Score" = "user_score")
+  
+} else {
+  
+  game_sales %>%
+    select(name, platform, critic_score) %>%
+    slice_max(critic_score, n = 5, with_ties = FALSE) %>% 
+    mutate(Rank = c(1:5), .before = name) %>% 
+    rename("Name" = "name",
+           "Platform" = "platform",
+           "Critic Score" = "critic_score")
+}
+
+```
+
+```{r}
+
+game_sales %>%
+  filter(platform == "Wii") %>% 
+  group_by(year_of_release) %>% 
+  summarise(total_sales = sum(sales)) %>% 
+  ggplot(aes(x = year_of_release,
+              y = total_sales)) +
+  geom_col() +
+  labs(x = "Year of Release",
+       y = "Sales",
+       title = "Platform Sales")
+
+game_sales %>%
+  filter(genre == "Sports") %>% 
+  group_by(year_of_release) %>% 
+  summarise(total_sales = sum(sales)) %>% 
+  ggplot(aes(x = year_of_release,
+              y = total_sales)) +
+  geom_col() +
+  labs(x = "Year of Release",
+       y = "Sales",
+       title = "Genre Sales")
+
+
+
+```
+
+```{r}
+
+game_sales %>% 
+  filter(platform == "Wii") %>% 
+  group_by(genre) %>% 
+  summarise(n = n())
+
+```
+
+```{r}
+
+platform_choice <- "Wii"
+genre_choice <- NULL
+
+game_sales %>% 
+  if (!is.null(genre_choice)) {
+    
+    filter(platform %in% platform_choice &
+                 genre %in% genre_choice)
+  } else {
+    
+     filter(platform %in% platform_choice)
+  }
+
+      # game_sales %>%
+      #   filter(platform %in% platform_choice &
+      #            genre %in% genre_choice) %>% 
+      #   select(name, platform, user_score) %>%
+      #   slice_max(user_score, n = 5, with_ties = FALSE) %>% 
+      #   mutate(Rank = row_number(), .before = name) %>% 
+      #   rename("Name" = "name",
+      #          "Platform" = "platform",
+      #          "User Score" = "user_score")
+
+```
+
+```{r}
+
+game_sales %>% 
+  #filter(developer == "Ubisoft") %>% # to be controlled by input choices
+  group_by(year_of_release) %>% 
+  summarise(annual_sales = sum(sales)) %>% 
+  ggplot(aes(x = year_of_release, 
+             y = annual_sales)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks = (min(game_sales$year_of_release):max(game_sales$year_of_release))) +
+  labs(x = "Year of Release",
+       y = "Annual Sales (£m)",
+       title = "Annual Game Sales vs Year of Release",
+       subtitle = "") + # can be updated to include text noting input selection
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "gray90"),
+        axis.line = element_line(colour = "gray90"))
+
+
+
+```
+
+```{r}
+
+# total sales
+total_sales <- game_sales %>% 
+  #filter(developer == "Ubisoft") %>% # to be controlled by input choices
+  group_by(year_of_release) %>% 
+  summarise(annual_sales = sum(sales)) %>% 
+  mutate(type_of_sale = "Total")
+
+# total sales for platform
+platform_sales <- game_sales %>% 
+  filter(platform == "Wii") %>% 
+  group_by(year_of_release) %>% 
+  summarise(annual_sales = sum(sales)) %>% 
+  mutate(type_of_sale = "Platform")
+
+# total sales for genre
+genre_sales <- game_sales %>% 
+  filter(genre == "Sports") %>% 
+  group_by(year_of_release) %>% 
+  summarise(annual_sales = sum(sales)) %>% 
+  mutate(type_of_sale = "Genre")
+
+combined_data <- total_sales %>% 
+  bind_rows(platform_sales, genre_sales)
+  # pivot_wider(names_from = type_of_sale, values_from = annual_sales)
+
+combined_data %>% 
+  ggplot(aes(x = year_of_release,
+             y = annual_sales,
+             colour = type_of_sale)) +
+  geom_point() +
+  geom_line() +
+  scale_x_continuous(breaks = seq(from = 1985, to = 2020, by = 5)) +
+  scale_y_continuous(breaks = seq(from = 0, to = 250, by = 50,
+                                  expand = c(0,0))) +
+  coord_cartesian(clip = "off") +
+  scale_colour_manual(values = c("Total" = "red",
+                      "Platform" = "green",
+                      "Genre" = "blue")) +
+  labs(x = "Year of Release",
+       y = "Annual Sales (£m)",
+       title = "Annual Game Sales vs Year of Release",
+       colour = "Sale Category") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1),
+        panel.background = element_rect(fill = "white"),
+        panel.grid.major = element_line(colour = "gray90"),
+        axis.line = element_line(colour = "gray90"),
+        legend.key = element_blank())
+
+```
+
+```{r}
+
+platform_choice <- "PS4"
+
+game_sales %>% 
+  group_by(platform) %>% 
+  summarise(total_sales = sum(sales)) %>% 
+  arrange(total_sales) %>% 
+  mutate(highlighted = ifelse(platform == platform_choice, T, NA)) %>% 
+  ggplot(aes(x = total_sales,
+             y = reorder(platform, total_sales),
+             fill = highlighted)) +
+  geom_col() +
+  scale_fill_manual(name = "platform", values = c("red","grey50"))
+
+
+
+```
+
+```{r}
+
+game_sales %>% 
+  group_by(genre) %>% 
+  summarise(total_sales = sum(sales)) %>% 
+  arrange(total_sales) %>% 
+  mutate(highlighted = ifelse(platform == platform_choice, T, NA)) %>% 
+  ggplot(aes(x = total_sales,
+             y = reorder(platform, total_sales),
+             fill = highlighted)) +
+  geom_col() +
+  scale_fill_manual(name = "platform", values = c("red","grey50"))
+
+
+```
+
