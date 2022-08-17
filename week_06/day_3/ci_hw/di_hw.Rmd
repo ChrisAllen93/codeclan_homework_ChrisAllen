@@ -1,0 +1,214 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(tidyverse)
+library(janitor)
+library(infer)
+
+```
+
+# MVP
+
+## Task 1
+Load the data again, clean_names(), and re-familiarise yourself with it
+
+```{r}
+
+ames <- read_csv("data/ames.csv") %>% 
+  clean_names()
+
+```
+## Task 2
+Investigate the distribution of lot_area. Is the distribution roughly normal? If not, what problems do you find?
+
+```{r}
+
+ames %>% 
+  ggplot(aes(lot_area)) +
+  geom_histogram(bins = 30)
+
+```
+
+Data doesn't follow a normal distribution as it is has a long tail to the right,
+i.e. is skewed to the right. 
+
+## Task 3
+Compute and visualise a bootstrap sampling distribution for the mean(lot_area)
+of the sold houses.
+
+```{r}
+
+resampled_ames <- ames %>% 
+  rep_sample_n(nrow(ames), reps = 10000, replace = TRUE)
+
+```
+
+```{r}
+
+summary_resampled_ames <- resampled_ames %>% 
+  summarise(mean_lot_area = mean(lot_area))
+
+summary_resampled_ames %>% 
+  ggplot(aes(mean_lot_area)) +
+  geom_histogram(col = "white")
+
+```
+
+## Task 4.
+Use your bootstrap distribution to calculate a 95% CI for mean(lot_area), and
+visualise it on the distribution
+
+```{r}
+
+ci_95_resampled_ames <- summary_resampled_ames %>% 
+  summarise(lower_bound = quantile(mean_lot_area, 0.025),
+            upper_bound = quantile(mean_lot_area, 0.975))
+
+ci_95_resampled_ames
+
+```
+
+```{r}
+
+summary_resampled_ames %>% 
+  ggplot(aes(mean_lot_area)) +
+  geom_histogram(col = "white") +
+  shade_ci(endpoints = ci_95_resampled_ames)
+
+```
+
+## Task 5.
+You would like to know the mean(lot_area) of the sold houses with higher confidence. Calculate the 99% CI for this variable (you can re-use your bootstrap distribution from above). Is it narrower or broader than the 95% CI? Does that make sense?
+
+```{r}
+
+ci_99_resampled_ames <- summary_resampled_ames %>% 
+  summarise(lower_bound = quantile(mean_lot_area, 0.005),
+            upper_bound = quantile(mean_lot_area, 0.995))
+
+ci_99_resampled_ames
+
+summary_resampled_ames %>% 
+  ggplot(aes(mean_lot_area)) +
+  geom_histogram(col = "white") +
+  shade_ci(endpoints = ci_99_resampled_ames)
+
+
+```
+The confidence interval is wider for the 99% CI vs the 95% CI. This makes sense
+as the 99% confidence interval ensures that 99% of the estimates of the mean lot area
+fall in its range, therefore the range needs to be alrger than that of the 95% CI
+value.
+
+## Task 6.
+Calculate the point estimate of the mean(lot_area)
+
+```{r}
+#point estimate of mean(lot_area) is the mean of the original sample data
+ames %>% 
+  summarise(mean_lot_area = mean(lot_area))
+
+```
+
+# EXTENSION
+
+## Task 1
+Calculate a point estimate and 95% CI for the proportion of houses in the data built before 1920. Does the number of reps you use matter? [Investigate reps from 200 up to 50000, memory of your laptop permitting].
+
+```{r}
+# add column to indicate if the house was built pre-1920 or not.
+ames_pre_1920 <- ames %>% 
+   mutate(built_pre_1920 = if_else(year_built < 1920, TRUE, FALSE),
+          .after = year_built) %>% 
+  select(order, year_built, built_pre_1920)
+
+# point estimate of original sample
+pe_built_pre_1920 <- ames_pre_1920 %>% 
+  summarise(prop_built_pre_1920 = mean(built_pre_1920))
+
+pe_built_pre_1920
+
+```
+### 200 reps
+```{r}
+# bootstrapping based on 200 reps and full dataset (2,930 values) with replacement
+ames_resampled_200 <- ames_pre_1920 %>% 
+  rep_sample_n(nrow(ames), reps = 200, replace = TRUE) %>% 
+  summarise(prop_built_pre_1920 = mean(built_pre_1920))
+
+ames_resampled_200
+
+```
+
+```{r}
+# calculate 95% confidence interval
+ci_ames_resampled_200 <- ames_resampled_200 %>% 
+  summarise(lower_bound = quantile(prop_built_pre_1920, 0.025),
+            upper_bound = quantile(prop_built_pre_1920, 0.975))
+
+ci_ames_resampled_200
+
+```
+
+```{r}
+
+# plot histogram of resampled data
+ames_resampled_200 %>% 
+  ggplot(aes(prop_built_pre_1920)) +
+  geom_histogram() +
+  shade_ci(endpoints = ci_ames_resampled_200)
+
+```
+
+### 50,000 reps
+```{r}
+# bootstrapping based on 200 reps and full dataset (2,930 values) with replacement
+ames_resampled_50000 <- ames_pre_1920 %>% 
+  rep_sample_n(nrow(ames), reps = 50000, replace = TRUE) %>% 
+  summarise(prop_built_pre_1920 = mean(built_pre_1920))
+
+ames_resampled_50000
+
+```
+
+```{r}
+# calculate 95% confidence interval
+ci_ames_resampled_50000 <- ames_resampled_50000 %>% 
+  summarise(lower_bound = quantile(prop_built_pre_1920, 0.025),
+            upper_bound = quantile(prop_built_pre_1920, 0.975))
+
+ci_ames_resampled_50000
+
+```
+
+```{r}
+
+# plot histogram of resampled data
+ames_resampled_50000 %>% 
+  ggplot(aes(prop_built_pre_1920)) +
+  geom_histogram() +
+  shade_ci(endpoints = ci_ames_resampled_50000)
+
+```
+
+```{r}
+# combine outputs of both tests
+ci_ames_resampled_200 %>% 
+  union(ci_ames_resampled_50000) %>% 
+  mutate(reps = c(200, 50000), .before = lower_bound) %>% 
+  mutate(ci_range = upper_bound - lower_bound)
+
+
+```
+
+Between 200 and 50,000 reps there is negligible difference between the confidence
+intervals. The range is slightly tighter with the 50,000 reps however the two 
+methods appear to be very similar despite the significant increase in the 
+computational power to process the 50,000 reps method. This has demonstrated that
+the number of reps is beneficial up to a point, after which the difference in 
+accuracy is negligible.
+

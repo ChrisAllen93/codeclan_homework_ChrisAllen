@@ -39,7 +39,7 @@ For your top brand, plot the distribution of phone ratings as a probability dens
 
 samsung_ratings <- mobile_ratings %>% 
   filter(brand == "Samsung") %>% 
-  select(rating)
+  dplyr::select(rating)
 
 samsung_rating_stats <- samsung_ratings %>% 
   summarise(mean_rating = mean(rating),
@@ -47,10 +47,11 @@ samsung_rating_stats <- samsung_ratings %>%
 
 samsung_ratings %>% 
   ggplot(aes(rating)) +
-  geom_histogram(aes(y = ..density..), binwidth = 0.1) +
+  geom_histogram(aes(y = ..density..), col = "white") +
   stat_function(
     fun = ~dnorm(., mean = samsung_rating_stats$mean_rating,
-                 sd = samsung_rating_stats$sd_rating)
+                 sd = samsung_rating_stats$sd_rating),
+    col = "red"
   )
 
 ```
@@ -141,5 +142,12 @@ the data appears to follow this line in the middle of the data set, there are
 significant differences towards the extremes, this is evident at the lower
 sample ratings (e.g. 1 and 2 ratings). Therefore, the QQ-plot would suggest that
 the data does not follow a normal distribution due to the disproportionate 1 and
-2 score ratings in the dataset.
+2 score ratings in the dataset, also known as having "heavy tails".
+
+```{r}
+
+library(car)
+qqPlot(samsung_ratings$rating)
+
+```
 
