@@ -101,7 +101,7 @@ four_rolls <- rolldie(4)
 # filter on values of 4 rolls equals 5, 6 or 7.
 four_rolls %>% 
   mutate(sum = rowSums(.)) %>% 
-  filter(sum == 5:7) %>% # 9 outcomes
+  filter(sum %in% c(5,6,7)) %>% # 34 outcomes
   summarise(prob = n() / nrow(four_rolls))
   
 ```
@@ -157,11 +157,24 @@ what is the probability I see one each of the numbers 6, 5, 4, 3, 2 and 1 on the
 
 ```{r}
 
-num_combinations <- nrow(combinations(6,6, repeats.allowed = TRUE))
-prob_1_to_6 <- 1 / num_combinations
+num_123456 <- nrow(permutations(6,6, repeats.allowed = FALSE))
+
+prob_1_to_6 <- num_123456 / num_permutations
+
 prob_1_to_6
 
 ```
+
+```{r}
+# row must contain 6, 5,..., 1, but can occur in any order
+contains_654321 <- six_rolls %>%
+  filter(isin(., c(6, 5, 4, 3, 2, 1), ordered = FALSE))
+
+prob <- nrow(contains_654321) / nrow(six_rolls)
+prob
+
+```
+
 
 ### Question 6.
 If I draw a single card from a 52-card deck, and it is black, what is the probability that its suit is spades?
@@ -173,9 +186,22 @@ playing_cards <- cards() %>%
 
 prob_black_and_spades <- playing_cards %>%
   filter(colour == "black" & suit == "Spade") %>% 
-  summarise(prob = n() / sum(playing_cards$colour == "black"))
+  summarise(prob = n() / nrow(playing_cards))
+
+prob_black <- playing_cards %>% 
+  filter(colour == "black") %>% 
+  summarise(prob = n() / nrow(playing_cards))
+
+prob_black_and_spades <- prob_black_and_spades / prob_black
 
 prob_black_and_spades #probability is 50% that the black card is spades
+
+```
+
+
+```{r}
+
+?choose(1, 6)
 
 ```
 
