@@ -1,0 +1,448 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(tidyverse)
+library(infer)
+
+msleep
+
+```
+
+# MVP
+
+## 1.1 Hypothesis testing - practical
+
+### Question 1
+Explore the dataset and familiarise yourself with it.
+
+```{r}
+
+glimpse(msleep)
+summary(msleep)
+
+```
+
+### Question 2
+Jabberwockies sleep for around 7 hours a night, on average. Perform an appropriate statistical test to determine whether the mean sleep_total in the sampled population of animal types differs from the typical value for jabberwockies.
+
+Determine the hypotheses we want to test:
+$$
+H_0: \mu_{sleep\ jabberwockies} = \mu_{sleep\ of\ all\ animals}\\
+H_1: \mu_{sleep\ jabberwockies} \neq \mu_{sleep\ of\ all\ animals}
+$$
+
+This test will be a two-tailed test.
+
+Set alpha = 0.05
+
+Firstly, identify the point estimate (sample statistic) that we want to compare,
+i.e. mean of sleep_total, in this case it is provided to us as 7 hours.
+
+```{r}
+# calculate sample statistic, i.e. mean of total sleep for all animals in sample
+sleep_observed_stat <- msleep %>% 
+  summarise(mean_sleep_total = mean(sleep_total))
+
+
+```
+
+
+Create null distribution from the sample data using the bootstrap method and 
+number of reps = 10,000. We will be using the "infer" package workflow to do 
+this.
+```{r}
+
+null_distribution_sleep <- msleep %>% 
+  specify(response = sleep_total) %>% 
+  hypothesise(null = "point", mu = 7) %>% 
+  generate(reps = 10000, type = "bootstrap") %>% 
+  calculate(stat = "mean")
+
+# create histogram of null_distribution
+null_distribution_sleep %>% 
+  visualise() +
+  shade_p_value(obs_stat = sleep_observed_stat, direction = "both")
+
+```
+
+```{r}
+
+p_value <- null_distribution_sleep %>% 
+  get_p_value(obs_stat = sleep_observed_stat, direction = "both")
+  
+```
+
+The p-value is much less (p < 0.001) than the alpha value (0.05) therefore we will 
+_reject_ the null hypothesis. This indicates that the average total_sleep is 
+_significantly_ different from 7 hours (the average total sleep for 
+jabberwockies).
+
+### Question 3
+Perform an appropriate statistical test to determine whether omnivores sleep for significantly longer than herbivores, on average.
+
+Determine the hypotheses we want to test:
+$$
+H_0: \mu_{sleep\ omnivores} = \mu_{sleep\ herbivores}\\
+H_1: \mu_{sleep\ omnivores} > \mu_{sleep\ herbivores}
+$$
+Can also be written as:
+$$
+H_0: \mu_{sleep\ omnivores} - \mu_{sleep\ herbivores} = 0\\
+H_1: \mu_{sleep\ omnivores} - \mu_{sleep\ herbivores} > 0
+$$
+
+This test will be a one-tailed test.
+
+Set alpha = 0.05
+
+Firstly, identify the point estimate (sample statistic) that we want to compare,
+i.e. mean of omnivores total sleep minus the mean of herbivores total sleep.
+
+```{r}
+# filter sample data for only omnivore and herbivore animals
+msleep_filtered <- msleep %>% 
+  filter(vore %in% c("omni", "herbi"))
+
+# calculate sample statistic, i.e. mean of total sleep for all animals in sample
+vore_observed_stat <- msleep_filtered %>% 
+  specify(response = sleep_total, explanatory = vore) %>% 
+  calculate(stat = "diff in means", order = c("omni", "herbi"))
+
+vore_observed_stat
+
+```
+
+
+Create null distribution from the sample data using the "permute" method and 
+number of reps = 10,000.
+
+```{r}
+
+null_distribution_vore <- msleep_filtered %>% 
+  specify(response = sleep_total, explanatory = vore) %>% 
+  hypothesise(null = "independence") %>% 
+  generate(reps = 10000, type = "permute") %>% 
+  calculate(stat = "diff in means", order = c("omni", "herbi"))
+
+# create histogram of null_distribution
+null_distribution_vore %>% 
+  visualise() +
+  shade_p_value(obs_stat = vore_observed_stat, direction = "right")
+
+```
+
+```{r}
+
+p_value <- null_distribution_vore %>% 
+  get_p_value(obs_stat = vore_observed_stat, direction = "right")
+  
+p_value
+
+```
+The p-value (p = 0.1256) is greater than the alpha value (0.05) therefore we 
+_fail to reject_ the null hypothesis. This indicates that the difference between
+omnivore and herbivore average total sleep is _not statistically significant_.
+
+### Question 4
+Perform an appropriate statistical test to determine whether the proportion of domesticated animal types in the population of animal types is greater than 5%.
+
+Determine the hypotheses we want to test:
+$$
+H_0: \pi_{domesticated} = 5\%\\
+H_1: \pi_{domesticated} > 5\%
+$$
+
+This test will be a one-tailed test.
+
+Set alpha = 0.05
+
+Firstly, identify the point estimate (sample statistic) that we want to compare,
+i.e. mean of omnivores total sleep minus the mean of herbivores total sleep.
+
+```{r}
+# create column specifying if animal is domesticated, change NA to FALSE
+msleep_dom <- msleep %>%
+  mutate(is_domesticated = conservation == "domesticated",
+         is_domesticated = coalesce(is_domesticated, FALSE),
+         .after = conservation)
+
+# calculate sample statistic, i.e. proportion of domesticated animals
+dom_observed_stat <- msleep_dom %>%
+  specify(response = is_domesticated, success = "TRUE") %>% 
+  calculate(stat = "prop")
+
+dom_observed_stat
+
+```
+
+
+Create null distribution from the sample data using the "permute" method and 
+number of reps = 10,000.
+
+```{r}
+
+null_distribution_dom <- msleep_dom %>% 
+  specify(response = is_domesticated, success = "TRUE") %>% 
+  hypothesise(null = "point", p = 0.05) %>% 
+  generate(reps = 10000, type = "draw") %>% 
+  calculate(stat = "prop")
+
+# create histogram of null_distribution
+null_distribution_dom %>% 
+  visualise() +
+  shade_p_value(obs_stat = dom_observed_stat, direction = "right")
+
+```
+
+```{r}
+
+p_value <- null_distribution_dom %>% 
+  get_p_value(obs_stat = dom_observed_stat, direction = "right")
+  
+p_value
+
+```
+The p-value (p = 0.0095) is less than the alpha value (0.05) therefore we 
+_reject_ the null hypothesis. This indicates that there is evidence to support
+the alternative hypothesis that the average proportion of domesticated animals 
+is greater than 5%.
+
+## 1.2 Hypothesis testing - Defining the Hypothesis
+
+For the following three business problems write out:
+
+- What kind of test you would use
+- H0 and Ha in both mathematical notation and in words.
+- Also state the method you would use to generate the null distribution (bootstrap, permutation or draw).
+
+### Question 1
+
+Test type: One-sample type - proportions - one-tailed
+
+Hypotheses: 
+
+Null hypothesis: The number of people in the town who are aware of the coffee 
+shop is less than 40%.
+
+The alternative hypothesis: The number of people in the town who are aware of
+the coffee shop is greater than or equal to 40%
+
+$$
+H_0 : \pi_{aware} < 40\% \\
+H_1 : \pi_{aware} \geq 40\% 
+$$
+
+Null distribution method: "draw"
+
+### Question 2
+
+Test type: One sample test - difference in proportions - two-tailed
+
+Hypotheses: 
+
+Null hypothesis: The CTR of Group A and Group B are the same, i.e. the location
+of the banner on the webpage shows no change in the CTR.
+
+The alternative hypothesis: The CTR of Group A and Group B are not the same, 
+i.e. the location of the banner on the webpage does show a change in the CTR.
+
+$$
+H_0 : \pi_{CTR\ A} = \pi_{CTR\ B} \\
+H_1 : \pi_{CTR\ A} \neq \pi_{CTR\ B} 
+$$
+
+Null distribution method: "permute"
+
+### Question 3
+
+Test type: one sample test - two-tailed - mean
+
+Hypotheses: 
+
+Null Hypothesis: Car part width is equal to 145mm
+
+Alternative Hypothesis: Car part width is not equal to 145mm
+
+$$
+H_0 : \mu_{width} = 145mm \\
+H_1 : \mu_{width} \neq 145mm 
+$$
+
+Null distribution method: "bootstrap"
+
+## 1.3 Hypothesis Testing - Interpreting the results
+
+### Question 1.
+
+Coffee shop problem. Significance level: 0.05, calculated p-value: 0.07
+
+Since the p-value is greater than the significance we should 
+_reject the alternative hypothesis_ which states that the average proportion of 
+people in the town who are aware of the coffee shop is greater than or equal to 
+40% and _fail to reject_ the null hypothesis, i.e. less than 40% of people are
+aware of the coffee shop.
+
+### Question 2.
+
+Website company problem. Significance level: 0.01, p-value: 0.006
+
+Since the p-value is less than the significance level we must _reject_ the null
+hypothesis since we have evidence to support the alternative hypothesis. In this
+case we have evidence to support that the change of banner location has had a 
+statistically significant impact on the CTR.
+
+### Question 3.
+
+Manufacturing company problem. Significance level: 0.05, p-value: 0.55
+
+Since the p-value is greater than the significance level we should _fail to reject_ 
+the null hypothesis which states that the manufacturing company is achieving the
+quality assurance target of 145mm for that car part, i.e. there is no statistical
+significant deviation from the 145mm average target.
+
+# EXTENSION
+
+## 2.1 Market Basket Analysis
+
+```{r}
+library(janitor)
+
+transactions <- read_csv("data/online_retail_subset.csv") %>% 
+  clean_names()
+
+```
+
+For the first section we are interested in the purchase of two particular items:
+
+item A - ‘HEART OF WICKER SMALL’ (StockCode 22469)
+item B - ‘LARGE CAKE TOWEL PINK SPOTS’ (StockCode 21110)
+
+
+### Question 1
+
+Calculate the support for item A (this will be the support for a single item)
+
+```{r}
+# filter data for stock code and distinct invoice_no
+num_transactions_A <- transactions %>% 
+  filter(stock_code == 22469) %>% 
+  distinct(invoice_no, stock_code) %>% 
+  summarise(prob_A = n())
+
+# calculate number of total distinct invoices
+total_transactions <- transactions %>% 
+  distinct(invoice_no) %>% 
+  summarise(n())
+
+sup_A <- num_transactions_A / total_transactions
+
+sup_A
+
+```
+
+### Question 2
+
+Calculate the support and confidence for rule (A→B).
+
+```{r}
+# find the number of invoices that have both products A and B
+num_A_and_B <- transactions %>% 
+  filter(stock_code %in% c(22469, 21110)) %>% 
+  group_by(invoice_no) %>% 
+  summarise(num_prod = n_distinct(stock_code)) %>% 
+  filter(num_prod == 2) %>% 
+  summarise(num_A_and_B = n())
+
+# calculate sup(A -> B)
+sup_A_and_B <- num_A_and_B / total_transactions
+  
+sup_A_and_B
+
+  # filter(invoice_no %in% c(536520, 536592, 537144, 537773, 538071, 538349, 538524),
+  #        stock_code %in% c(22469, 21110))
+
+```
+
+```{r}
+# conf(A -> B) = sup(A -> B) / sup(A)
+conf_A_and_B <- sup_A_and_B / sup_A
+conf_A_and_B
+
+```
+
+### Question 3.
+Calculate the lift for (A → B)
+
+```{r}
+
+num_transactions_B <- transactions %>% 
+  filter(stock_code == 21110 ) %>% 
+  distinct(invoice_no, stock_code) %>% 
+  summarise(prob_B = n())
+
+sup_B <- num_transactions_B / total_transactions
+
+sup_B
+
+```
+
+```{r}
+
+lift_A_and_B <- sup_A_and_B / (sup_A * sup_B)
+
+lift_A_and_B
+
+```
+
+# Apriori Algorithm
+
+```{r}
+
+library(arules)
+library(arulesViz)
+transactions_reformat <- transactions %>%
+  select(invoice_no, description) %>%
+  na.omit()
+
+write_csv(transactions_reformat, "transactions_reformat.csv")
+
+apriori_format <- read.transactions("transactions_reformat.csv", format = "single", sep = ",", header = TRUE, cols = c("invoice_no", "description"))
+
+```
+
+```{r}
+inspect(head(apriori_format))
+```
+
+```{r}
+transactions %>% 
+  distinct(description)
+
+```
+
+
+```{r}
+# get the rules
+
+rules <- apriori(apriori_format, parameter = list(supp = 0.02, conf = 0.6, 
+                                                  minlen = 3),
+                 control = list(verbose = F))
+
+# rules <- sort(rules, by="confidence", decreasing=TRUE)
+
+inspect(rules[])
+
+```
+
+```{r}
+
+library(arulesViz)
+
+plot(rules, method="graph", engine = "interactive")
+
+```
+
