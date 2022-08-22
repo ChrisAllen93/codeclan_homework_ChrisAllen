@@ -45,6 +45,7 @@ i.e. mean of sleep_total, in this case it is provided to us as 7 hours.
 ```{r}
 # calculate sample statistic, i.e. mean of total sleep for all animals in sample
 sleep_observed_stat <- msleep %>% 
+  
   summarise(mean_sleep_total = mean(sleep_total))
 
 
@@ -240,7 +241,7 @@ Null distribution method: "draw"
 
 ### Question 2
 
-Test type: One sample test - difference in proportions - two-tailed
+Test type: Two sample test - difference in proportions
 
 Hypotheses: 
 
@@ -252,7 +253,7 @@ i.e. the location of the banner on the webpage does show a change in the CTR.
 
 $$
 H_0 : \pi_{CTR\ A} = \pi_{CTR\ B} \\
-H_1 : \pi_{CTR\ A} \neq \pi_{CTR\ B} 
+H_1 : \pi_{CTR\ A} < \pi_{CTR\ B} 
 $$
 
 Null distribution method: "permute"
