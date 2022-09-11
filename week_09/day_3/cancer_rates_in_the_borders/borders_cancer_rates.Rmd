@@ -1,0 +1,280 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(tidyverse)
+library(janitor)
+
+```
+
+```{r}
+
+national_incidence <- read_csv("raw_data/incidence_at_scotland_level.csv") %>% 
+  clean_names()
+
+glimpse(national_incidence)
+
+```
+
+```{r}
+
+hb_names <- read_csv("raw_data/geography_codes_and_labels_hb2014_01042019.csv") %>% 
+  clean_names() %>% 
+  select(hb, hb_name)
+
+hb_incidence <- read_csv("raw_data/incidence_by_health_board.csv") %>% 
+  clean_names() %>% 
+  left_join(hb_names, "hb") %>% 
+  filter(hb_name == "NHS Borders") %>% 
+  select(-ends_with("_qf"))
+
+
+
+hb_incidence
+hb_names
+
+hb_incidence <- hb_incidence %>% 
+  left_join(hb_names, "hb") %>% 
+  filter(hb_name == "NHS Borders") %>% 
+  select(-ends_with("_qf"))
+
+```
+
+
+# Total annual cancer incidences in the borders
+
+```{r}
+
+hb_incidence %>%
+  filter(cancer_site == "All cancer types" & sex == "All") %>%
+  ggplot(aes(x = year, y = incidences_all_ages)) +
+  geom_line() +
+  theme_classic() +
+  scale_y_continuous(limits = c(0,NA)) +
+  labs(x = "Year",
+       y = "Total Incidences",
+       title = "Total number of cancer incidences in the Scottish Borders",
+       subtitle = "1996 to 2020")
+
+```
+The year on year incidence rates of cancer has trended upwards since 1996 reaching
+a peak in 2017, since 2017, however, there has been a significant downwards trend
+with the incidences in 2020 being the lowest since 2009, albeit this is presumably due 
+to the covid pandemic where people were advised not to go to hospitals except in 
+emergencies and many cancers may have gone un-diagnosed during this time period.
+
+
+
+# All cancer rates compared with europe and world
+
+```{r}
+
+hb_incidence %>%
+  filter(cancer_site == "All cancer types" & sex == "All") %>%
+  select(id:year, crude_rate, easr, wasr) %>% 
+  pivot_longer(c(crude_rate, easr, wasr), names_to = "type", values_to = "incidence_rate") %>% 
+  ggplot(aes(x = year, y = incidence_rate, group = type, col = type)) +
+  geom_line()
+
+
+```
+
+```{r}
+
+hb_incidence %>%
+  filter(cancer_site == "All cancer types" & sex == "All") %>% 
+  filter(sir_lower95pc_confidence_interval > 100 |
+           sir_upper95pc_confidence_interval < 100)
+
+
+```
+
+```{r}
+
+X5yr_summary_incidence_by_cancer_network_region <- read_csv("raw_data/5yr _summary_incidence_by_cancer_network_region.csv") %>% 
+  clean_names()
+
+X5yr_summary_incidence_by_cancer_network_region %>% 
+  distinct(region)
+
+```
+
+```{r}
+
+hb_5yr <- read_csv("raw_data/5yr_summary_incidence_by_health_board.csv") %>% 
+  clean_names() %>% 
+  left_join(hb_names, "hb") %>% 
+  select(id, hb_name, everything(), -hb, -ends_with("_qf")) %>% 
+  filter(hb_name == "NHS Borders")
+
+top_5_cancers_sex <- hb_5yr %>% 
+  filter(cancer_site != "All cancer types", sex == "All") %>% 
+  slice_max(incidences_all_ages, n = 5) %>% 
+  mutate(cancer_site = factor(cancer_site))
+
+top_5_cancers_list <- top_5_cancers_sex %>% 
+  pull(cancer_site)
+
+top_5_cancers_sex %>% 
+  ggplot(aes(x = reorder(cancer_site, sort(incidences_all_ages)),
+             y = incidences_all_ages, label = scales::comma(incidences_all_ages))) +
+  geom_col() +
+  geom_text(position = position_nudge(y = 75)) +
+  theme_classic() +
+  scale_y_continuous(limits = c(0, NA),
+                     expand = expansion(mult = c(0, 0.1)),
+                     labels = scales::comma) +
+  labs(x = "Cancer Type",
+       y = "Incidences",
+       title = "Top 5 most common cancers in the Scottish Borders",
+       subtitle = "2016 - 2020") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8))
+
+```
+
+```{r}
+
+hb_5yr %>% 
+  arrange(desc(sir_lower95pc_confidence_interval))
+
+```
+age groups of total cancer incidences
+```{r}
+top_5_list <- top_5_cancers_sex %>% 
+  pull(cancer_site)
+
+
+hb_5yr_ages <- hb_5yr %>% 
+  filter(sex != "All") %>% 
+  mutate(sex = factor(sex, c("Male", "Female"))) %>% 
+  select(id:incidences_age85and_over) %>% 
+  pivot_longer(incidences_age_under5:incidences_age85and_over,
+               names_to = "age_group", values_to = "incidences") %>% 
+  mutate(age_group = str_remove(age_group, "incidences_age|"),
+         age_group = str_remove(age_group, "_"),
+         age_group = str_replace(age_group, "to", " - "),
+         age_group = str_replace(age_group, "under5", "Under 5"),
+         age_group = str_replace(age_group, "85andover", "85+")) 
+
+age_group_list <- hb_5yr_ages %>% 
+  head(18) %>% 
+  pull(age_group)
+
+hb_5yr_ages %>% 
+  mutate(age_group = factor(age_group, levels = age_group_list)) %>% 
+  ggplot(aes(x = age_group, y = incidences)) +
+  geom_col() +
+  scale_y_continuous(expand = c(0, 0), labels = scales::comma) +
+  theme_classic()+
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Age Group",
+       y = "Total Incidences",
+       title = "Total number of cancer incidences in the Scottish Borders",
+       subtitle = "1996 to 2020")
+```
+
+
+
+```{r}
+hb_5yr_incidence_rates <- hb_5yr %>% 
+  filter(sex != "All") %>% 
+  mutate(sex = factor(sex, c("Male", "Female"))) %>% 
+  pivot_longer(incidence_rate_age_under5:incidence_rate_age85and_over,
+               names_to = "age_group", values_to = "incidences") %>% 
+  select(id:sex, age_group, incidences) %>% 
+  mutate(age_group = str_remove(age_group, "incidence_rate_age|"),
+         age_group = str_remove(age_group, "_"),
+         age_group = str_replace(age_group, "to", " - "),
+         age_group = str_replace(age_group, "under5", "Under 5"),
+         age_group = str_replace(age_group, "85andover", "85+")) 
+
+hb_5yr_incidence_rates %>% 
+  mutate(age_group = factor(age_group, levels = age_group_list)) %>% 
+  ggplot(aes(x = age_group, y = incidences)) +
+  geom_col() +
+  scale_y_continuous(expand = c(0, 0), labels = scales::comma) +
+  theme_classic()+
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Age Group",
+       y = "Incidence Rate (per x,000)",
+       title = "Cancer incidence rates per age group in the Scottish Borders",
+       subtitle = "1996 to 2020")
+
+```
+
+sex of top 5 cancers 
+```{r}
+
+hb_5yr %>% 
+  filter(cancer_site %in% top_5_list, sex != "All") %>% 
+  select(id:sex, incidences_all_ages) %>% 
+  mutate(sex = factor(sex, c("Male", "Female")),
+         cancer_site = factor(cancer_site, levels = rev(top_5_cancers_list))) %>% 
+  ggplot(aes(x = cancer_site, y = incidences_all_ages, fill = sex)) +
+  geom_col(position = "fill", col = "black") +
+  scale_y_continuous(labels = scales::percent, expand = c(0, 0)) +
+  labs(y = "Proportion (%)",
+       title = "Proportion of top 5 cancer types by gender in Scottish Borders",
+       subtitle = "Incidences recorded between 2016 and 2020",
+       fill = "Gender") +
+  theme_classic() +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_text(face = "bold")) +
+  coord_flip()
+
+```
+
+
+# Final graph - which cancers to pay close attention too in future
+i.e. cancers which are higher than the national average and affect many people are priority
+
+```{r}
+library(plotly)
+
+```
+
+
+```{r}
+
+p <- hb_5yr %>% 
+  select(cancer_site, sex, incidences_all_ages, 
+         standardised_incidence_ratio:sir_upper95pc_confidence_interval) %>% 
+  filter(sex == "All", incidences_all_ages > 0) %>% 
+  mutate(standardised_incidence_ratio = round(standardised_incidence_ratio, 1)) %>% 
+  rename(SIR = standardised_incidence_ratio,
+         Incidences = incidences_all_ages,
+         Type = cancer_site) %>% 
+  ggplot(aes(label = Type, y = Incidences, x = SIR)) +
+  geom_point() +
+  xlim(0,200) +
+  ylim(0, 10000) +
+  scale_y_continuous(trans = "log10", name = "log(incidences)") +
+  theme_classic() +
+  geom_vline(aes(xintercept = 100)) +
+  geom_hline(aes(yintercept = 100)) +
+  theme(panel.background = element_rect(colour = "black")) +
+  labs(x = "SIR",
+       y = "Incidences",
+       title = "Cancer type prioritisation matrix",
+       subtitle = "NHS Borders data: 2016 - 2020")
+
+
+
+ggplotly(p,
+         tooltip = c("label", "y", "x")) %>%
+  config(displayModeBar = F)
+
+```
+
+```{r}
+hb_5yr %>% 
+  select(cancer_site, sex, incidences_all_ages, crude_rate,
+         standardised_incidence_ratio) %>% 
+  arrange(standardised_incidence_ratio)
+```
+

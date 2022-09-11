@@ -1,0 +1,265 @@
+---
+title: "Scottish Borders - Cancer Rates - Report"
+output:
+  html_document:
+    code_folding: hide
+---
+
+```{r setup, include=FALSE} 
+knitr::opts_chunk$set(warning = FALSE, message = FALSE) 
+```
+
+```{r}
+
+library(tidyverse)
+library(janitor)
+library(plotly)
+library(ggrepel)
+
+```
+
+```{r}
+
+hb_names <- read_csv("raw_data/geography_codes_and_labels_hb2014_01042019.csv") %>% 
+  clean_names() %>% 
+  select(hb, hb_name)
+
+hb_incidence <- read_csv("raw_data/incidence_by_health_board.csv") %>% 
+  clean_names() %>% 
+  left_join(hb_names, "hb") %>% 
+  filter(hb_name == "NHS Borders") %>% 
+  select(-ends_with("_qf"))
+
+```
+# Aims of analysis
+
+* Understanding the prevalence of cancer in the Scottish Borders 
+* Which types of cancers are most prevalent? 
+* Which demographics are affected most by cancer? 
+* What cancer types should most attention be paid to? 
+
+
+# Understanding the prevalence of cancer in the Scottish Borders
+
+The following plot shows the trend in all cancer types in the Scottish Borders 
+from 1996 to 2020. The plot shows that there is some variance in the total number
+of cancer incidences year on year however there is an overall upwards trend signified 
+by the blue-line (line of best-fit). However, there has been a significant drop
+in incidences in 2020, this lis likely due to the covid pandemic where people were
+advised not to go to hospitals except in emergencies and many cancers may have
+gone un-diagnosed during this time period, resulting in a loss of recorded data
+rather than a reduction in cancer incidences.
+
+```{r}
+
+hb_incidence %>%
+  filter(cancer_site == "All cancer types" & sex == "All") %>%
+  ggplot(aes(x = year, y = incidences_all_ages)) +
+  geom_line() +
+  geom_smooth(se = FALSE) +
+  theme_classic() +
+  scale_y_continuous(limits = c(0,NA)) +
+  labs(x = "Year",
+       y = "Total Incidences",
+       title = "Total number of cancer incidences in the Scottish Borders",
+       subtitle = "1996 to 2020")
+
+```
+
+To understand the overall trend in cancer incidences it is important to understand
+what cancer types are most commonly observed in the Borders, this can at least
+focus resources to target reduction in the cancers which affect the majority of cancer patients.
+
+# Which types of cancers are most prevalent?
+
+Between the years of 2016 and 2020, the top 5 by number of incidences are shown 
+in the following plot.
+
+```{r}
+
+hb_5yr <- read_csv("raw_data/5yr_summary_incidence_by_health_board.csv") %>% 
+  clean_names() %>% 
+  left_join(hb_names, "hb") %>% 
+  select(id, hb_name, everything(), -hb, -ends_with("_qf")) %>% 
+  filter(hb_name == "NHS Borders")
+
+top_5_cancers_sex <- hb_5yr %>% 
+  filter(cancer_site != "All cancer types", sex == "All") %>% 
+  slice_max(incidences_all_ages, n = 5) %>% 
+  mutate(cancer_site = factor(cancer_site))
+
+top_5_cancers_list <- top_5_cancers_sex %>% 
+  pull(cancer_site)
+
+top_5_cancers_sex %>% 
+  ggplot(aes(x = reorder(cancer_site, sort(incidences_all_ages)),
+             y = incidences_all_ages,
+             label = scales::comma(incidences_all_ages),
+             fill = cancer_site)) +
+  geom_col(col = "black") +
+  geom_text(position = position_nudge(y = 75)) +
+  theme_classic() +
+  scale_y_continuous(limits = c(0, NA),
+                     expand = expansion(mult = c(0, 0.1)),
+                     labels = scales::comma) +
+  labs(x = "Cancer Type",
+       y = "Incidences",
+       title = "Top 5 most common cancers in the Scottish Borders",
+       subtitle = "2016 - 2020") +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1, size = 8),
+        legend.position = "none")
+
+```
+
+Non-melanoma skin cancer is the cancer type most seen in the Borders, followed 
+by basal cell carcinoma of the skin. These are both cancers relating to the skin
+(making up 2,464 new cancer cases (61% of cancer cases in the Borders)). Therefore,
+there are opportunities for preventative public health campaigns promoting lifestyles
+which reduce risk of skin cancer. Furthermore, the third highest incidence of cancer is
+related to the trachea, bronchius and lungs and therefore more focus could be placed
+on promoting non-smoking campaigns or help for those wanting to quit smoking.
+
+# Which demographics are affected most by cancer?
+
+An analysis of the prevalence of each of the top 5 cancer types, identified above, 
+for each gender was also looked at to understand any differences between the genders.
+
+```{r}
+
+top_5_list <- top_5_cancers_sex %>% 
+  pull(cancer_site)
+
+hb_5yr %>% 
+  filter(cancer_site %in% top_5_list, sex != "All") %>% 
+  select(id:sex, incidences_all_ages) %>% 
+  mutate(sex = factor(sex, c("Male", "Female")),
+         cancer_site = factor(cancer_site, levels = rev(top_5_cancers_list))) %>% 
+  ggplot(aes(x = cancer_site, y = incidences_all_ages, fill = sex)) +
+  geom_col(position = "fill", col = "black") +
+  scale_y_continuous(labels = scales::percent, expand = c(0, 0)) +
+  labs(y = "Proportion (%)",
+       title = "Proportion of top 5 cancer types by gender in Scottish Borders",
+       subtitle = "Incidences recorded between 2016 and 2020",
+       fill = "Gender") +
+  theme_classic() +
+  theme(axis.title.y = element_blank(),
+        axis.text.y = element_text(face = "bold")) +
+  coord_flip()
+
+```
+
+The plot above shows that males represent more than 50% of incidences of
+non-melanoma skin cancer, basal cell carcinoma of the skin and colorectal cancer.
+The gender split is about 50:50 for trachea, bronchus and lung cancer and breast
+cancer is significantly dominated by the female demographic.
+
+The non-melanoma skin cancer incidences is disproportionately represented by males,
+this may be due to the higher rates of men working outside (i.e. higher risk of
+sun burn) and therefore from this insight there could be targeted awareness 
+campaigns towards construction companies etc.
+
+Nextly, the impact of age on cancer incidence was investigated, this time the 
+incidence rate was used, rather than incidences (number). The plot below shows
+that cancer affects elderly people the most where there is a significant step up
+in incidence rate for persons over the age of 65.
+
+```{r}
+hb_5yr_incidence_rates <- hb_5yr %>% 
+  filter(sex != "All") %>% 
+  mutate(sex = factor(sex, c("Male", "Female"))) %>% 
+  pivot_longer(incidence_rate_age_under5:incidence_rate_age85and_over,
+               names_to = "age_group", values_to = "incidences") %>% 
+  select(id:sex, age_group, incidences) %>% 
+  mutate(age_group = str_remove(age_group, "incidence_rate_age|"),
+         age_group = str_remove(age_group, "_"),
+         age_group = str_replace(age_group, "to", " - "),
+         age_group = str_replace(age_group, "under5", "Under 5"),
+         age_group = str_replace(age_group, "85andover", "85+")) 
+
+
+age_group_list <- hb_5yr %>% 
+  filter(sex != "All") %>% 
+  mutate(sex = factor(sex, c("Male", "Female"))) %>% 
+  select(id:incidences_age85and_over) %>% 
+  pivot_longer(incidences_age_under5:incidences_age85and_over,
+               names_to = "age_group", values_to = "incidences") %>% 
+  mutate(age_group = str_remove(age_group, "incidences_age|"),
+         age_group = str_remove(age_group, "_"),
+         age_group = str_replace(age_group, "to", " - "),
+         age_group = str_replace(age_group, "under5", "Under 5"),
+         age_group = str_replace(age_group, "85andover", "85+")) %>% 
+  head(18) %>% 
+  pull(age_group)
+
+hb_5yr_incidence_rates %>% 
+  mutate(age_group = factor(age_group, levels = age_group_list)) %>% 
+  ggplot(aes(x = age_group, y = incidences)) +
+  geom_col() +
+  scale_y_continuous(expand = c(0, 0), labels = scales::comma) +
+  theme_classic()+
+  theme(legend.position = "none",
+        axis.text.x = element_text(angle = 45, hjust = 1)) +
+  labs(x = "Age Group",
+       y = "Incidence Rate (per x,000)",
+       title = "Cancer incidence rates per age group in the Scottish Borders",
+       subtitle = "1996 to 2020")
+
+```
+
+The plot above ties in with what we might expect, as we get older we are at higher 
+risk of developing cancer.
+
+# What cancer types should most attention be paid to?
+
+Further analysis looked at how the Borders compared with the national incidence rates for each type of cancer. For this assessment the SIR (standardised incidence rate) was plotted against the number of incidences to create a graph with 4 quadrants which could be used to identify cancers which are significantly above or below the national rate.
+
+```{r}
+
+hb_5yr %>% 
+  select(cancer_site, sex, incidences_all_ages, 
+         standardised_incidence_ratio:sir_upper95pc_confidence_interval) %>% 
+  filter(sex == "All", incidences_all_ages > 0, cancer_site != "All cancer types") %>% 
+  mutate(standardised_incidence_ratio = round(standardised_incidence_ratio, 1),
+         significant = if_else(sir_lower95pc_confidence_interval > 100 |
+                                 sir_upper95pc_confidence_interval < 100,
+                               TRUE,
+                               FALSE),
+         significant = factor(significant, levels = c("TRUE", "FALSE")),
+         clabel = if_else(significant == TRUE, cancer_site, "")) %>% 
+  rename(SIR = standardised_incidence_ratio,
+         Incidences = incidences_all_ages,
+         Type = cancer_site) %>% 
+  ggplot(aes(y = Incidences, x = SIR)) +
+  geom_point(aes(colour = significant)) +
+  geom_label_repel(aes(label = clabel, colour = significant), size = 3,
+                   show.legend = FALSE) +
+  xlim(0,200) +
+  ylim(0, 10000) +
+  scale_y_continuous(trans = "log10") +
+  theme_classic() +
+  geom_vline(aes(xintercept = 100)) +
+  geom_hline(aes(yintercept = 100)) +
+  theme(panel.background = element_rect(colour = "black")) +
+  labs(x = "SIR",
+       y = "Incidences",
+       title = "Cancer type prioritisation matrix",
+       subtitle = "NHS Borders: 2016 - 2020", 
+       colour = "Statistically Significant?")
+
+```
+
+The plot above shows how the standardised incidence rate (the ratio of the actual incidences in the region and the overall rate for the country multiplied by 100) changes across each cancer type with the number of incidences used as the scale on the y-axis. The purpose of this graph is to help identify which cancer types are either statistically significantly lower or higher between the Borders values and the national values to highlights any potential areas of improvement. The graph is interpreted as follows, SIR values greater than 100 indicate that there are higher rates of cancer in the borders compared with national rates and conversely, if this is lower than 100 then there are lower rates of cancer compared with the national rates. The graph is split into a further two sections indicating the number of incidences (i.e. the frequency of people with the cancer). Each quadrant takes into account whether the SIR is higher or lower than national levels or if the incidence frequency is higher or lower than 100.
+
+The top-right quadrant indicates the cancer types which affect a lot of people and have higher rates than the national average (this is the quadrant which could indicate which cancer types to focus any public healthcare spend). The bottom-right quadrant shows higher rates but lower incidences, bottom-left shows both low rates and low frequency and top-left shows higher frequency and lower rates.
+
+# Summary
+
+* Skin and lung cancers make up the majority of cancer types 
+* Males make up a large proportion of skin cancers
+* Significant rise in incidence rates in people aged 65 and above
+* The Borders only has one type of cancer which is significantly higher than the national level, and has many cancer types which are significantly lower.
+
+# Conclusions 
+
+* With skin cancer being so high (and specifically for males), public health campaigns targeted at reducing risks from sun exposure could improve rates of cancer (perhaps construction / outdoor industries would yield best results)
+* Quit smoking campaigns could reduce the overall number of people developing lung-based cancers
