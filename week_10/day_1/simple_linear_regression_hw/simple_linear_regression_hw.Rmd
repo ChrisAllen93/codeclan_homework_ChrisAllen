@@ -1,0 +1,83 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(tidyverse)
+
+```
+
+Load the data into a dataframe project
+
+```{r}
+
+project <- read_csv("data/project_management.csv")
+
+project
+
+```
+Plot the data, taking estimated_length as the independent variable and actual_length as the dependent variable.
+
+```{r}
+
+project %>% 
+  ggplot(aes(x = estimated_length, y = actual_length)) +
+  geom_point()
+
+```
+Calculate the correlation coefficient of estimated_length and actual_length and interpret the value you obtain.
+
+```{r}
+
+project %>% 
+  summarise(correl = cor(estimated_length, actual_length))
+
+```
+
+The correlation coefficient is 0.8, this would suggest that there is a strong positive correlation between the estimated_length and the actual_length variables.
+
+
+
+Perform a simple linear regression using actual_length as the dependent variable, and estimated_length as the independent variable. Save the model object to a variable.
+
+```{r}
+
+model <- lm(actual_length ~ estimated_length,
+            project)
+
+model
+
+```
+
+Interpret the regression coefficient of estimated_length (i.e. slope, gradient) you obtain from the model. How do you interpret the r2 value reported by the model?
+
+```{r}
+
+summary(model)
+
+```
+
+The intercept is 1.4 which indicates that the line of best fit passes through the y-axis at 1.4 days. However, the intercapt has a p-value of 0.484 which suggests that it is not significant.
+
+The gradient of the line of best fit is positive which indicates a positive increase in the actual_length when the estimated_length increases (this corresponds with the correlation coefficient calculated earlier). This value has a p-value of close to zero therefore this value is statistically significant.
+
+The $r^2$ value is 0.6475 which indicates that 64.75% of the change in the actual_length can be explained by a change in the estimated_length. Higher $r^2$ values means a bit fit, therefore the value obtained here could be considered a moderate/good fit.
+
+
+
+
+Is the relationship statistically significant? Remember, to assess this you need to check the p-value of the regression coefficient (or slope/gradient). But you should first check the regression diagnostic plots to see if the p-value will be reliable (don’t worry about any outlier points you see in the diagnostic plots, we’ll return to them in the extension).
+
+```{r}
+
+library(ggfortify)
+
+autoplot(model)
+
+```
+
+The intercept is not statistically significant (p-value of 0.484), therefore the null hypothesis would be accepted (i.e. the coefficient was equal to 0). However, the gradient is statistically significant (p-value of close to zero) which indicates that the coefficient is not equal to zero, in this case the gradient is positive.
+
+From the regression diagnostic plots, we can see that there appears to be reasonable randomness in the residuals at increasing fitted values (plot 1), the resiudals are independent. The distribution of residuals follows a normal distribution (plot 2), the residuals follow normality. The variation of the residuals in plot 3 show that as fitted values increase, the blue smoothed line stays around a constant value (except to the right where an outlier skews the trend), this proves constancy of the variation of the residuals.
