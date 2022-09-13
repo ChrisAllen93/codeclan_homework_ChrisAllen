@@ -1,0 +1,173 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(tidyverse)
+
+```
+# Question 1
+```{r}
+
+housing_prices <- read_csv("data/housing_prices.csv")
+
+housing_prices
+
+```
+
+# Question 2
+
+```{r, warning=FALSE}
+
+library(GGally)
+
+ggpairs(housing_prices)
+
+```
+
+# Question 3 
+
+```{r}
+
+housing_prices <- housing_prices %>% 
+  select(-total_bedrooms)
+
+```
+# Question 4
+
+## i
+
+Done above
+
+## ii
+```{r}
+
+housing_prices %>% 
+  summarise(cor = cor(median_income, median_house_value))
+
+# strong correlation between median_income and median_house_value = 0.642
+
+housing_prices %>% 
+  ggplot(aes(x= median_income, y = median_house_value)) +
+  geom_point()
+
+```
+
+# Question 5
+
+```{r}
+
+housing_prices %>% 
+  distinct(ocean_proximity)
+
+```
+
+5 distinct ocean_proximity categories therefore we would expect n - 1 dummy variables, i.e. 4 dummy variables for ocean_proximity from this dataset.
+
+# Question 6
+
+```{r}
+
+model <- lm(median_house_value ~ median_income,
+            housing_prices)
+
+```
+
+```{r}
+library(ggfortify)
+
+autoplot(model)
+
+```
+
+Plot one shows good randomness between residuals and fitted values
+Plot two shows that the residuals don't quite fit a perfect normal distribution, i.e. deviance from the straight line at higher theoretical quantiles
+Plot three shows consistent standardised residuals across the dataset - perfect!
+
+The plots show that the line of best fit from the model is acceptable.
+
+# Question 7
+
+Add proximity to the beach (categoric variable to the analysis)
+
+```{r}
+
+library(fastDummies)
+
+housing_prices %>% 
+  dummy_cols(select_columns = "ocean_proximity",
+             remove_first_dummy = TRUE,
+             remove_selected_columns = TRUE)
+
+```
+
+```{r}
+
+model_income_rooms <- lm(median_house_value ~ median_income + total_rooms,
+                       housing_prices)
+
+autoplot(model_income_rooms)
+
+summary(model_income_rooms)
+
+```
+
+```{r}
+
+
+model_income_oceanprox <- lm(median_house_value ~ median_income + ocean_proximity,
+                housing_prices)
+
+summary(model_income_oceanprox)
+
+```
+
+```{r}
+
+autoplot(model_income_oceanprox)
+
+```
+
+Residual values look ok however the residuals still don't match perfectly with a normal distribution.
+
+From the summary table there are positive increases in the median house price when the property is located near a bay or ocean with a much larger increase if the property is located on an island, conversely inland properties tend to have lower median house values. 
+
+The change in median_house_values can be explained by around 55% from the median_income and ocean_proximity values.
+
+# Question 8
+
+
+```{r}
+
+model_log_inc <- lm(median_house_value ~ median_income + ocean_proximity +
+                      log(median_income):ocean_proximity,
+                    housing_prices)
+
+summary(model_log_inc)
+
+```
+
+I don't believe that the interaction between log(median_income) and ocean_proximity is valid since it is hard to believe that these two variables would interact. This is further emphasised by the negligible increase in the R-squared value from 0.5529 (without interaction) and 0.5578 (with interaction).
+
+The issue may lie with the use of the log being applied to the income value, the income values already appear to be in some transformed state(?).
+
+# Question 8
+
+```{r}
+
+autoplot(model_log_inc)
+
+```
+
+```{r}
+
+library(mosaic)
+
+plotModel(model_log_inc)
+
+```
+
+Only the Island data points adopt a logarithmic curve-like shape when the interactions are included in the model, the remaining are (close to) parallel lines.
+
