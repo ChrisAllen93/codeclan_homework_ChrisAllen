@@ -19,11 +19,12 @@ housing_prices
 
 # Question 2
 
-```{r, warning=FALSE}
+```{r}
 
 library(GGally)
 
-ggpairs(housing_prices)
+#ggpairs(housing_prices)
+ggpairs(housing_prices[,c("total_rooms", "total_bedrooms")])
 
 ```
 
@@ -40,6 +41,12 @@ housing_prices <- housing_prices %>%
 ## i
 
 Done above
+```{r}
+
+housing_prices %>% 
+  ggpairs()
+
+```
 
 ## ii
 ```{r}
@@ -141,7 +148,7 @@ The change in median_house_values can be explained by around 55% from the median
 
 ```{r}
 
-model_log_inc <- lm(median_house_value ~ median_income + ocean_proximity +
+model_log_inc <- lm(log(median_house_value) ~ log(median_income) + ocean_proximity +
                       log(median_income):ocean_proximity,
                     housing_prices)
 
@@ -161,13 +168,161 @@ autoplot(model_log_inc)
 
 ```
 
+
 ```{r}
 
-library(mosaic)
+housing_prices %>%
+  ggplot(aes(x = log(median_income),
+             y = log(median_house_value), 
+             colour = ocean_proximity)) +
+  geom_point(alpha = 0.1) +
+  geom_smooth(method = "lm", se = FALSE) +
+  facet_wrap(~ ocean_proximity)
 
-plotModel(model_log_inc)
 
 ```
 
-Only the Island data points adopt a logarithmic curve-like shape when the interactions are included in the model, the remaining are (close to) parallel lines.
+The slope of the lines of best fit are very similar across each ocean_proximity category, therefore it can be assumed that there is little change in the predicted value based on the input of the ocean_proximity value.
+
+# Additional insights
+
+```{r}
+
+housing_features <- housing_prices %>% 
+  mutate(rooms_per_house = total_rooms / households,
+         bedrooms_per_house = total_bedrooms / households,
+         rooms_per_person = total_rooms / population,
+         bedrooms_per_person = total_bedrooms / population,
+         houses_per_person = households / population,
+         prop_bedrooms = total_bedrooms / total_rooms)
+
+library(skimr)
+
+housing_features %>%
+  select(rooms_per_house:prop_bedrooms) %>% 
+  skim()
+
+```
+
+Set warning = FALSE and message = FALSE to view ggpairs() plots without error messages.
+```{r, warning = FALSE, message = FALSE}
+
+housing_features %>% 
+  select(-c(longitude, latitude, rooms_per_house:prop_bedrooms)) %>% 
+  select(median_house_value, everything()) %>% 
+  ggpairs(progress = FALSE) # progress = FALSE also suppresses progress bar
+  
+
+ggsave("ggpairs1.png",
+       width = 12,
+       height = 11)
+
+```
+
+
+
+```{r, warning = FALSE, message = FALSE}
+
+housing_features %>% 
+  select(median_house_value, longitude, latitude, ocean_proximity) %>% 
+  ggpairs(progress = FALSE) # progress = FALSE also suppresses progress bar
+  
+
+ggsave("ggpairs2.png",
+       width = 12,
+       height = 10)
+
+```
+
+
+```{r, warning = FALSE, message = FALSE}
+
+housing_features %>% 
+  select(median_house_value, rooms_per_house:prop_bedrooms) %>% 
+  ggpairs(progress = FALSE) # progress = FALSE also suppresses progress bar
+  
+
+ggsave("ggpairs3.png",
+       width = 12,
+       height = 10)
+
+```
+
+```{r}
+
+housing_features <- housing_features %>% 
+  drop_na()
+
+```
+
+Observations:
+* median income - very promising - high correlation
+* ocean proximity - want to explore the levels, 2nd level seems different to the rest, can we group?
+* houses per person, proportion bedrooms, rooms per house -> potentially useful
+
+
+```{r}
+
+housing_features %>% 
+  count(ocean_proximity)
+
+```
+
+Can we group this?! YES!
+2nd level, which had lower distribution of median house value is different - all others are near water.
+
+```{r}
+
+housing_features <- housing_features %>% 
+  mutate(ocean_prox_group = if_else(ocean_proximity == "INLAND",
+                                    "Inland",
+                                    "Near Water"))
+
+housing_features %>% 
+  count(ocean_prox_group)
+
+
+```
+
+```{r}
+
+housing_features %>% 
+  select(median_house_value,
+         ocean_prox_group,
+         rooms_per_house:prop_bedrooms) %>% 
+  ggpairs(aes(fill = ocean_prox_group), progress = FALSE)
+
+ggsave("ggpair4.png",
+       width = 12,
+       height = 10)
+
+
+```
+
+```{r}
+
+model <- lm(median_house_value ~ median_income,
+            housing_features)
+
+library(modelr)
+
+housing_features %>% 
+  add_residuals(model) %>% 
+  ggplot(aes(resid)) +
+  geom_histogram()
+
+```
+
+Evidence of positive skew
+
+How good is the model?
+Well, it's a simple linear model using a variable with r = 0.6
+  so, we expect r squared of around 0.4 (0.6^2)
+
+
+
+
+
+
+
 

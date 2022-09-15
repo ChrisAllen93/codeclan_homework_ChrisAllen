@@ -1,0 +1,285 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(tidyverse)
+library(ggfortify)
+library(GGally)
+library(modelr)
+
+```
+
+```{r}
+
+house <- read_csv("data/kc_house_data.csv")
+
+```
+# Question 1
+
+```{r}
+
+house_trim <- house %>% 
+  select(price, everything(),
+         -c(id, date, sqft_living15, sqft_lot15, zipcode)) %>% 
+  mutate(waterfront = as.logical(waterfront),
+         renovated = if_else(yr_renovated == 0, FALSE, TRUE)) %>% 
+  select(-yr_renovated) %>% 
+  mutate(grade = case_when(
+    grade <= 3 ~ "poor",
+    grade <= 7 ~ "average",
+    grade <= 13 ~ "great"
+  ))
+
+house_trim
+
+```
+# Question 2
+
+```{r}
+
+alias(price ~ ., house_trim)
+
+```
+
+```{r}
+
+house_trim <- house_trim %>% 
+  select(-sqft_basement)
+
+```
+
+# Question 3
+
+```{r}
+
+house_trim %>% 
+  ggpairs(progress = FALSE)
+
+ggsave("ggpairs1.png",
+       height = 20,
+       width = 20)
+
+```
+
+```{r}
+
+houses_tidy_numeric <- house_trim %>%
+  select_if(is.numeric)
+
+houses_tidy_nonnumeric <- house_trim %>%
+  select_if(function(x) !is.numeric(x))
+
+houses_tidy_nonnumeric$price <- house_trim$price
+
+ggpairs(houses_tidy_numeric, progress = FALSE)
+ggpairs(houses_tidy_nonnumeric, progress = FALSE)
+
+```
+
+First Predictor Candidates:
+
+sqft_living
+sqft_above
+bathrooms
+waterfront
+grade
+
+```{r}
+
+mod1a <- lm(price ~ sqft_living,
+            house_trim)
+
+summary(mod1a)
+autoplot(mod1a)
+
+```
+
+```{r}
+
+mod1b <- lm(price ~ sqft_above,
+            house_trim)
+
+summary(mod1b)
+autoplot(mod1b)
+
+```
+
+```{r}
+
+mod1c <- lm(price ~ bathrooms,
+            house_trim)
+
+summary(mod1c)
+autoplot(mod1c)
+
+```
+
+
+```{r}
+
+mod1d <- lm(price ~ waterfront,
+            house_trim)
+
+summary(mod1d)
+autoplot(mod1d)
+
+```
+
+```{r}
+
+mod1e <- lm(price ~ grade,
+            house_trim)
+
+summary(mod1e)
+autoplot(mod1e)
+
+```
+
+Select sqft_living as first predictor (mod1a)
+
+```{r}
+
+house_resid <- house_trim %>% 
+  add_residuals(mod1a) %>% 
+  select(resid, everything(), -price, -sqft_living)
+
+house_resid %>% 
+  ggpairs(aes(colour = grade, alpha = 0.5),progress = FALSE)
+
+ggsave("ggpairs2.png",
+       height = 20,
+       width = 20)
+
+```
+
+Second Predictor candidates:
+
+lat
+waterfront
+view
+yr_built
+
+```{r}
+
+mod2a <- lm(price ~ sqft_living + lat, 
+            house_trim)
+
+summary(mod2a)
+autoplot(mod2a)
+
+```
+
+```{r}
+
+mod2b <- lm(price ~ sqft_living + waterfront, 
+            house_trim)
+
+summary(mod2b)
+autoplot(mod2b)
+
+```
+
+```{r}
+
+mod2c <- lm(price ~ sqft_living + view, 
+            house_trim)
+
+summary(mod2c)
+autoplot(mod2c)
+
+```
+
+```{r}
+
+mod2d <- lm(price ~ sqft_living + yr_built, 
+            house_trim)
+
+summary(mod2d)
+autoplot(mod2d)
+
+```
+
+```{r}
+
+anova(mod1a, mod2b)
+
+```
+
+
+```{r}
+
+house_resid <- house_trim %>% 
+  add_residuals(mod2a) %>% 
+  select(resid, everything(), -c(lat, price, sqft_living))
+
+house_resid %>% 
+  ggpairs(progress = FALSE)
+
+ggsave("ggpairs3.png",
+       width = 20,
+       height = 20)
+  
+```
+
+Third predictor candidates
+view
+waterfront
+yr_built
+
+
+```{r}
+
+mod3a <- lm(price ~ sqft_living + lat + view, 
+            house_trim)
+
+summary(mod3a)
+autoplot(mod3a)
+
+```
+
+```{r}
+
+mod3b <- lm(price ~ sqft_living + lat + waterfront, 
+            house_trim)
+
+summary(mod3b)
+autoplot(mod3b)
+
+```
+
+```{r}
+
+mod3c <- lm(price ~ sqft_living + lat + yr_built, 
+            house_trim)
+
+summary(mod3c)
+autoplot(mod3c)
+
+```
+
+Fourth predictor
+
+
+
+
+```{r}
+
+house_resid <- house_trim %>% 
+  add_residuals(mod3a) %>% 
+  select(resid, everything(), -c(lat, price, sqft_living, view))
+
+house_resid %>% 
+  ggpairs(progress = FALSE)
+
+ggsave("ggpairs4.png",
+       width = 20,
+       height = 20)
+
+```
+
+
+
+
