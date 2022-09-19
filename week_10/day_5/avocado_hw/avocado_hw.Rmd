@@ -1,0 +1,243 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(tidyverse)
+library(skimr)
+library(leaps)
+library(ggfortify)
+library(GGally)
+library(modelr)
+library(caret)
+
+```
+
+```{r}
+
+avocado <- read_csv("data/avocado.csv") %>% 
+  janitor::clean_names()
+
+avocado %>% 
+  skim()
+
+```
+
+# clean and modify data
+
+Several transformations were made to the dataset which could help explain why the average price of an avocado would fluctuate, this meant that proportions and logarithmic transformations were preferred for this analysis, some of this cleaning was made retrospectively as the model was being developed to assist with explaining how the predicted variable changed with the predictors.
+
+```{r}
+
+avocado_clean <- avocado %>% 
+  filter(total_bags > 0) %>% 
+  select(-1, - date) %>% 
+  mutate(prop_4046 = x4046 / total_volume,
+         prop_4225 = x4225 / total_volume,
+         prop_4770 = x4770 / total_volume,
+         prop_small_bags = small_bags / total_bags,
+         prop_large_bags = large_bags / total_bags,
+         prop_x_large_bags = x_large_bags / total_bags,
+         ln_total_volume = log(total_volume), 
+         year = factor(year)) %>%
+  select(-c(total_volume:x_large_bags, prop_4770, prop_x_large_bags))
+
+skim(avocado_clean)
+
+avocado %>% 
+  ggplot(aes(log(total_volume), fill = type)) + 
+  geom_histogram()
+
+```
+
+```{r, message = FALSE, warning = FALSE}
+
+avocado_clean %>% 
+  ggpairs(aes(colour = type, alpha = 0.5), progress = FALSE)
+
+ggsave("ggpairs1.png",
+       width = 20, 
+       height = 20)
+
+```
+
+# Create test/train split
+```{r}
+
+n_data <- nrow(avocado_clean)
+
+test_index <- sample(1:n_data, size = n_data * 0.2)
+
+test <- slice(avocado_clean, test_index)
+train <- slice(avocado_clean, -test_index)
+
+```
+
+
+# automatic model selection
+
+```{r}
+
+regsubsets_forward <- regsubsets(average_price ~ .,
+                                 data = avocado_clean,
+                                 nvmax = 15,
+                                 method = "forward")
+
+sum_regsubsets_forward <- summary(regsubsets_forward)
+
+sum_regsubsets_forward
+
+sum_regsubsets_forward$rsq
+sum_regsubsets_forward$adjr2
+
+```
+
+```{r}
+
+sum_regsubsets_forward$which
+plot(regsubsets_forward, scale = "adjr2")
+plot(regsubsets_forward, scale = "bic")
+
+plot(sum_regsubsets_forward$rsq, type = "o", pch = 20)
+plot(sum_regsubsets_forward$bic, type = "o", pch = 20)
+
+```
+
+```{r}
+
+
+regsubsets_backward <- regsubsets(average_price ~ .,
+                                 data = avocado_clean,
+                                 nvmax = 15,
+                                 method = "backward")
+
+sum_regsubsets_backward <- summary(regsubsets_backward)
+
+sum_regsubsets_backward
+```
+
+
+```{r}
+
+regsubsets_exhaustive <- regsubsets(average_price ~ .,
+                                 data = avocado_clean,
+                                 nvmax = 15,
+                                 method = "exhaustive")
+
+sum_regsubsets_exhaustive <- summary(regsubsets_exhaustive)
+
+sum_regsubsets_exhaustive
+sum_regsubsets_exhaustive$rsq
+sum_regsubsets_exhaustive$adjr2
+
+```
+
+```{r}
+
+plot(regsubsets_backward, scale = "bic")
+plot(regsubsets_exhaustive, scale = "bic")
+
+plot(regsubsets_backward, scale = "adjr2")
+plot(regsubsets_exhaustive, scale = "adjr2")
+
+
+plot(sum_regsubsets_backward$adjr2, type = "o", pch = 20)
+plot(sum_regsubsets_exhaustive$adjr2, type = "o", pch = 20)
+
+plot(sum_regsubsets_exhaustive$bic, type = "o", pch = 20)
+
+```
+# Selected model
+
+The best fitting model was obtained using the automatic model selection features of the leaps package. The original model selected did not include all predictors included in the final model.
+```{r}
+
+model <- lm(average_price ~ type + prop_4225 + year + prop_large_bags +
+              ln_total_volume + prop_4046,
+            avocado_clean)
+
+summary(model)
+autoplot(model)
+
+```
+
+The model residuals show consistent randomness in scale and direction from plot one of the above, it also shows moderate normality with a light right_skew.
+From the scale-location plot the standardised residuals appear to show a very small upwards trend as fitted values increase, for the purposes of the model the graphs achieve the desired plots relatively well and will therefore be assumed to be appropriate for estimating average avocado prices.
+
+
+```{r}
+
+test %>% 
+  add_residuals(model) %>% 
+  mutate(squared_error = resid^2) %>% 
+  summarise(mse = mean(squared_error))
+
+```
+
+MSE seems rather high compared with the size of the "average price" variable. Time to check if other predictors can be incorporated.
+
+Check to see if region has any affect on the performance of the model.
+
+```{r}
+
+model_with_region <- lm(average_price ~ type + prop_4225 + year + prop_large_bags +
+              ln_total_volume + prop_4046 + region,
+             avocado_clean)
+
+anova(model, model_with_region)
+
+summary(model_with_region)
+
+```
+
+The inclusion of the region is statistically significant, based on the Analysis of Variation results, however not all regions are statistically significant. This was sufficient enough to include regions as part of the model. The rsquared and adjusted r-squared values increased substantially from the previous model attempt, ~0.54 to ~0.7.
+
+```{r}
+
+autoplot(model_with_region)
+
+```
+
+The plots here follow a very similar trend as seen previously above, and are considered "acceptable" for this model.
+
+
+K-fold validation 
+
+Using k-fold validation to check if the model is appropriate over various validation datasets.
+
+```{r}
+
+cv_10_fold <- trainControl(method = "cv",
+                           number = 10,
+                           savePredictions = TRUE)
+
+model_kfold_val <- train(average_price ~ type + prop_4225 + year + prop_large_bags +
+              ln_total_volume + prop_4046 + region,
+               avocado_clean,
+               trControl = cv_10_fold,
+               method = "lm")
+
+summary(model_kfold_val)
+
+```
+
+```{r}
+
+model_kfold_val$pred
+model_kfold_val$resample
+```
+
+The model shows that rsquared value ranges from ~0.69 to 0.72 across the 10 different validation sets which shows that the model itself should be well-suited for predicting average avocado prices for any new data it sees as the current model yields consistent results with the current data.
+
+Time to test the model against the test data set.
+```{r}
+
+test %>% 
+  add_predictions(model_kfold_val) %>% 
+  add_residuals(model_kfold_val) %>% 
+  select(average_price, pred, resid)
+
+```
+

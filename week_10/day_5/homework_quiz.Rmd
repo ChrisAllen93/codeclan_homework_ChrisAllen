@@ -1,0 +1,61 @@
+---
+title: "Homework Quiz"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    number_sections: true
+    df_print: paged
+    css: ../../../styles.css
+  pdf_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+<br><br>
+
+1. I want to predict how well 6 year-olds are going to do in their final school exams. Using the following variables am I likely under-fitting, fitting well or over-fitting? Postcode, gender, reading level, score in maths test, date of birth, family income.
+
+You are likely to be overfitting with these variables as some variables aren't specifically related to the predicted variable (i.e. final school exam score), the variables likely to be a cause of overfitting are postcode, date of birth and family income.
+
+
+2. If I have two models, one with an AIC score of 34,902 and the other with an AIC score of 33,559 which model should I use?
+
+The model with the lowest AIC score should be used, therefore the model with a score of 33,559 should be used.
+
+
+3. I have two models, the first with: r-squared: 0.44, adjusted r-squared: 0.43. The second with: r-squared: 0.47, adjusted r-squared: 0.41. Which one should I use?
+
+The first model should be used since the second model is likely to be overfitting the data since the adjusted r-squared value is lower than that of the first model.
+
+
+4. I have a model with the following errors: RMSE error on test set: 10.3, RMSE error on training data: 10.4. Do you think this model is over-fitting?
+
+No, the model is not overfitting since the model will have been trained on the training data set and received a higher RMSE. Since the test set has yielded a lower RMSE it is likely that the model is capturing the trends of the data (i.e. well-fitted) rather than connecting specific patterns of the training data set (i.e. overfitting)
+
+
+5. How does k-fold validation work?
+
+K-fold validation partitions the data into training and validation data sets and runs a model against each of these data sets to validate the effectiveness of the model.
+
+
+6. What is a validation set? When do you need one?
+
+A validation dataset is a sample of data held back from training your model that is used to give an estimate of model skill while tuning model’s hyperparameters. This allows the model to be tested on "unseen" data and gives an insight into the "predictive" capabilities of the model.
+
+
+7. Describe how backwards selection works.
+
+The model includes all predictors in the model and removes predictors one-by-one to improve the model until it can no longer produce better results, i.e. the adjusted R squared value stops increasing. 
+
+
+8. Describe how best subset selection works.
+
+This selection technique will assess all possible combinations of predictors and measure the effectiveness of the model-fit for each one, the best subset will then be selected from the vast range of all models.
+
+
+
+
+

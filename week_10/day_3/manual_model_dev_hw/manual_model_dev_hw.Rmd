@@ -9,6 +9,7 @@ library(tidyverse)
 library(ggfortify)
 library(GGally)
 library(modelr)
+library(skimr)
 
 ```
 
@@ -16,7 +17,10 @@ library(modelr)
 
 house <- read_csv("data/kc_house_data.csv")
 
+skim(house)
+
 ```
+
 # Question 1
 
 ```{r}
@@ -31,9 +35,12 @@ house_trim <- house %>%
     grade <= 3 ~ "poor",
     grade <= 7 ~ "average",
     grade <= 13 ~ "great"
-  ))
+  ),
+  price = log(price),
+  bedrooms = log(bedrooms+0.01))
 
-house_trim
+house_trim %>% 
+  skim()
 
 ```
 # Question 2
@@ -47,13 +54,13 @@ alias(price ~ ., house_trim)
 ```{r}
 
 house_trim <- house_trim %>% 
-  select(-sqft_basement)
+  select(-sqft_basement, -sqft_above)
 
 ```
 
 # Question 3
 
-```{r}
+```{r, message = FALSE}
 
 house_trim %>% 
   ggpairs(progress = FALSE)
@@ -66,16 +73,16 @@ ggsave("ggpairs1.png",
 
 ```{r}
 
-houses_tidy_numeric <- house_trim %>%
-  select_if(is.numeric)
-
-houses_tidy_nonnumeric <- house_trim %>%
-  select_if(function(x) !is.numeric(x))
-
-houses_tidy_nonnumeric$price <- house_trim$price
-
-ggpairs(houses_tidy_numeric, progress = FALSE)
-ggpairs(houses_tidy_nonnumeric, progress = FALSE)
+# houses_tidy_numeric <- house_trim %>%
+#   select_if(is.numeric)
+# 
+# houses_tidy_nonnumeric <- house_trim %>%
+#   select_if(function(x) !is.numeric(x))
+# 
+# houses_tidy_nonnumeric$price <- house_trim$price
+# 
+# ggpairs(houses_tidy_numeric, progress = FALSE)
+# ggpairs(houses_tidy_nonnumeric, progress = FALSE)
 
 ```
 
@@ -99,7 +106,7 @@ autoplot(mod1a)
 
 ```{r}
 
-mod1b <- lm(price ~ sqft_above,
+mod1b <- lm(price ~ bathrooms,
             house_trim)
 
 summary(mod1b)
@@ -109,7 +116,7 @@ autoplot(mod1b)
 
 ```{r}
 
-mod1c <- lm(price ~ bathrooms,
+mod1c <- lm(price ~ lat,
             house_trim)
 
 summary(mod1c)
@@ -140,7 +147,7 @@ autoplot(mod1e)
 
 Select sqft_living as first predictor (mod1a)
 
-```{r}
+```{r, message= FALSE}
 
 house_resid <- house_trim %>% 
   add_residuals(mod1a) %>% 
