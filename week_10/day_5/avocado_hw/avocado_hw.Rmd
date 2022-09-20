@@ -54,12 +54,12 @@ avocado %>%
 
 ```{r, message = FALSE, warning = FALSE}
 
-avocado_clean %>% 
-  ggpairs(aes(colour = type, alpha = 0.5), progress = FALSE)
-
-ggsave("ggpairs1.png",
-       width = 20, 
-       height = 20)
+# avocado_clean %>% 
+#   ggpairs(aes(colour = type, alpha = 0.5), progress = FALSE)
+# 
+# ggsave("ggpairs1.png",
+#        width = 20, 
+#        height = 20)
 
 ```
 
@@ -121,32 +121,32 @@ sum_regsubsets_backward
 
 ```{r}
 
-regsubsets_exhaustive <- regsubsets(average_price ~ .,
-                                 data = avocado_clean,
-                                 nvmax = 15,
-                                 method = "exhaustive")
-
-sum_regsubsets_exhaustive <- summary(regsubsets_exhaustive)
-
-sum_regsubsets_exhaustive
-sum_regsubsets_exhaustive$rsq
-sum_regsubsets_exhaustive$adjr2
+# regsubsets_exhaustive <- regsubsets(average_price ~ .,
+#                                  data = avocado_clean,
+#                                  nvmax = 15,
+#                                  method = "exhaustive")
+# 
+# sum_regsubsets_exhaustive <- summary(regsubsets_exhaustive)
+# 
+# sum_regsubsets_exhaustive
+# sum_regsubsets_exhaustive$rsq
+# sum_regsubsets_exhaustive$adjr2
 
 ```
 
 ```{r}
 
-plot(regsubsets_backward, scale = "bic")
-plot(regsubsets_exhaustive, scale = "bic")
-
-plot(regsubsets_backward, scale = "adjr2")
-plot(regsubsets_exhaustive, scale = "adjr2")
-
-
-plot(sum_regsubsets_backward$adjr2, type = "o", pch = 20)
-plot(sum_regsubsets_exhaustive$adjr2, type = "o", pch = 20)
-
-plot(sum_regsubsets_exhaustive$bic, type = "o", pch = 20)
+# plot(regsubsets_backward, scale = "bic")
+# plot(regsubsets_exhaustive, scale = "bic")
+# 
+# plot(regsubsets_backward, scale = "adjr2")
+# plot(regsubsets_exhaustive, scale = "adjr2")
+# 
+# 
+# plot(sum_regsubsets_backward$adjr2, type = "o", pch = 20)
+# plot(sum_regsubsets_exhaustive$adjr2, type = "o", pch = 20)
+# 
+# plot(sum_regsubsets_exhaustive$bic, type = "o", pch = 20)
 
 ```
 # Selected model
@@ -156,7 +156,7 @@ The best fitting model was obtained using the automatic model selection features
 
 model <- lm(average_price ~ type + prop_4225 + year + prop_large_bags +
               ln_total_volume + prop_4046,
-            avocado_clean)
+            train)
 
 summary(model)
 autoplot(model)
@@ -184,7 +184,7 @@ Check to see if region has any affect on the performance of the model.
 
 model_with_region <- lm(average_price ~ type + prop_4225 + year + prop_large_bags +
               ln_total_volume + prop_4046 + region,
-             avocado_clean)
+             train)
 
 anova(model, model_with_region)
 
@@ -203,7 +203,33 @@ autoplot(model_with_region)
 The plots here follow a very similar trend as seen previously above, and are considered "acceptable" for this model.
 
 
-K-fold validation 
+The model shows that rsquared value ranges from ~0.69 to 0.72 across the 10 different validation sets which shows that the model itself should be well-suited for predicting average avocado prices for any new data it sees as the current model yields consistent results with the current data.
+
+Time to test the model against the test data set.
+
+```{r}
+
+train %>% 
+  add_predictions(model_with_region) %>%
+  add_residuals(model_with_region) %>%
+  select(average_price, pred, resid) %>%
+  mutate(squared_error = resid^2) %>% 
+  summarise(mse = mean(squared_error)) 
+
+test %>%
+  add_predictions(model_with_region) %>%
+  add_residuals(model_with_region) %>%
+  select(average_price, pred, resid) %>%
+  mutate(squared_error = resid^2) %>% 
+  summarise(mse = mean(squared_error))
+
+```
+
+Based on the changed in MSE, the error is slightly larger in the test data set which suggests that the model closely aligns with both data sets.
+
+
+
+# K-fold validation 
 
 Using k-fold validation to check if the model is appropriate over various validation datasets.
 
@@ -227,17 +253,26 @@ summary(model_kfold_val)
 
 model_kfold_val$pred
 model_kfold_val$resample
+
 ```
 
-The model shows that rsquared value ranges from ~0.69 to 0.72 across the 10 different validation sets which shows that the model itself should be well-suited for predicting average avocado prices for any new data it sees as the current model yields consistent results with the current data.
+# Interactions
 
-Time to test the model against the test data set.
+rsquared to beat:       0.7066
+adjrsquared to beat:    0.7054
+
+
+type:prop_4225 = 0.7132, 0.7119
+type:year =      0.7102, 0.7089
+type:prop_large_bags = 0.7084, 0.7072
+type:ln_total_volume = 0.7073, 0.7061
+
 ```{r}
 
-test %>% 
-  add_predictions(model_kfold_val) %>% 
-  add_residuals(model_kfold_val) %>% 
-  select(average_price, pred, resid)
+mod_int <- lm(formula = average_price ~ type + prop_4225 + year + prop_large_bags + 
+    ln_total_volume + prop_4046 + region + type:ln_total_volume, data = train)
+
+summary(mod_int)
 
 ```
 
