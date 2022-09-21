@@ -1,0 +1,170 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(rpart)
+library(rpart.plot)
+library(tidyverse)
+library(janitor)
+
+titanic_set <- read_csv('data/titanic_decision_tree_data.csv') %>% 
+  clean_names()
+
+shuffle_index <- sample(1:nrow(titanic_set))
+
+# shuffle the data so class order isn't in order - need this for training/testing split later on 
+titanic_set <- titanic_set[shuffle_index, ]
+
+```
+
+# Question 1
+
+```{r}
+
+titanic_clean <- titanic_set %>% 
+  filter(!is.na(survived)) %>% 
+  mutate(sex = as_factor(sex),
+         survived = factor(survived, levels = c(0,1), labels = c("No", "Yes")),
+         pclass = factor(pclass, levels = c(3,2,1),
+                         labels = c("Lower", "Middle", "Upper")),
+         embarked = as_factor(embarked),
+         age_status= if_else(age <= 16, "child", "adult")) %>%
+  drop_na() %>% 
+  select(-c("x1", "passenger_id", "name", "ticket", "fare", "cabin"))
+
+titanic_clean
+
+```
+
+# Question 2
+
+```{r}
+
+library(GGally)
+
+titanic_clean %>% 
+  select(survived, everything()) %>% 
+  ggpairs(progress = FALSE)
+
+```
+
+The ggpairs plot above shows that there are some relationships between the variables which could help explain if that person survived or not, the first one would be sex (females tended to survive more), age and age_status (more people of older ages tended to survive) and pclass (upper class people tended to survive more).
+
+# Question 3
+
+Split the data 80% training and 20% testing, the total number of observations is 183 therefore it is assumed that a high proportion of the data will be required to develop a model which can predict based on the available predictors, therefore 80% was selected.
+
+```{r}
+
+n_data <- nrow(titanic_clean)
+
+test_index <- sample(1:n_data, size = n_data * 0.2)
+titanic_test <- slice(titanic_clean, test_index)
+titanic_train <- slice(titanic_clean, -test_index)
+
+```
+
+```{r}
+
+titanic_test %>% 
+  tabyl(survived)
+
+```
+
+```{r}
+
+titanic_train %>% 
+  tabyl(survived)
+
+```
+
+The proportion of survived is approximately even between the training and testing data sets.
+
+# Question 4
+
+```{r}
+
+titanic_fit <- rpart(
+  formula = survived ~ .,
+  data = titanic_train,
+  method = "class"
+)
+
+```
+
+```{r}
+
+titanic_train %>% 
+  filter(survived == "Yes") %>% 
+  filter(sex == "male") %>% 
+  filter(age < 43.6)
+
+```
+
+
+```{r}
+
+rpart.plot(titanic_fit,
+           yesno = 2,
+           fallen.leaves = TRUE,
+           digits = 4,
+           type = 4,
+           extra = 101)
+
+```
+
+From the decision tree above using all possible predictors, the most important predictors are sex and age for the majority of the data followed by sib_sp (number of siblings / spouses on titanic).
+
+The decision tree shows that females have the highest chance of surviving, as this represents 47.62% (65 out of 147) of those that survived. Only 5 females died on the titanic (from the training data set). the next highest demographic of survivors were males between the age of 18.6 and 43.6 with no siblings or spouses on the titanic at the time of the incident (17.01% - only 11 survivors). Next highest survivors were males over the age of 63. The main takeaway is that sex and age have the highest impact on the predicted survival rate.
+
+# Question 6
+
+```{r}
+
+library(modelr)
+library(yardstick)
+library(caret)
+
+```
+
+
+```{r}
+
+titanic_test_pred <- titanic_test %>%
+  add_predictions(titanic_fit, type = "class") %>% 
+  select(survived, pred)
+
+```
+
+```{r}
+
+conf_mat <- titanic_test_pred %>% 
+  conf_mat(truth = survived, estimate = pred)
+
+conf_mat
+
+```
+
+```{r}
+
+titanic_test_pred %>% 
+  accuracy(truth = survived, estimate = pred)
+
+titanic_test_pred %>% 
+  sensitivity(truth = survived, estimate = pred)
+
+
+```
+
+```{r}
+
+conf_mat_caret <- confusionMatrix(titanic_test_pred$pred,
+                                  titanic_test_pred$survived)
+
+conf_mat_caret
+
+```
+
