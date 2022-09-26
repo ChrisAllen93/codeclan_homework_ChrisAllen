@@ -1,0 +1,230 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+
+library(tidyverse)
+library(modelr)
+library(glmulti)
+library(pROC)
+
+```
+
+```{r}
+
+orange_juice <- read_csv("data/orange_juice.csv") %>% 
+  janitor::clean_names()
+
+```
+
+```{r}
+
+oj <- orange_juice %>% 
+  mutate(purchase_mm = (purchase == "MM"), .before = purchase, 
+         store_id = as.factor(store_id)) %>% 
+  select(-purchase)
+
+orange_juice %>% 
+  distinct(store, store7, store_id)
+# possible drop store7 and store columns, info contained in "store_id" column
+
+```
+
+```{r}
+orange_juice %>% 
+  select(contains("price")) %>% 
+  select(price_ch, sale_price_ch, price_mm, sale_price_mm, price_diff,
+         list_price_diff)
+  
+oj
+
+```
+
+```{r}
+
+alias(purchase_mm ~ ., oj)
+
+```
+
+```{r}
+
+oj_clean <- oj %>% 
+  select(-store, -store7, - price_ch, - price_mm, -price_diff, -disc_ch,
+         -disc_mm, -weekof_purchase)
+
+alias(purchase_mm ~ ., oj_clean)
+
+skimr::skim(oj_clean)
+
+```
+
+```{r}
+
+n_data <- nrow(oj_clean)
+
+test_index <- sample(1:n_data, n_data * 0.2)
+
+oj_test <- slice(oj_clean, test_index)
+oj_train <- slice(oj_clean, -test_index)
+
+```
+
+
+
+```{r, message=FALSE, warning=FALSE}
+
+library(GGally)
+
+oj_clean %>% 
+  ggpairs(progress = FALSE)
+
+```
+
+
+```{r}
+
+glmulti_search_all_mains <- glmulti(
+  purchase_mm ~ ., 
+  data = oj_train,
+  level = 1,               # No interactions considered, main effects only
+  method = "h",            # Exhaustive approach
+  crit = "bic",            # BIC as criteria
+  confsetsize = 10,        # Keep 10 best models
+  plotty = F, 
+  report = T,              # No plots, but provide interim reports
+  fitfunction = "glm",     # glm function
+  family = binomial(link = "logit")) # binomial family for logistic regression
+
+summary(glmulti_search_all_mains)
+
+```
+
+```{r}
+
+glmulti_ga_search_with_pairs_aic <- glmulti(
+  purchase_mm ~ .,
+  data = oj_train,
+  level = 2,               # Interactions considered
+  method = "g",            # Genetic algorithm approach
+  crit = "aic",            # AIC as criteria
+  confsetsize = 10,        # Keep 10 best models
+  marginality = TRUE,      # consider pairs only if both main effects in model
+  plotty = F, 
+  report = T,              # No plots, but provide interim reports
+  fitfunction = "glm",     # glm function
+  family = binomial(link = "logit")) # binomial family for logistic regression
+
+summary(glmulti_ga_search_with_pairs_aic)
+
+```
+
+```{r}
+
+library(leaps)
+
+leaps_exhaustive_model <- regsubsets(purchase_mm ~ .,
+                                     oj_train,
+                                     nvmax = 20                                     ,
+                                     method = "exhaustive",)
+
+summary(leaps_exhaustive_model)
+
+```
+
+
+# Best Model
+purchase_mm~1+special_ch+special_mm+loyal_ch+sale_price_mm+sale_price_ch+pct_disc_mm+pct_disc_ch+list_price_diff+loyal_ch:special_ch+pct_disc_mm:special_mm+pct_disc_ch:special_ch+pct_disc_ch:loyal_ch+list_price_diff:special_ch+list_price_diff:loyal_ch
+
+```{r}
+glmulti_best_model <- glm(purchase_mm~1+special_ch+special_mm+loyal_ch+
+                            sale_price_mm+sale_price_ch+pct_disc_mm+pct_disc_ch+
+                            list_price_diff+loyal_ch:special_ch+
+                            pct_disc_mm:special_mm+pct_disc_ch:special_ch+
+                            pct_disc_ch:loyal_ch+list_price_diff:special_ch+
+                            list_price_diff:loyal_ch,
+                  oj_train,
+                  family = binomial(link = "logit"))
+
+glmulti_best_model_main <- glm(purchase_mm~1+loyal_ch+sale_price_mm+sale_price_ch,
+                  oj_train,
+                  family = binomial(link = "logit"))
+
+
+all_predictor_model <- glm(purchase_mm ~ .,
+                           oj_train,
+                           family = binomial(link = "logit"))
+                           
+best_4pred_model <- glm(purchase_mm ~ loyal_ch + sale_price_mm + sale_price_ch +
+                          store_id,
+                           oj_train,
+                           family = binomial(link = "logit"))
+
+```
+
+```{r}
+
+glmulti_with_pred <- oj_test %>% 
+  add_predictions(glmulti_best_model, type = "response")
+
+glmulti_roc_obj <- glmulti_with_pred %>% 
+  roc(response = purchase_mm, predictor = pred)
+
+glmultimain_with_pred <- oj_test %>% 
+  add_predictions(glmulti_best_model_main, type = "response")
+
+glmultimain_roc_obj <- glmultimain_with_pred %>% 
+  roc(response = purchase_mm, predictor = pred)
+
+apm_with_pred <- oj_test %>% 
+  add_predictions(all_predictor_model, type = "response")
+
+apm_roc_obj <- apm_with_pred %>% 
+  roc(response = purchase_mm, predictor = pred)
+
+fourpred_with_pred <- oj_test %>% 
+  add_predictions(best_4pred_model, type = "response")
+
+fourpred_roc_obj <- fourpred_with_pred %>% 
+  roc(response = purchase_mm, predictor = pred)
+
+```
+
+```{r}
+
+ggroc(data = list("glmulti best" = glmulti_roc_obj,
+                  "glmulti main" = glmultimain_roc_obj,
+                  "all predictor model" = apm_roc_obj,
+                  "4 predictor model" = fourpred_roc_obj),
+      legacy.axes = TRUE) +
+  labs(x = "False Positive Rate",
+       y = "True Positive Rate", 
+       title = "ROC Curves",
+       col = "Model") +
+  theme_classic() +
+  scale_x_continuous(expand = c(0, 0), labels = scales::percent) +
+    scale_y_continuous(expand = c(0, 0), labels = scales::percent)
+
+```
+
+```{r}
+
+auc(glmulti_roc_obj)      # 0.8516
+auc(glmultimain_roc_obj)  # 0.8674
+auc(apm_roc_obj)          # 0.8658
+auc(fourpred_roc_obj)     # 0.8737
+
+```
+
+The best model tested against the "test" data set is the simplest model which takes into account the top 4 predictors. It is clear that the more complex models developed from the training data set are overfitting and don't capture the overall trends of the dataset.
+
+
+```{r}
+library(broom)
+
+best_4pred_model$coefficient
+
+summary(best_4pred_model)
+
+```

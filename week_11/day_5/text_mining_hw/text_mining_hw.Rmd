@@ -1,0 +1,129 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+# MVP
+Using the dataset austen_books() from the package janeaustenr.
+
+```{r}
+
+library(tidyverse)
+library(tidytext)
+library(textdata)
+library(janeaustenr)
+
+```
+
+```{r}
+
+titles <- c("Pride & Prejudice", "Sense & Sensibility") 
+books <- list(prideprejudice, sensesensibility)
+
+books <- purrr::map_chr(books, paste, collapse = " ")
+
+```
+
+```{r}
+
+two_books <- tibble(
+  title = titles,
+  text = books
+) %>% 
+  unnest_tokens(word, text)
+
+two_books
+
+```
+
+## Find the most common words in both Pride & Prejudice and Sense & Sensibility.
+
+```{r}
+
+two_books %>% 
+  count(title, word) %>% 
+  group_by(title) %>% 
+  slice_max(n, n = 3)
+
+```
+
+The most common words across both books are "the", "to" and "of.
+
+## Find the most common words in both Pride & Prejudice and Sense & Sensibility, not including stop words.
+
+```{r}
+
+two_books %>% 
+  anti_join(stop_words) %>% 
+  count(title, word) %>% 
+  group_by(title) %>% 
+  slice_max(n, n = 3)
+
+```
+
+The most common words (excluding stop words) are "Elizabeth", "Darcy" and "Bennet" in Pride& Prejudice, and "Elinor", "Marianne" and "Time" in Sense & Sensibility.
+
+## Find the most common sentiment words in both Pride & Prejudice and Sense & Sensibility.
+
+```{r}
+# using bing list as sentiment words
+two_books %>% 
+  inner_join(lexicon_bing()) %>% 
+  group_by(title, word) %>% 
+  summarise(word_count = n()) %>% 
+  slice_max(word_count, n = 3)
+
+```
+The most common sentiment words from P&P are "miss", "well" and "good" and for S&S are "well", "miss" and "good". 
+
+# Extension
+Taking your results above. Can you create a plot which visualises the differences between the books?
+
+```{r}
+
+pride_book <- tibble(
+  id = 1:length(prideprejudice),
+  lines = prideprejudice
+) %>% 
+  unnest_tokens(word, lines)
+
+pride_book_sentiments <- pride_book %>% 
+  inner_join(lexicon_afinn()) %>% 
+  group_by(id) %>% 
+  summarise(mean_sentiment = mean(value)) %>% 
+  mutate(id = id/ max(id),
+         title = "Pride & Prejudice")
+
+
+sense_book <- tibble(
+  id = 1:length(sensesensibility),
+  lines = sensesensibility
+) %>% 
+  unnest_tokens(word, lines)
+
+sense_book_sentiments <- sense_book %>% 
+  inner_join(lexicon_afinn()) %>% 
+  group_by(id) %>% 
+  summarise(mean_sentiment = mean(value)) %>% 
+  mutate(id = id/ max(id),
+         title = "Sense & Sensibility")
+
+combined_sentiments <- pride_book_sentiments %>% 
+  bind_rows(sense_book_sentiments)
+
+combined_sentiments %>% 
+  ggplot(aes(x = id, y = mean_sentiment, colour = title)) +
+  geom_smooth(se = FALSE) +
+  labs(x = "Percentage of story complete (%)",
+       y = "Average sentence sentiment score",
+       title = "How does sentiment change through the books?",
+       col = "Book Title") +
+  scale_x_continuous(labels = scales::percent, expand = c(0,0)) +
+  scale_y_continuous(expand = c(0.2, 0)) +
+  theme_classic()
+
+```
+
+S&S starts off more positive than P&P but sharply decreases before rising again at 50% of the book. It rises a bit then decreases again before finally rising towards the end of the book. P&P drops more slowly as the book progresses with a low-point at around 70% of the story completed, before rising again continuously until the end of the book.
+
+Interestingly, both books start happier than they end (in terms of sentimental words used!)
