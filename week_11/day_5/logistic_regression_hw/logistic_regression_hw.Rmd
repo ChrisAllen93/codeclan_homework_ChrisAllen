@@ -121,6 +121,10 @@ summary(glmulti_ga_search_with_pairs_aic)
 ```
 
 ```{r}
+summary(glmulti_ga_search_with_pairs_aic)$bestmodel
+```
+
+```{r}
 
 library(leaps)
 
@@ -162,6 +166,24 @@ best_4pred_model <- glm(purchase_mm ~ loyal_ch + sale_price_mm + sale_price_ch +
                            family = binomial(link = "logit"))
 
 ```
+
+```{r}
+
+"AIC"
+aic(glmulti_best_model)
+aic(glmulti_best_model_main)
+aic(all_predictor_model)
+aic(best_4pred_model)
+
+
+"BIC"
+bic(glmulti_best_model)
+bic(glmulti_best_model_main)
+bic(all_predictor_model)
+bic(best_4pred_model)
+
+```
+
 
 ```{r}
 
@@ -210,10 +232,10 @@ ggroc(data = list("glmulti best" = glmulti_roc_obj,
 
 ```{r}
 
-auc(glmulti_roc_obj)      # 0.8516
-auc(glmultimain_roc_obj)  # 0.8674
-auc(apm_roc_obj)          # 0.8658
-auc(fourpred_roc_obj)     # 0.8737
+auc(glmulti_roc_obj)      # 0.9066
+auc(glmultimain_roc_obj)  # 0.9049
+auc(apm_roc_obj)          # 0.9083
+auc(fourpred_roc_obj)     # 0.9100
 
 ```
 
